@@ -6,10 +6,38 @@ export default defineConfig({
       github: 'https://github.com/OpenSPG/openspg',
     },
     footer: false,
-    nav: {
-      'zh-CN': [{ title: '快速开始', link: '/Guide' }],
-      'en-US': [{ title: 'Quick Start', link: '/en/Guide' }],
-    },
+    // nav: {
+    //   'zh-CN': [
+    //     { title: '快速开始', link: '/Guide' },
+    //     {
+    //       title: '案例',
+    //       link: '/example/enterprise-supply-chain/enterprise_supply_chain_introduce_quickstart',
+    //     },
+    //   ],
+    //   'en-US': [
+    //     { title: 'Quick Start', link: '/en-US/Guide' },
+    //     {
+    //       title: 'Case Study',
+    //       link: '/en-US/example/enterprise-supply-chain/enterprise_supply_chain_introduce_quickstart',
+    //     },
+    //   ],
+    // },
+    // sidebar: {
+    //   '/example': [
+    //     {
+    //       children: [
+    //         {
+    //           title: 'A',
+    //           link: '/example/enterprise-supply-chain/enterprise_supply_chain_introduce_quickstart',
+    //         },
+    //         {
+    //           title: 'B',
+    //           link: '/example/medical/medical_introduce_quickstart',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   },
   favicons: [
     'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*JiTDRaNWTQkAAAAAAAAAAAAADtmcAQ/original',

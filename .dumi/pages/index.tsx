@@ -3,6 +3,7 @@
  */
 
 import { useEffect } from 'react';
+import { history } from 'dumi';
 import { Button, Descriptions, Tabs } from 'antd';
 import styled from 'styled-components';
 import AboutUs from '../components/AboutUs';
@@ -24,6 +25,12 @@ const Banner = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 120px;
+  @media (max-width: 768px) {
+    padding: 0px 60px;
+  }
+  @media (max-width: 480px) {
+    padding: 0px 20px;
+  }
 `;
 
 const Middle = styled.div`
@@ -296,7 +303,7 @@ const MainPage = () => {
   }, []);
 
   const handleDownload = () => {
-    window.open('https://survey.aliyun.com/apps/zhiliao/wUwnL6sPC');
+    history.push('/download');
   };
 
   return (
@@ -332,7 +339,12 @@ const MainPage = () => {
             <Button size="large" type="primary" onClick={handleDownload}>
               {PARAGRAPH.WhitepaperDownload}
             </Button>
-            <Button size="large" onClick={() => {}}>
+            <Button
+              size="large"
+              onClick={() => {
+                history.push('/quick-start');
+              }}
+            >
               {PARAGRAPH.QuickStart}
             </Button>
           </BtnGroup>
