@@ -1,5 +1,5 @@
 ---
-title: SPG Overview
+title: Overview
 order: 1
 ---
 
@@ -50,19 +50,19 @@ OpenSPG Core Capabilities:
 
 ### Get Started
 
-* [Install OpenSPG](doc/core/install_en.md)
+* [Install OpenSPG](./install.en-US.md)
 * Quick start with examples:
-  * [Enterprise Supply Chain Knowledge Graph](./doc/example/EnterpriseSupplyChain/enterprise_supply_chain_introduce_quickstart_en.md)
-  * [Risk Mining Knowledge Graph](./doc/example/RiskMining/risk_mining_introduce_quickstart_en.md)
-  * [Medical Knowledge Graph](./doc/example/Medical/medical_introduce_quickstart_en.md)
+  * [Enterprise Supply Chain Knowledge Graph](../example/enterprise-supply-chain/index.en-US.md)
+  * [Risk Mining Knowledge Graph](../example/risk-mining/index.en-US.md)
+  * [Medical Knowledge Graph](../example/Medical/index.en-US.md)
 
 ### Advanced Tutorials
 
-* [KNext command tool and SDK Tutorial](doc/core/knext_tutorial_en.md)
-* [SPG-Schema tutorial](doc/core/spgschema_tutorial_en.md)
-* [SPG-Reasoner Tutorial](doc/core/spgreasoner_tutorial_en.md)
-* [Adapting a new graph database tutorial](doc/core/spg2lpg_translator_tutorial_en.md)
+* [KNext command tool and SDK Tutorial](../tutorial/knext/index.en-US.md)
+* [SPG-Schema tutorial](../tutorial/spgschema/index.en-US.md)
+* [SPG-Reasoner Tutorial](../tutorial/spgreasoner/index.en-US.md)
+* [Adapting a new graph database tutorial](../tutorial/spg2lpg/index.en-US.md)
 
 ## How to contribute
 
-* [Contribution Guidelines](doc/core/contribution_en.md)
+* [Contribution Guidelines](./contribution.en-US.md)

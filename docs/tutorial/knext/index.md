@@ -1,5 +1,5 @@
 ---
-title: KNext命令及使用
+title: KNext命令使用
 order: 1
 ---
 

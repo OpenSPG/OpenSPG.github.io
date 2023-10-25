@@ -3,28 +3,28 @@ title: Data Introduction
 order: 2
 ---
 
-###### 1 Directory Structure
+## 1 Directory Structure
 
 ```
 |_supplychain
-	|_builder
-  	|_job
-      |__data
-        	|_Company.csv // The company instances
-        	|_Company_fundTrans_Company.csv	// Transfer relation between companys
-        	|_Person.csv			// The Person instances
-        	|_Industry.csv		// The industry concepts
-        	|_Product.csv			// The product concepts
-        	|_Index.csv				// The index categories concepts
-        	|_Trend.csv			  // The trend categories concepts
-        	|_ProductChainEvent.csv // The industry chain events
-        	|_TaxOfCompanyEvent.csv // The categorization of company events
-          |_TaxOfProdEvent.csv		// The categorization of product events
+    |_builder
+    |_job
+    |__data
+        |_Company.csv                      // The company instances
+        |_Company_fundTrans_Company.csv    // Transfer relation between companys
+        |_Person.csv                       // The Person instances
+        |_Industry.csv                     // The industry concepts
+        |_Product.csv                      // The product concepts
+        |_Index.csv                        // The index categories concepts
+        |_Trend.csv                        // The trend categories concepts
+        |_ProductChainEvent.csv            // The industry chain events
+        |_TaxOfCompanyEvent.csv            // The categorization of company events
+        |_TaxOfProdEvent.csv               // The categorization of product events
 ```
 
 Introducing a sample of the data separately:
 
-###### 2 The company instances (Company.csv)
+## 2 The company instances (Company.csv)
 
 ```
 id,name,products
@@ -34,9 +34,9 @@ CSF0000002238,三角*胎股*限公司,"轮胎,全钢子午线轮胎"
 - id: The unique ID of the company.
 - name: The name of the company.
 - products: The products produced by the company, separated by ','.
--
 
-###### 3 Transfer relation between companys (Company_fundTrans_Company.csv)
+
+## 3 Transfer relation between companys (Company_fundTrans_Company.csv)
 
 ```
 src,dst,transDate,transAmt
@@ -48,7 +48,7 @@ CSF0000002227,CSF0000001579,20230506,73
 - transDate: The date of the fund transfer.
 - transAmt: The total amount of the fund transfer.
 
-###### 4 The person instances (Person.csv)
+## 4 The person instances (Person.csv)
 
 ```
 id,name,age,legalRep
@@ -60,7 +60,7 @@ id,name,age,legalRep
 - age: The age of the person.
 - legalRep: The name of the company where the person serves as the legal representative.
 
-###### 5 The industry concepts (Industry.csv)
+## 5 The industry concepts (Industry.csv)
 
 ```
 fullname
@@ -74,7 +74,7 @@ fullname
 The industry chain concepts is represented by its name, with dashes indicating its higher-level concepts.
 For example, the higher-level concept of "Energy-Energy-Energy Equipment and Services" is "Energy-Energy", and the higher-level concept of "Energy-Energy-Energy Equipment and Services-Energy Equipment and Services" is "Energy-Energy-Energy Equipment and Services".
 
-###### 6 The product concepts (Product.csv)
+## 6 The product concepts (Product.csv)
 
 ```
 fullname,belongToIndustry,hasSupplyChain
@@ -85,7 +85,7 @@ fullname,belongToIndustry,hasSupplyChain
 - belongToIndustry: The industry which the product belongs to. For example, in this case, "Butadiene rubber" belongs to the "commodity chemicals industry".
 - hasSupplyChain: The downstream industries related to the product. For example, the downstream industries of "Butadiene rubber" may include "tire manufacturing", "rubber and plastic product trading", and so on.
 
-###### 7 The industry chain events (ProductChainEvent.csv)
+## 7 The industry chain events (ProductChainEvent.csv)
 
 ```
 id,name,subject,index,trend
@@ -98,14 +98,14 @@ id,name,subject,index,trend
 - index: The index related to the event. In this example, it is "price".
 - trend: The trend of the event. In this example, it is "rising".
 
-###### 8 The index concepts(Index.csv) and the trend concepts(Trend.csv)
+## 8 The index concepts(Index.csv) and the trend concepts(Trend.csv)
 
 Trend and index are atomic conceptual categories that can be combined to form industrial chain events and company events.
 
 - trend: The trend of the event, with possible values of "rising" or "falling".
 - index: The index related to the event, with possible values of "price," "cost," or "profit".
 
-###### 9 The event categorization(TaxOfCompanyEvent.csv、TaxOfProdEvent.csv)
+## 9 The event categorization(TaxOfCompanyEvent.csv、TaxOfProdEvent.csv)
 
 Event classification includes industrial chain event classification and company event classification with the following data:
 

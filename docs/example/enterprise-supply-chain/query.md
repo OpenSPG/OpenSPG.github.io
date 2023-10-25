@@ -3,7 +3,7 @@ title: 查询任务
 order: 4
 ---
 
-### 场景1：企业信用评级特征生成
+## 场景1：企业信用评级特征生成
 
 需求：在企业信用评级中，假定需要得到如下决策因子 <br>
 1）主供应商关系 <br>
@@ -18,18 +18,18 @@ order: 4
 
 ```
 Define (s:Compnay)-[p:mainSupply]->(o:Company) {
-  STRUCTURE{
-  	(s)-[:product]->(upProd:Product)-[:hasSupplyChain]->(downProd:Product)<-[:product]-(o),
-  	(o)-[f:fundTrans]->(s)
-  	(otherCompany:Company)-[otherf:fundTrans]->(s)
-  }
-	CONSTRAINT {
-  	// 计算公司o的转入占比
-  	otherTransSum("总共转入金额") = group(s).sum(otherf.transAmt)
-  	targetTransSum("o转入的金额总数") = group(s,o).sum(f.transAmt)
-  	transRate = targetTransSum*1.0/(otherTransSum + targetTransSum)
-  	R1("占比必须超过50%"): transRate > 0.5
-  }
+    Structure {
+        (s)-[:product]->(upProd:Product)-[:hasSupplyChain]->(downProd:Product)<-[:product]-(o),
+        (o)-[f:fundTrans]->(s)
+        (otherCompany:Company)-[otherf:fundTrans]->(s)
+    }
+    Constraint {
+        // 计算公司o的转入占比
+        otherTransSum("总共转入金额") = group(s).sum(otherf.transAmt)
+        targetTransSum("o转入的金额总数") = group(s,o).sum(f.transAmt)
+        transRate = targetTransSum*1.0/(otherTransSum + targetTransSum)
+        R1("占比必须超过50%"): transRate > 0.5
+    }
 }
 ```
 
@@ -37,11 +37,11 @@ Define (s:Compnay)-[p:mainSupply]->(o:Company) {
 
 ```
 Define (s:Compnay)-[p:belongToIndustry]->(o:Industry) {
-  STRUCTURE{
-  	(s)-[:product]->(c:Product)-[:belongToIndustry]->(o)
-  }
-	CONSTRAINT {
-  }
+    Structure {
+        (s)-[:product]->(c:Product)-[:belongToIndustry]->(o)
+    }
+    Constraint {
+    }
 }
 ```
 
@@ -50,75 +50,75 @@ Define (s:Compnay)-[p:belongToIndustry]->(o:Industry) {
 ```
 // 近1个月流出金额
 Define (s:Compnay)-[p:fundTrans1Month]->(o:Int) {
-  STRUCTURE{
-  	(s)-[f:fundTrans]->(c:Company)
-  }
-	CONSTRAINT {
-  	R1("近1个月的流出资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 30
-  	totalOut = group(s).sum(transAmt)
-  	o = totalOut
-  }
+    Structure {
+        (s)-[f:fundTrans]->(c:Company)
+    }
+    Constraint {
+        R1("近1个月的流出资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 30
+        totalOut = group(s).sum(transAmt)
+        o = totalOut
+    }
 }
 
 // 近3个月流出金额
 Define (s:Compnay)-[p:fundTrans3Month]->(o:Int) {
-  STRUCTURE{
-  	(s)-[f:fundTrans]->(c:Company)
-  }
-	CONSTRAINT {
-  	R1("近4个月的流出资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 90
-  	totalOut = group(s).sum(transAmt)
-  	o = totalOut
-  }
+    Structure {
+        (s)-[f:fundTrans]->(c:Company)
+    }
+    Constraint {
+        R1("近4个月的流出资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 90
+        totalOut = group(s).sum(transAmt)
+        o = totalOut
+    }
 }
 
 // 近6个月流出金额
 Define (s:Compnay)-[p:fundTrans6Month]->(o:Int) {
-  STRUCTURE{
-  	(s)-[f:fundTrans]->(c:Company)
-  }
-	CONSTRAINT {
-  	R1("近5个月的流出资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 180
-  	totalOut = group(s).sum(transAmt)
-  	o = totalOut
-  }
+    Structure {
+        (s)-[f:fundTrans]->(c:Company)
+    }
+    Constraint {
+        R1("近5个月的流出资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 180
+        totalOut = group(s).sum(transAmt)
+        o = totalOut
+    }
 }
 
 // 近1个月流入金额
 Define (s:Compnay)-[p:fundTrans1MonthIn]->(o:Int) {
-  STRUCTURE{
-  	(s)<-[f:fundTrans]-(c:Company)
-  }
-	CONSTRAINT {
-  	R1("近1个月的流入资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 30
-  	totalOut = group(s).sum(transAmt)
-  	o = totalOut
-  }
+    Structure {
+        (s)<-[f:fundTrans]-(c:Company)
+    }
+    Constraint {
+        R1("近1个月的流入资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 30
+        totalOut = group(s).sum(transAmt)
+        o = totalOut
+    }
 }
 
 // 近3个月流入金额
 Define (s:Compnay)-[p:fundTrans3MonthIn]->(o:Int) {
-  STRUCTURE{
-  	(s)<-[f:fundTrans]-(c:Company)
-  }
-	CONSTRAINT {
-  	R1("近3个月的流入资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 90
-  	totalOut = group(s).sum(transAmt)
-  	o = totalOut
-  }
+    Structure {
+        (s)<-[f:fundTrans]-(c:Company)
+    }
+    Constraint {
+        R1("近3个月的流入资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 90
+        totalOut = group(s).sum(transAmt)
+        o = totalOut
+    }
 }
 
 
 // 近6个月流入金额
 Define (s:Compnay)-[p:fundTrans6MonthIn]->(o:Int) {
-  STRUCTURE{
-  	(s)<-[f:fundTrans]-(c:Company)
-  }
-	CONSTRAINT {
-  	R1("近6个月的流入资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 180
-  	totalOut = group(s).sum(transAmt)
-  	o = totalOut
-  }
+    Structure {
+        (s)<-[f:fundTrans]-(c:Company)
+    }
+    Constraint {
+        R1("近6个月的流入资金"): date_diff(from_unix_time(now(), 'yyyyMMdd'),f.transDate) < 180
+        totalOut = group(s).sum(transAmt)
+        o = totalOut
+    }
 }
 ```
 
@@ -127,39 +127,39 @@ Define (s:Compnay)-[p:fundTrans6MonthIn]->(o:Int) {
 ```
 // 近1个月资金流水差
 Define (s:Company)-[p:cashflowDiff1Month]->(o:Integer) {
-      STRUCTURE{
+    Structure {
         (s)
-      }
-      CONSTRAINT {
-          // 此处引用特征3中的规则
-          fundTrans1Month = rule_value(s.fundTrans1Month == null, 0, s.fundTrans1Month)
-          fundTrans1MonthIn = rule_value(s.fundTrans1MonthIn == null, 0, s.fundTrans1MonthIn)
-          o = fundTrans1Month - fundTrans1MonthIn
-      }
+    }
+    Constraint {
+        // 此处引用特征3中的规则
+        fundTrans1Month = rule_value(s.fundTrans1Month == null, 0, s.fundTrans1Month)
+        fundTrans1MonthIn = rule_value(s.fundTrans1MonthIn == null, 0, s.fundTrans1MonthIn)
+        o = fundTrans1Month - fundTrans1MonthIn
+    }
 }
 
 // 近3个月资金流水差
 Define (s:Company)-[p:cashflowDiff3Month]->(o:Integer) {
-      STRUCTURE{
+    Structure {
         (s)
-      }
-      CONSTRAINT {
-              // 此处引用特征3中的规则
-          fundTrans3Month = rule_value(s.fundTrans3Month == null, 0, s.fundTrans3Month)
-          fundTrans3MonthIn = rule_value(s.fundTrans3MonthIn == null, 0, s.fundTrans3MonthIn)
-          o = fundTrans3Month - fundTrans3MonthIn
-      }
+    }
+    Constraint {
+        // 此处引用特征3中的规则
+        fundTrans3Month = rule_value(s.fundTrans3Month == null, 0, s.fundTrans3Month)
+        fundTrans3MonthIn = rule_value(s.fundTrans3MonthIn == null, 0, s.fundTrans3MonthIn)
+        o = fundTrans3Month - fundTrans3MonthIn
+    }
 }
 
 // 近6个月资金流水差
 Define (s:Company)-[p:cashflowDiff6Month]->(o:Integer) {
-  STRUCTURE{
-    (s)
-  }
-  CONSTRAINT {
-          fundTrans6Month = rule_value(s.fundTrans6Month == null, 0, s.fundTrans6Month)
-          fundTrans6MonthIn = rule_value(s.fundTrans6MonthIn == null, 0, s.fundTrans6MonthIn)
-          o = fundTrans6Month - fundTrans6MonthIn
+    Structure {
+        (s)
+    }
+    Constraint {
+        fundTrans6Month = rule_value(s.fundTrans6Month == null, 0, s.fundTrans6Month)
+        fundTrans6MonthIn = rule_value(s.fundTrans6MonthIn == null, 0, s.fundTrans6MonthIn)
+        o = fundTrans6Month - fundTrans6MonthIn
   }
 }
 ```
@@ -169,11 +169,11 @@ Define (s:Company)-[p:cashflowDiff6Month]->(o:Integer) {
 ```
 // 定义同法人关系
 Define (s:Compnay)-[p:sameLegalReprensentative]->(o:Company) {
-  STRUCTURE{
-  	(s)<-[:legalReprensentative]-(u:Person)-[:legalReprensentative]->(o)
-  }
-	CONSTRAINT {
-  }
+    Structure {
+        (s)<-[:legalReprensentative]-(u:Person)-[:legalReprensentative]->(o)
+    }
+    Constraint {
+    }
 }
 ```
 
@@ -181,38 +181,37 @@ Define (s:Compnay)-[p:sameLegalReprensentative]->(o:Company) {
 
 ```
 MATCH
-	(s:SupplyChain.Company)
+    (s:SupplyChain.Company)
 RETURN
-	s.id, s.fundTrans1Month, s.fundTrans3Month,
-	s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn,
-	s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month, s.cashflowDiff6Month
+    s.id, s.fundTrans1Month, s.fundTrans3Month, 
+    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn, 
+    s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month, s.cashflowDiff6Month
 ```
 
 ```
 MATCH
-	(s:SupplyChain.Company)-[:mainSupply]->(o:SupplyChain.Company)
+    (s:SupplyChain.Company)-[:mainSupply]->(o:SupplyChain.Company)
 RETURN
-	s.id, o.id
+    s.id, o.id
 ```
 
 ```
 MATCH
-	(s:SupplyChain.Company)-[:belongToIndustry]->(o:SupplyChain.Industry)
+    (s:SupplyChain.Company)-[:belongToIndustry]->(o:SupplyChain.Industry)
 RETURN
-	s.id, o.id
+    s.id, o.id
 ```
 
 ```
 MATCH
-	(s:SupplyChain.Company)-[:sameLegalRepresentative]->(o:SupplyChain.Company)
+    (s:SupplyChain.Company)-[:sameLegalRepresentative]->(o:SupplyChain.Company)
 RETURN
-	s.id, o.id
+    s.id, o.id
 ```
 
-### 场景2：企业供应链发生变化
+## 场景2：企业供应链发生变化
 
 假设供应链发生如下变化： <br>
-
 ```
 "钱****份限公司"发布公告，生产产品“三轮摩托车，二轮摩托车”变更为“两轮摩托车”，则"三角**轮胎股份"和钱"****份限公司"的主供应链关系自动断裂，"三角**轮胎股份"和"钱****份限公司"不再具有主供应链关系
 ```
@@ -241,7 +240,7 @@ RETURN
     s.id, o.id
 ```
 
-### 场景3：产业链影响
+## 场景3：产业链影响
 
 事件内容如下:
 
@@ -263,12 +262,12 @@ knext builder submit ProductChainEvent
 ```
 // ProductChainEvent为一个具体的事件实例，当其属性满足价格上涨条件时，该事件分类为价格上涨事件
 Define (e:ProductChainEvent)-[p:belongTo]->(o:`TaxonofProductChainEvent`/`价格上涨`) {
-  STRUCTURE {
-  }
-	CONSTRAINT {
-		R1: e.index == '价格'
-    R2: e.trend == '上涨'
-	}
+    Structure {
+    }
+    Constraint {
+        R1: e.index == '价格'
+        R2: e.trend == '上涨'
+    }
 }
 ```
 
@@ -277,33 +276,33 @@ Define (e:ProductChainEvent)-[p:belongTo]->(o:`TaxonofProductChainEvent`/`价格
 ```
 // 定义了价格上涨和企业成本上升的规则
 Define (s:`TaxonofProductChainEvent`/`价格上涨`)-[p:leadTo]->(o:`TaxonofCompanyEvent`/`成本上涨`) {
-  STRUCTURE {
-  	//1、找到产业链事件的主体，本例中为顺丁橡胶
-  	//2、找到顺丁橡胶的下游产品，本例中为斜交轮胎
-  	//3、找到生成斜交轮胎的所有企业，本例中为三角**轮胎股份
-    (s)-[:subject]->[prod:Product]-[:hasSupplyChain]->(down:Product)<-[:product]-(c:Company)
-  }
-	CONSTRAINT {
-	}
-  Action {
-    	// 创建一个公司成本上升事件，主体为查询得到的三角**轮胎股份
-    	downEvent = createNodeInstance(
+    Structure {
+        //1、找到产业链事件的主体，本例中为顺丁橡胶
+        //2、找到顺丁橡胶的下游产品，本例中为斜交轮胎
+        //3、找到生成斜交轮胎的所有企业，本例中为三角**轮胎股份
+        (s)-[:subject]->[prod:Product]-[:hasSupplyChain]->(down:Product)<-[:product]-(c:Company)
+    }
+    Constraint {
+    }
+    Action {
+        // 创建一个公司成本上升事件，主体为查询得到的三角**轮胎股份
+        downEvent = createNodeInstance(
             type=CompanyEvent,
             value={
-            subject=c.id
-            trend="上涨"
-            index="成本"
+                subject=c.id
+                trend="上涨"
+                index="成本"
             }
-      )
-    	// 由于这个事件是通过产业链价格上涨引起，故在两者之间增加一条边
-      createEdgeInstance(
+        )
+        // 由于这个事件是通过产业链价格上涨引起，故在两者之间增加一条边
+        createEdgeInstance(
             src=s,
             dst=downEvent,
             type=leadTo,
             value={
             }
-      )
-  }
+        )
+    }
 }
 ```
 
@@ -311,7 +310,7 @@ Define (s:`TaxonofProductChainEvent`/`价格上涨`)-[p:leadTo]->(o:`TaxonofComp
 
 ```cypher
 MATCH
-	(s:SupplyChain.ProductChainEvent)-[:leadTo]->(o:SupplyChain.CompanyEvent)
+    (s:SupplyChain.ProductChainEvent)-[:leadTo]->(o:SupplyChain.CompanyEvent)
 RETURN
-	s.id, o.id
+    s.id,s.subject,o.subject,o.name
 ```

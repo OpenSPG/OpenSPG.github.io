@@ -3,28 +3,28 @@ title: 数据介绍
 order: 2
 ---
 
-###### 1、数据目录
+## 1 数据目录
 
 ```
 |_supplychain
-	|_builder
-  	|_job
-      |__data
-        	|_Company.csv // 存放公司数据
-        	|_Company_fundTrans_Company.csv	//公司转账关系
-        	|_Person.csv			//人相关数据
-        	|_Industry.csv		//行业类目概念数据
-        	|_Product.csv			//产品类目概念数据
-        	|_Index.csv				//指标类目概念数据
-        	|_Trend.csv			  //趋势类目概念数据
-        	|_ProductChainEvent.csv //产业链事件
-        	|_TaxOfCompanyEvent.csv //公司事件分类数据
-          |_TaxOfProdEvent.csv		//产业链产品事件分类数据
+    |_builder
+    |_job
+    |__data
+        |_Company.csv                      // 存放公司数据
+        |_Company_fundTrans_Company.csv    //公司转账关系
+        |_Person.csv                       //人相关数据
+        |_Industry.csv                     //行业类目概念数据
+        |_Product.csv                      //产品类目概念数据
+        |_Index.csv                        //指标类目概念数据
+        |_Trend.csv                        //趋势类目概念数据
+        |_ProductChainEvent.csv            //产业链事件
+        |_TaxOfCompanyEvent.csv            //公司事件分类数据
+        |_TaxOfProdEvent.csv               //产业链产品事件分类数据
 ```
 
 分别抽样部分数据进行介绍。
 
-###### 2、公司数据（Company.csv）
+## 2 公司数据（Company.csv）
 
 ```
 id,name,products
@@ -35,7 +35,7 @@ CSF0000002238,三角*胎股*限公司,"轮胎,全钢子午线轮胎"
 - name：公司名
 - products：公司生产的产品，使用逗号分隔
 
-###### 3、公司资金转账（Company_fundTrans_Company.csv）
+## 3 公司资金转账（Company_fundTrans_Company.csv）
 
 ```
 src,dst,transDate,transAmt
@@ -47,7 +47,7 @@ CSF0000002227,CSF0000001579,20230506,73
 - transDate：转账日期
 - transAmt：转账总金额
 
-###### 4、法人代表（Person.csv）
+## 4 法人代表（Person.csv）
 
 ```
 id,name,age,legalRep
@@ -59,7 +59,7 @@ id,name,age,legalRep
 - age：年龄
 - legalRep：法人代表公司名字
 
-###### 5、产业类目概念（Industry.csv）
+## 5 产业类目概念（Industry.csv）
 
 ```
 fullname
@@ -72,7 +72,7 @@ fullname
 
 产业只有名字，其中段横线代表其上位概念，例如“能源-能源-能源设备与服务”的上位概念是“能源-能源”；“能源-能源-能源设备与服务-能源设备与服务”的上位概念为“能源-能源-能源设备与服务”。
 
-###### 6、产品类目概念（Product.csv）
+## 6 产品类目概念（Product.csv）
 
 ```
 fullname,belongToIndustry,hasSupplyChain
@@ -83,7 +83,7 @@ fullname,belongToIndustry,hasSupplyChain
 - belongToIndustry：所归属的行业，例如本例中，顺丁橡胶属于商品化工
 - hasSupplyChain：是其下游产业，例如顺丁橡胶下游产业有轮胎、橡塑制品贸易等
 
-###### 7、产业链事件（ProductChainEvent.csv）
+## 7 产业链事件（ProductChainEvent.csv）
 
 ```
 id,name,subject,index,trend
@@ -96,14 +96,14 @@ id,name,subject,index,trend
 - index：指标，本例为价格
 - trend：趋势，本例为上升
 
-###### 8、指标（Index.csv）和趋势（Trend.csv）
+## 8 指标（Index.csv）和趋势（Trend.csv）
 
-趋势、指标作为原子概念类目，可组合成产业链事件和公司事件
+趋势、指标作为原子概念类目，可组合成产业链事件和公司事件。
 
 - 趋势，值域为：上涨、下跌
 - 指标，值域为：价格、成本、利润
 
-###### 9、事件分类（TaxOfCompanyEvent.csv、TaxOfProdEvent.csv）
+## 9 事件分类（TaxOfCompanyEvent.csv、TaxOfProdEvent.csv）
 
 事件分类包括产业链事件分类和公司事件分类，数据为：
 

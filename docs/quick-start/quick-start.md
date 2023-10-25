@@ -1,5 +1,5 @@
 ---
-title: SPG概述
+title: SPG介绍
 order: 1
 ---
 
@@ -46,19 +46,19 @@ OpenSPG核心能力模型包括：
 
 ### Get Started
 
-* [安装说明](doc/core/install.md)
+* [安装说明](./install.md)
 * 通过案例快速上手:
-  * [企业供应链图谱](./doc/example/EnterpriseSupplyChain/enterprise_supply_chain_introduce_quickstart.md)
-  * [黑产挖掘图谱](./doc/example/RiskMining/risk_mining_introduce_quickstart.md)
-  * [医疗知识图谱](./doc/example/Medical/medical_introduce_quickstart.md)
+  * [企业供应链图谱](../example/enterprise-supply-chain/index.md)
+  * [黑产挖掘图谱](../example/risk-mining/index.md)
+  * [医疗知识图谱](../example/Medical/index.md)
 
 ### 进阶教程
 
-* [KNext命令行工具和SDK教程](doc/core/knext_tutorial.md)
-* [知识建模Schema教程](doc/core/spgschema_tutorial.md)
-* [逻辑规则推理KGDSL教程](doc/core/spgreasoner_tutorial.md)
-* [适配新的图数据库教程](doc/core/spg2lpg_translator_tutorial.md)
+* [KNext命令行工具和SDK教程](../tutorial/knext/index.md)
+* [知识建模Schema教程](../tutorial/spgschema/index.md)
+* [逻辑规则推理KGDSL教程](../tutorial/spgreasoner/index.md)
+* [适配新的图数据库教程](../tutorial/spg2lpg/index.md)
 
 ## 贡献代码
 
-* [Contribution Guidelines](doc/core/contribution.md)
+* [Contribution Guidelines](./contribution.md)

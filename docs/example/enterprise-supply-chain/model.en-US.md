@@ -3,9 +3,9 @@ title: Schema modeling
 order: 1
 ---
 
-# 1 Schema details
+## 1 Schema details
 
-Schema tutorial of OpenSPG, please refer to [spgschema](tutorial/spgschema). <br>
+Schema tutorial of OpenSPG, please refer to [spgschema_tutorial](../../tutorial/spgschema/index.en-US.md). <br>
 For modeling of the Enterprise Supply Chain Knowledge Graph, please refer to the documentation：[schema description](https://github.com/OpenSPG/openspg/blob/master/python/knext/examples/supplychain/schema/supplychain.schema). <br>
 Execute the following script to complete schema creation: <br>
 
@@ -13,7 +13,7 @@ Execute the following script to complete schema creation: <br>
 knext schema commit
 ```
 
-# 2 SPG Modeling vs Property Graph Modeling
+## 2 SPG Modeling vs Property Graph Modeling
 
 This section will compare the differences between SPG semantic modeling and regular modeling.
 
@@ -27,7 +27,7 @@ id,name,products
 CSF0000000254,北大*药*份限公司,"医疗器械批发,医药批发,制药,其他化学药品"
 ```
 
-###### Modeling based on text attributes
+#### 2.1.1 Modeling based on text attributes
 
 ```yaml
 //Text Attributes
@@ -38,7 +38,7 @@ Company(企业): EntityType
 
 At this moment, the products are only represented as text without semantic information. It is not possible to obtain the upstream and downstream industry chain related information for "北大药份限公司", which is inconvenient for maintenance and usage.
 
-###### Modeling based on relations
+#### 2.1.2 Modeling based on relations
 
 To achieve better maintenance and management of the products, it is generally recommended to represent the products as entities and establish relations between the company and its products.
 
@@ -48,7 +48,7 @@ Product(产品): EntityType
         name(产品名): Text
     relations:
         isA(上位产品): Product
-
+        
 Company(企业): EntityType
     relations:
         product(经营产品): Product
@@ -66,10 +66,10 @@ CSF0000000254,北大*药*份限公司,其他化学药品
 
 This approach has two disadvantages: <br>
 
-1. The raw data needs to be cleaned and converted into multiple rows. <br>
-2. It requires adding and maintaining relation data. When the original data changes, the existing relations need to be deleted and new data needs to be added, which can lead to data errors. <br>
+1) The raw data needs to be cleaned and converted into multiple rows. <br>
+2) It requires adding and maintaining relation data. When the original data changes, the existing relations need to be deleted and new data needs to be added, which can lead to data errors. <br>
 
-###### Modeling based on SPG semantic attributes
+#### 2.1.3 Modeling based on SPG semantic attributes
 
 SPG supports semantic attributes, which can simplify knowledge construction. <br>
 The modeling can be done as follows: <br>
@@ -77,7 +77,7 @@ The modeling can be done as follows: <br>
 ```yaml
 Product(产品): ConceptType
     hypernymPredicate: isA
-
+        
 Company(企业): EntityType
     properties:
         product(经营产品): Product
@@ -128,20 +128,20 @@ Company(企业): EntityType
             constraint: MultiValue
     relations:
         belongToIndustry(所在行业): Industry
-          rule: [[
-              Define (s:Company)-[p:belongToIndustry]->(o:Industry) {
-                        STRUCTURE {
-                          (s)-[:product]->(c:Product)-[:belongToIndustry]->(o)
-                        }
-                        CONSTRAINT {
-                        }
+            rule: [[
+                Define (s:Company)-[p:belongToIndustry]->(o:Industry) {
+                    Structure {
+                        (s)-[:product]->(c:Product)-[:belongToIndustry]->(o)
                     }
-              ]]
+                    Constraint {
+                    }
+                }
+            ]]
 ```
 
-You can refer to the examples in Scenario 1 and Scenario 2 of the [Enterprise Supply Chain Query](./query) for specific details.
+You can refer to the examples in Scenario 1 and Scenario 2 of the [Enterprise Supply Chain Query](./query.en-US.md) for specific details.
 
-### 2.3 Concepts vs Entitys
+### 2.3 Concepts vs Entities
 
 Existing knowledge graph solutions also include common sense knowledge graphs such as ConceptNet. In practical
 business applications, different domains have their own categorical systems that reflect the semantic understanding of the business. There is no universal common sense graph that can be applied to all business scenarios. Therefore, a common practice is to create the domain-specific categorical system as entities and mix them with other entity data. This approach leads to the need for both schema extension modeling and fine-grained semantic modeling on the same categorical system. The coupling of data structure definition and semantic modeling results in complexity in engineering implementation and maintenance management. It also increases the difficulty in organizing and representing (cognitive) domain knowledge.
@@ -151,7 +151,7 @@ OpenSPG distinguishes between concepts and entities to decouple semantics from d
 ```yaml
 Product(产品): ConceptType
     hypernymPredicate: isA
-
+        
 Company(企业): EntityType
     properties:
         product(经营产品): Product
@@ -167,23 +167,23 @@ The representation of events with multiple elements is indeed a type of lossless
 
 ```yaml
 Event(事件):
-  properties:
-    eventTime(发生时间): Long
-    subject(涉事主体): Text
-    object(客体): Text
-    place(地点): Text
-    industry(涉事行业): Text
+    properties:
+        eventTime(发生时间): Long
+        subject(涉事主体): Text
+        object(客体): Text
+        place(地点): Text
+        industry(涉事行业): Text
 ```
 
 This representation method is unable to capture the multidimensional associations of real events. OpenSPG provides event modeling that enables the association of multiple elements in an event, as shown below.
 
 ```yaml
 CompanyEvent(公司事件): EventType
-	properties:
-		subject(主体): Company
-		index(指标): Index
-		trend(趋势): Trend
-		belongTo(属于): TaxOfCompanyEvent
+    properties:
+        subject(主体): Company
+        index(指标): Index
+        trend(趋势): Trend
+        belongTo(属于): TaxOfCompanyEvent
 ```
 
-In the above event, all attribute types are defined SPG types, without any basic type expressions. OpenSPG utilizes this declaration to implement the expression of multiple elements in an event. Specific application examples can be found in the detailed description of Scenario 3 in the [Enterprise Supply Chain Query](./query) document.
+In the above event, all attribute types are defined SPG types, without any basic type expressions. OpenSPG utilizes this declaration to implement the expression of multiple elements in an event. Specific application examples can be found in the detailed description of Scenario 3 in the [Enterprise Supply Chain Query](./enterprise_supply_chain_query.md) document.
