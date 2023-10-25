@@ -28,6 +28,7 @@ function Download() {
   const [searchParams] = useSearchParams();
   const [url, setUrl] = useState('');
   const validateRef = useRef<ValidateFn>();
+  const [moduleLoaded, setModuleLoaded] = useState(false);
   const tokenFromUrl = searchParams.get(TokenKey) || '';
   const [showBackup, setShowBackup] = useState(false);
   const [waitingForResult, setWaitingForResult] = useState(false);
@@ -42,7 +43,7 @@ function Download() {
     return now - timeStamp > expireTime;
   }, [timeStamp]);
 
-  const ableToDownload = !isExpired && allow;
+  const ableToDownload = !isExpired && allow && url;
 
   useEffect(() => {
     fetch('release.wasm')
@@ -50,11 +51,12 @@ function Download() {
       .then((bytes) => instantiate(bytes))
       .then(({ validate }: { validate: ValidateFn }) => {
         validateRef.current = validate;
+        setModuleLoaded(true);
       });
   }, []);
 
   useEffect(() => {
-    if (!validateRef.current) return;
+    if (!moduleLoaded || !validateRef.current) return;
     const result = validateRef.current(tokenFromUrl);
     if (result) {
       setUrl(result);
@@ -63,16 +65,16 @@ function Download() {
       setTimeStamp(new Date().getTime());
       window.close();
     }
-  }, [validateRef.current, tokenFromUrl]);
+  }, [moduleLoaded, tokenFromUrl]);
 
   useEffect(() => {
-    if (!token || !validateRef.current) return;
+    if (!token || !moduleLoaded || !validateRef.current) return;
     const result = validateRef.current(token);
     if (result) {
       setUrl(result);
       setAllow(true);
     }
-  }, [validateRef.current, token]);
+  }, [moduleLoaded, token]);
 
   useEffect(() => {
     if (ableToDownload) {
@@ -83,7 +85,7 @@ function Download() {
           download();
         }, 1000);
     }
-  }, [allow, timeStamp]);
+  }, [ableToDownload, downloadImmediately]);
 
   const goToQuestionnaire = (isBackup?: boolean) => {
     setWaitingForResult(true);
