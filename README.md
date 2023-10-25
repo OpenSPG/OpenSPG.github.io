@@ -1,21 +1,23 @@
-# spg-site-doc
+# spg-site
 
 Official website of [OpenSPG](http://spg.openkg.cn/)
 
-## Development
+## 启动
 
-> To confirm that you have installed [pnpm](https://pnpm.io/installation)
+> 确认已经安装了 [pnpm](https://pnpm.io/installation)
 
 ```bash
-# install dependencies
+# 安装依赖
 $ pnpm install
 
-# start dev server
+# 启动服务
 $ pnpm start
 
-# build docs
-$ pnpm run build
 ```
+
+## 编写文档
+
+参考 [dumi](https://d.umijs.org/guide/conventional-routing)
 
 ## LICENSE
 
