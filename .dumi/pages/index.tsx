@@ -1,0 +1,431 @@
+/**
+ * title: 语义增强可编程知识图谱
+ */
+
+import { useEffect } from 'react';
+import { Button, Descriptions, Tabs } from 'antd';
+import styled from 'styled-components';
+import AboutUs from '../components/AboutUs';
+import CustomItem from '../components/CustomItem';
+import SpgCaseItem from '../components/SpgCaseItem';
+import { useIntl } from '../hooks/useIntl';
+import { useTheme } from '../hooks/useTheme';
+
+const Banner = styled.div`
+  height: 400px;
+  background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*ZgvDRofu-FsAAAAAAAAAAAAADtmcAQ/original');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 120px;
+`;
+
+const Middle = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 0 40px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 20px;
+  }
+`;
+
+const LeftTitleContainer = styled.div`
+  max-width: 680px;
+  margin-bottom: 20px;
+`;
+
+const BaseTitle = styled.div`
+  font-size: 32px;
+  font-weight: 600;
+  color: rgba(26, 27, 37, 0.88);
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
+`;
+
+const Title = styled(BaseTitle)`
+  text-align: left;
+`;
+
+const BtnGroup = styled.div`
+  display: flex;
+  gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 50%;
+  }
+
+  @media (max-width: 480px) {
+    width: 60%;
+  }
+
+  @media (max-width: 360px) {
+    width: 100%;
+  }
+`;
+
+const BaseInfo = styled.div`
+  color: rgba(26, 27, 37, 0.65);
+  font-size: 14px;
+`;
+
+const Info = styled(BaseInfo)``;
+
+const SPG = styled.div`
+  width: 100%;
+  padding: 72px 120px;
+  text-align: center;
+  background-color: #fff;
+  @media (max-width: 768px) {
+    padding: 50px 40px;
+  }
+  @media (max-width: 480px) {
+    padding: 30px 20px;
+  }
+`;
+
+const SPGContent = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+`;
+
+const SPGTitle = styled(BaseTitle)`
+  margin-bottom: 37px;
+`;
+
+const SPGList = styled.div`
+  display: grid;
+  grid-gap: 45px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  width: 100%;
+`;
+
+const Point = styled.div`
+  background-color: rgba(243, 247, 255, 1);
+  padding: 40px 120px;
+  text-align: center;
+  @media (max-width: 768px) {
+    padding: 40px 40px;
+  }
+  @media (max-width: 480px) {
+    padding: 40px 20px;
+  }
+`;
+
+const PointContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+
+  img {
+    background-color: #fff;
+    border-radius: 16px;
+    min-height: 500px;
+    max-height: 500px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    @media (max-width: 768px) {
+      min-height: 300px;
+    }
+    @media (max-width: 480px) {
+      min-height: 200px;
+    }
+  }
+`;
+
+const PointTitle = styled(BaseTitle)`
+  margin-bottom: 15px;
+`;
+
+const Framework = styled.div`
+  text-align: center;
+  padding: 38px 120px 72px;
+  background-color: #fff;
+
+  @media (max-width: 768px) {
+    padding: 38px 40px 72px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 38px 20px 72px;
+  }
+`;
+
+const FrameworkContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  img {
+    border: 1px solid rgba(47, 84, 235, 0.2);
+    border-radius: 16px;
+    background-color: rgba(243, 247, 255, 1);
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+
+const FrameworkTitle = styled(BaseTitle)`
+  margin-bottom: 15px;
+`;
+
+const FrameworkInfo = styled(BaseInfo)`
+  margin-bottom: 16px;
+`;
+
+const Case = styled.div`
+  text-align: center;
+  padding: 56px 120px 36px;
+  background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original)
+    no-repeat;
+  background-size: cover;
+  @media (max-width: 768px) {
+    padding: 36px 40px 36px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 20px 36px;
+  }
+`;
+
+const CaseContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const CaseTitle = styled(BaseTitle)`
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 20px;
+  }
+`;
+
+const Footer = styled.div`
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(243, 247, 255, 1);
+  background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*Rs5FTKaUgTIAAAAAAAAAAAAADtmcAQ/original');
+  background-repeat: no-repeat;
+  user-select: none;
+`;
+
+const Bottom = styled.div`
+  padding: 40px 120px;
+  background-color: #152337;
+  background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');
+  background-repeat: no-repeat;
+  user-select: none;
+  @media (max-width: 768px) {
+    padding: 40px 40px;
+  }
+  @media (max-width: 480px) {
+    padding: 40px 20px;
+  }
+`;
+
+const BottomContent = styled.div`
+  display: flex;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  .ant-descriptions-title {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 14px;
+  }
+  .ant-descriptions-item-content {
+    color: rgba(255, 255, 255, 0.65);
+  }
+`;
+
+const MainPage = () => {
+  const {
+    Messages: {
+      COPYRIGHT_INFORMATION_CONFIG,
+      PARAGRAPH,
+      SPG_CASE_CONFIG,
+      SPG_POINT_CONFIG,
+    },
+  } = useIntl();
+
+  const theme = useTheme();
+
+  useEffect(() => {
+    const main = document.querySelector('body .dumi-default-doc-layout > main');
+
+    main &&
+      main.setAttribute(
+        'style',
+        'margin-top: -76px; padding: 0; max-width: 100%;',
+      );
+
+    return () => {
+      main &&
+        main.setAttribute(
+          'style',
+          'margin-top: 0; padding: 0 24px; max-width: 1392px;',
+        );
+    };
+  }, []);
+
+  const handleDownload = () => {
+    window.open('https://survey.aliyun.com/apps/zhiliao/wUwnL6sPC');
+  };
+
+  return (
+    <div className="home">
+      <Banner>
+        {/* <Header>
+          <img src="https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*D5uYQpLS8dsAAAAAAAAAAAAADtmcAQ/original" />
+          <Divider type="vertical" />
+          <Language>
+            <GlobalOutlined />
+            <Select
+              value={lang}
+              bordered={false}
+              onChange={(value) => {
+                localStorage.setItem('lang', value);
+                setLang(value);
+              }}
+              options={[
+                { label: '中文(简体)', value: 'zh-CN' },
+                { label: 'English(US)', value: 'en-US' },
+              ]}
+            />
+          </Language>
+        </Header> */}
+        <Middle>
+          <LeftTitleContainer>
+            <Title>
+              <div>语义增强可编程知识图谱SPG</div>
+              <div>(Semantic-enhanced Programmable Graph)</div>
+            </Title>
+          </LeftTitleContainer>
+          <BtnGroup>
+            <Button size="large" type="primary" onClick={handleDownload}>
+              {PARAGRAPH.WhitepaperDownload}
+            </Button>
+            <Button size="large" onClick={() => {}}>
+              {PARAGRAPH.QuickStart}
+            </Button>
+          </BtnGroup>
+        </Middle>
+      </Banner>
+
+      <SPG>
+        <SPGContent>
+          <SPGTitle>{PARAGRAPH.whyChooseSPG}</SPGTitle>
+          <SPGList>
+            {SPG_POINT_CONFIG.map((item) => {
+              return <CustomItem key={item.title} {...item} />;
+            })}
+          </SPGList>
+        </SPGContent>
+      </SPG>
+      <Point>
+        <PointContent>
+          <PointTitle>{PARAGRAPH.SPGFeaturesSemanticExamples}</PointTitle>
+          <Info>{PARAGRAPH.DeepSemanticNetworking}</Info>
+          <Tabs
+            defaultActiveKey="1"
+            centered
+            size="large"
+            animated
+            items={[
+              {
+                key: '1',
+                label: PARAGRAPH.SemanticEnhancedProperties,
+                children: (
+                  <img
+                    style={{ padding: 10 }}
+                    src={PARAGRAPH.SemanticEnhancedPropertiesImg}
+                  />
+                ),
+              },
+              {
+                key: '2',
+                label: PARAGRAPH.DataToKnowledgeProcess,
+                children: <img src={PARAGRAPH.DataToKnowledgeProcessImg} />,
+              },
+            ]}
+          />
+        </PointContent>
+      </Point>
+      <Framework>
+        <FrameworkContent>
+          <FrameworkTitle>{PARAGRAPH.SPGSemanticFramework}</FrameworkTitle>
+          <FrameworkInfo>{PARAGRAPH.AccelerateDataIntegration}</FrameworkInfo>
+          <img src={PARAGRAPH.AccelerateDataIntegrationImg} />
+        </FrameworkContent>
+      </Framework>
+      <Case>
+        <CaseContent>
+          <CaseTitle>{PARAGRAPH.SPGCaseStudies}</CaseTitle>
+          {SPG_CASE_CONFIG.map((item, index) => {
+            return (
+              <SpgCaseItem
+                key={item.title}
+                reverse={index % 2 === 0}
+                {...item}
+              />
+            );
+          })}
+        </CaseContent>
+      </Case>
+      <Footer>
+        <Button size="large" type="primary" onClick={handleDownload}>
+          {PARAGRAPH.WhitepaperDownload}
+        </Button>
+      </Footer>
+      <Bottom>
+        <BottomContent>
+          {COPYRIGHT_INFORMATION_CONFIG.map((item) => {
+            return (
+              <Descriptions
+                title={item.title}
+                key={item.title}
+                style={item.style}
+              >
+                {item.unitNames.map((unit) => {
+                  return (
+                    <Descriptions.Item key={unit}>{unit}</Descriptions.Item>
+                  );
+                })}
+              </Descriptions>
+            );
+          })}
+        </BottomContent>
+      </Bottom>
+      <AboutUs />
+    </div>
+  );
+};
+
+export default MainPage;

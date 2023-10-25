@@ -1,0 +1,42 @@
+{
+  "name": "spg-site",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Official website of OpenSPG",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "dumi dev",
+    "build": "dumi build",
+    "prepare": "husky install && dumi setup"
+  },
+  "authors": [
+    "Aaron <yangtao.yangtao@antgroup.com>"
+  ],
+  "license": "MIT",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{md,json}": [
+      "prettier --write --no-error-on-unmatched-pattern"
+    ]
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^5.2.5",
+    "@commitlint/cli": "^18.0.0",
+    "@commitlint/config-conventional": "^18.0.0",
+    "@types/react-dom": "^18.2.7",
+    "@types/react": "^18.2.21",
+    "antd": "^5.8.4",
+    "copy-to-clipboard": "^3.3.3",
+    "dumi": "^2.2.13",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
+    "prettier": "^3.0.3",
+    "styled-components": "^6.1.0",
+    "typescript": "^5.1.6"
+  },
+  "repository": "git@github.com:OpenSPG/openspg-site.git"
+}
