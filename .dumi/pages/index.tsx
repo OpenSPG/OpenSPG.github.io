@@ -207,10 +207,8 @@ const Case = styled.div`
 
   background-size: cover;
 
-  &[data-prefers-color='light'] {
-    background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original)
-      no-repeat;
-  }
+  background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original)
+    no-repeat;
 
   [data-prefers-color='dark'] {
   }
@@ -278,11 +276,11 @@ const BottomContent = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
-  .ant-descriptions-title {
+  .spg-descriptions-title {
     color: var(--text-color-invert);
     font-size: 14px;
   }
-  .ant-descriptions-item-content {
+  .spg-descriptions-item-content {
     color: var(--text-color-invert-light);
   }
 `;
