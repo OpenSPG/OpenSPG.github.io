@@ -1,15 +1,13 @@
 ---
-title: SPG Schema
-order: 4
+title: SPG知识建模
+order: 2
 ---
 
-# SPG-Schema知识建模
-
-# Schema类型
+## 1 Schema类型
 
 在这个章节里，我们将介绍SPG里的实体、事件和概念类型等基础知识。
 
-## 实体类型 (EntityType)
+### 1.1 实体类型 (EntityType)
 
 实体类型，定义了具有共同数据结构（特征）的一类实例的集合，是一种多元要素的复合节点类型。通常实体类型用于描述客观世界中的一个具体事物，比如公司、学校、书籍等等。再以学校这个实体类型举例，它的实例可以有“xxx市第一小学”、“xxx大学”等。
 
@@ -26,30 +24,30 @@ order: 4
 以学校举例，实体类型的属性可以有如下：
 
 ```yaml
-enName(英文名): Text
-shortName(简称): Text
-founder(创办人): Person
-foundDate(创立日期): STD.Date
-category(类别): TaxonomySchool
-address(地址): Text
+enName(英文名):      Text
+shortName(简称):     Text
+founder(创办人):      Person
+foundDate(创立日期):  STD.Date
+category(类别):      TaxonomySchool
+address(地址):       Text
 ```
 
 那学校实体类型的实例可以是：
 
 ```json
 {
-  "id": "zjdx",
-  "name": "浙江大学",
-  "enName": "Zhejiang University",
-  "shortName": "浙大、ZJU",
-  "founder": "林启",
-  "foundDate": "18970521",
-  "category": "公立大学",
-  "address": "西溪校区：杭州市西湖区天目山路148号"
+    "id": "zjdx",
+    "name": "浙江大学",
+    "enName": "Zhejiang University",
+    "shortName": "浙大、ZJU",
+    "founder": "林启",
+    "foundDate": "18970521",
+    "category": "公立大学",
+    "address": "西溪校区：杭州市西湖区天目山路148号"
 }
 ```
 
-## 事件类型 (EventType)
+### 1.2 事件类型 (EventType)
 
 在实体类型的基础上，加入主体、客体、时间、空间这四类要素，是对动态行为的建模，旨在反映在不同空间、时间区间上事物的状态。例如政策事件、行业事件、用户行为事件，都属于事件类型。其中主体要素是必须具备的，其余要素是可选的。
 
@@ -58,28 +56,28 @@ address(地址): Text
 以企业事件类型举例，其属性可以有如下：
 
 ```yaml
-subject(主体): Company
-object(客体): Text
-time(时间): STD.Date
-location(地点): Text
-behavior(行为): Behavior
+subject(主体):   Company
+object(客体):    Text
+time(时间):      STD.Date
+location(地点):  Text
+behavior(行为):  Behavior
 ```
 
 那学校实体类型的实例可以是：
 
 ```json
 {
-  "id": "2023100820394930",
-  "name": "XX公司在10月28日在深交所挂牌上市",
-  "subject": "XX公司",
-  "object": "深交所",
-  "time": "20231028",
-  "location": "深交所",
-  "behavior": "上市"
+    "id": "2023100820394930",
+    "name": "XX公司在10月28日在深交所挂牌上市",
+    "subject": "XX公司",
+    "object": "深交所",
+    "time": "20231028",
+    "location": "深交所",
+    "behavior": "上市"
 }
 ```
 
-## 概念类型 (ConceptType)
+### 1.3 概念类型 (ConceptType)
 
 概念是对一类具有共同特征的实体的抽象化描述，通常是用于描述实体/事件类型的分类。比如学校分类概念：小学、中学、大学。概念跟实体的区别是概念无法指代一个客观世界的具体事物，它是对一类事物的总结概括型描述。
 
@@ -113,7 +111,7 @@ behavior(行为): Behavior
 ]
 ```
 
-## 类型间的语义关联
+### 1.4 类型间的语义关联
 
 ![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*3s79QouHNicAAAAAAAAAAAAADtmcAQ/original)
 
@@ -124,11 +122,13 @@ behavior(行为): Behavior
 - IND: 归纳关系(Induction)，是指从一类有共同特征的实体中得出对这些实体概括性的概念，这种个体和概念之间的关系就是归纳关系。目前可用的谓词有belongTo，其他谓词尚待扩展。
 - INC: 包含关系(Inclusion)，表达部分与整体的关系。目前可用的谓词有isPartOf，其他谓词尚待扩展。
 
-# 声明式Schema
 
-在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](/tutorial/knext)）。
 
-## 关键字
+## 2 声明式Schema
+
+在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](../knext/index.md)）。
+
+### 2.1 关键字
 
 ```
 namespace
@@ -142,9 +142,9 @@ NotNull, MultiValue, Enum, Regular
 
 > -> 用于表达类型的继承关系，A -> B
 >
-> STD.\*表示以STD.开头的都是预留关键字，作标准类型名称
+> STD.*表示以STD.开头的都是预留关键字，作标准类型名称
 
-## 基础句法
+### 2.2 基础句法
 
 类似YAML，以缩进作为作用域的表示。缩进建议使用4个空格（Tab符会被当做两个空格）
 
@@ -158,12 +158,12 @@ NotNull, MultiValue, Enum, Regular
   - P为要继承自的父类型
 - **namespace A**
   - A表示项目前缀，在Schema文件的第一行必须出现。项目前缀会在Schema提交的时候自动拼接到实体类型名称的前面
-- **[[...]]**
+- **[[ ... ]]**
   - 规则脚本的定界符，仅用于rule的定义，类似于Python的"""用法
 
 声明式Schema脚本采用逐行解析的方式，定义上要遵循顺序原则，即父类型要在子类型之前定义、属性上使用的类型也需要在其所属类型定义之前先定义好。
 
-## 语法结构
+### 2.3 语法结构
 
 总共分类6层缩进，按缩进的多少依次为：
 
@@ -207,7 +207,7 @@ TypeB(实体类型B) -> TypeA:
     desc: 这是实体类型A的子类型
 ```
 
-### 定义实体类型
+#### 2.3.1 定义实体类型
 
 ```yaml
 # 以下定义一个公司的实体类型
@@ -217,7 +217,7 @@ Company(公司): EntityType
 ListedCompany(上市公司) -> Company:
 ```
 
-#### 定义属性和关系
+##### 2.3.1.1 定义属性和关系
 
 ```yaml
 Company(公司): EntityType
@@ -238,7 +238,7 @@ Company(公司): EntityType
         subCompany(子公司): Company
 ```
 
-#### 定义子属性
+##### 2.3.1.2 定义子属性
 
 ```yaml
 Company(公司): EntityType
@@ -250,7 +250,7 @@ Company(公司): EntityType
         industry(行业): Industry
 ```
 
-#### 定义谓词逻辑
+##### 2.3.1.3 定义谓词逻辑
 
 ```yaml
 Company(公司): EntityType
@@ -260,12 +260,12 @@ Company(公司): EntityType
             # 这里定义关系的谓词逻辑，使用 [[ 和 ]] 作为逻辑规则的定界符
             rule: [[
                Define (s:Comapny)-[p:risk]->(o:Company) {
-                    ... ...
+                    ... ...                                  
                }
             ]]
 ```
 
-### 定义概念类型
+#### 2.3.2 定义概念类型
 
 ```yaml
 Industry(公司行业分类): ConceptType
@@ -273,7 +273,7 @@ Industry(公司行业分类): ConceptType
     hypernymPredicate: isA
 ```
 
-### 定义事件类型
+#### 2.3.3 定义事件类型
 
 ```yaml
 CompanyRiskEvent(公司风险事件): EventType
@@ -282,7 +282,7 @@ CompanyRiskEvent(公司风险事件): EventType
         subject: Company
 ```
 
-## 建模示例
+### 2.4 建模示例
 
 ```yaml
 namespace Medical
@@ -306,16 +306,16 @@ Disease(疾病): EntityType
 
         commonSymptom(常见症状): Symptom
             constraint: MultiValue
-
+            
         applicableDrug(适用药品): Drug
             constraint: MultiValue
-
+            
         department(就诊科室): HospitalDepartment
             constraint: MultiValue
-
+            
         diseaseSite(发病部位): BodyPart
             constraint: MultiValue
-
+            
     relations:
         abnormal(异常指征): Indicator
             properties:
@@ -324,7 +324,7 @@ Disease(疾病): EntityType
                 shape(性状): Text
 ```
 
-# 对象化Schema
+## 3 对象化Schema
 
 每次Schema变更发布后，根据项目前缀生成一个python类，比如medical例子：<br />
 knext/examples/medical/schema/medical_schema_helper.py
@@ -393,14 +393,13 @@ class Medical:
 ```
 
 用户使用的时候，代码如此写：
-
 > 需要先import项目schema类
 
 ```python
 from knext.examples.medical.schema.medical_schema_helper import Medical
 
 if __name__ == '__main__':
-
+    
     disease_name = Medical.Disease.name
     ... ...
     common_symptom = Medical.Disease.commomSymptom
@@ -413,20 +412,20 @@ if __name__ == '__main__':
         .add_field("name", Medical.Disease.name) \
         .add_field("commonSymptom", Medical.Disease.commonSymptom) \
         .add_field("applicableDrug", Medical.Disease.applicableDrug) \
-        .add_field("complication", Medical.Disease.complication)
+        .add_field("complication", Medical.Disease.complication)        
 ```
 
-# 通过python API创建schema
+## 4 通过python API创建schema
 
-### 语法
+### 4.1 接口
 
-#### 初始化
+#### 4.1.1 初始化
 
 ```python
 schema = Schema()
 ```
 
-#### Schema类接口
+#### 4.1.2 Schema类接口
 
 ```python
 session = schema.create_session()
@@ -434,7 +433,7 @@ session = schema.create_session()
 
 > create_session代表创建一个Schema变更的Session，在Session里会包含所有当前项目的Schema信息
 
-#### Session类接口
+#### 4.1.3 Session类接口
 
 ```python
 session.create_type(disease)
@@ -447,7 +446,7 @@ session.commit()
 >
 > commit为提交Schema变更
 
-### 完整例子
+### 4.2 完整例子
 
 ```python
 schema = Schema()
@@ -457,57 +456,57 @@ session = schema.create_session()
 
 # 以上面的建模例子，用代码实现
 hospital_department = ConceptType(
-    name="Medical.HospitalDepartment",
-    name_zh="医院科室",
-    hypernym_predicate=HypernymPredicateEnum.IsA
+  name="Medical.HospitalDepartment",
+  name_zh="医院科室",
+  hypernym_predicate=HypernymPredicateEnum.IsA
 )
 
 body_part = ConceptType(
-    name="Medical.BodyPart",
-    name_zh="人体部位",
-    hypernym_predicate=HypernymPredicateEnum.IsA
+  name="Medical.BodyPart",
+  name_zh="人体部位",
+  hypernym_predicate=HypernymPredicateEnum.IsA
 )
 
 drug = EntityType(
-    name="Medical.Drug",
-    name_zh="药品"
+  name="Medical.Drug",
+  name_zh="药品"
 )
 
 symptom = EntityType(
-    name="Medical.Symptom",
-    name_zh="症状"
+  name="Medical.Symptom",
+  name_zh="症状"
 )
 
 disease = EntityType(
-    name="Medical.Disease",
-    name_zh="疾病",
-    properties=[
-        Property(
-            name="commonSymptom",
-            name_zh="常见症状",
-            object_type_name="Medical.Symptom"
-        ),
-        Property(
-            name="applicableDrug",
-            name_zh="适用药品",
-            object_type_name="Medical.Drug"
-        ),
-        Property(
-            name="department",
-            name_zh="就诊科室",
-            object_type_name="Medical.HospitalDepartment"
-        ),
-        Property(
-            name="diseaseSite",
-            name_zh="发病部位",
-            object_type_name="Medical.BodyPart"
-        ),
-        Property(
-            name="complication",
-            name_zh="并发症",
-            object_type_name="Medical.Disease"
-        )
-    ]
+  name="Medical.Disease",
+  name_zh="疾病",
+  properties=[
+    Property(
+      name="commonSymptom",
+      name_zh="常见症状",
+      object_type_name="Medical.Symptom"
+    ),
+    Property(
+      name="applicableDrug",
+      name_zh="适用药品",
+      object_type_name="Medical.Drug"
+    ),
+    Property(
+      name="department",
+      name_zh="就诊科室",
+      object_type_name="Medical.HospitalDepartment"
+    ),
+    Property(
+      name="diseaseSite",
+      name_zh="发病部位",
+      object_type_name="Medical.BodyPart"
+    ),
+    Property(
+      name="complication",
+      name_zh="并发症",
+      object_type_name="Medical.Disease"
+    )
+  ]
 )
 
 # 定义创建类型

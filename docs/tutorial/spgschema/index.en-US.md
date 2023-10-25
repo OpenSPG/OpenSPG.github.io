@@ -1,15 +1,13 @@
 ---
-title: SPG Schema
-order: 4
+title: SPG-Schema
+order: 2
 ---
 
-# SPG-Schema
-
-# Introduction to the basics of Schema
+## 1 Introduction to the basics of Schema
 
 In this chapter, we will introduce the fundamentals of entity, event, and concept types in SPG.
 
-## Entity Type
+### 1.1 Entity Type
 
 Entity type, which defines a collection of instances with a common data structure (characteristics). Entity types are typically used to describe specific objects in the real world, such as companies, schools, books, and so on. Taking the example of a school entity type, its instances can be "xxx City First Primary School" or "xxx University".
 
@@ -38,18 +36,18 @@ An instance of the school entity type can look like:
 
 ```json
 {
-  "id": "zjdx",
-  "name": "Zhejiang University",
-  "englishName": "Zhejiang University",
-  "shortName": "ZJU",
-  "founder": "Lin Qi",
-  "foundDate": "18970521",
-  "category": "Public University",
-  "address": "Xixi Campus: No. 148, Tianmushan Road, Xihu District, Hangzhou City"
+    "id": "zjdx",
+    "name": "Zhejiang University",
+    "englishName": "Zhejiang University",
+    "shortName": "ZJU",
+    "founder": "Lin Qi",
+    "foundDate": "18970521",
+    "category": "Public University",
+    "address": "Xixi Campus: No. 148, Tianmushan Road, Xihu District, Hangzhou City"
 }
 ```
 
-## Event Type
+### 1.2 Event Type
 
 EventType is a modeling approach that extends the entity type by incorporating four elements: subject, object, time, and location. It aims to represent dynamic behavior and reflect the state of things in different spatial and temporal intervals. Events can include policy events, industry events, and user behavior events. Among these elements, the subject element is mandatory, while the others are optional.
 
@@ -69,17 +67,17 @@ An instance of the enterprise event type can be:
 
 ```json
 {
-  "id": "2023100820394930",
-  "name": "XX company is listed on the Shenzhen Stock Exchange on October 28th",
-  "subject": "XX company",
-  "object": "Shenzhen Stock Exchange",
-  "time": "20231028",
-  "location": "Shenzhen Stock Exchange",
-  "behavior": "listing"
+    "id": "2023100820394930",
+    "name": "XX company is listed on the Shenzhen Stock Exchange on October 28th",
+    "subject": "XX company",
+    "object": "Shenzhen Stock Exchange",
+    "time": "20231028",
+    "location": "Shenzhen Stock Exchange",
+    "behavior": "listing"
 }
 ```
 
-## Concept Type
+### 1.3 Concept Type
 
 Concept is an abstraction description of a class of entities that share common characteristics. It is often used to categorize entity/event types. For example: concepts for school classification could include primary schools, secondary schools, and universities. The main difference between concepts and entities is that concepts cannot refer to specific objects in the real world. They provide a general and summarized description of a class of things. Additionally, concepts are assumed to have a hierarchical relationship (which can be specified during modeling) between them, allowing for abstract descriptions of generalization and specialization. For example: the concept hierarchy for school classification would have "middle school" and "high school" as subordinate concepts to the concept "secondary school."
 
@@ -95,24 +93,26 @@ Here is an example of concept instances for school classification:
 
 ```json
 [
-  {
-    "name": "public institution",
-    "alias": "public, public school"
-  },
-  {
-    "name": "public institution-public university",
-    "alias": null
-  },
-  {
-    "name": "public institution-public university-comprehensive public university",
-    "alias": "public comprehensive university"
-  }
+    {
+        "name": "public institution",
+        "alias": "public, public school"
+    },
+    {
+        "name": "public institution-public university",
+        "alias": null
+    },
+    {
+        "name": "public institution-public university-comprehensive public university",
+        "alias": "public comprehensive university"
+    }
 ]
 ```
 
-## Semantic relations between SPG types
+### 1.4 Semantic relations between SPG types
+
 
 ![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*3s79QouHNicAAAAAAAAAAAAADtmcAQ/original)
+
 
 - HYP: Hypernym, refers to the relation where a broader or more general concept includes or encompasses another more specific or particular concept. The available predicates are "isA" and "locateAt", while other predicates are yet to be expanded.
 - SYNANT: Synonymy/Antonymy, expresses whether concepts are synonymous or antonymous to each other. The available predicates are "synonym" and "antonym", while other predicates are yet to be expanded.
@@ -121,12 +121,13 @@ Here is an example of concept instances for school classification:
 - IND: Induction, refers to the relation where general concepts are derived from a group of entities with common characteristics. The available predicate is "belongTo", while other predicates are yet to be expanded.
 - INC: Inclusion, expresses the relation between a part and a whole. The available predicate for this relationship is "isPartOf", while other predicates are yet to be expanded.
 
-# Declarative Schema
+
+## 2 Declarative Schema
 
 Operators are not defined in the declarative Schema, they are bound by the release of KNext (refer
-to [KNext Tutorial](/tutorial/knext) for operator development).
+to [KNext Tutorial](doc/core/knext_tutorial.md) for operator development).
 
-## KeyWords
+### 2.1 KeyWords
 
 ```
 namespace
@@ -140,9 +141,9 @@ NotNull, MultiValue, Enum, Regular
 
 > -> Used to express the inheritance relationship of a type, A -> B
 >
-> STD.\* Anything beginning with STD. is a reserved keyword, used as a standard type name.
+> STD.* Anything beginning with STD. is a reserved keyword, used as a standard type name.
 
-## Basic Syntax
+### 2.2 Basic Syntax
 
 Similar to YAML, indentation is used as a representation of scopes. Four spaces are recommended for indentation (tab
 characters are treated as two spaces)
@@ -159,7 +160,7 @@ characters are treated as two spaces)
   - A is the project prefix, which must appear in the first line of the Schema file. The project prefix is
     automatically spliced into the entity type name when the Schema is submitted.
 
-## Syntax
+### 2.3 Syntax
 
 There are 6 levels of indentation, listed in order of indentation:
 
@@ -203,7 +204,7 @@ TypeB("Entity type B") -> TypeA:
     desc: "This is a subtype of entity type A"
 ```
 
-### Define entity types
+#### 2.3.1 Define entity types
 
 ```yaml
 # defines an entity type for a company
@@ -213,7 +214,7 @@ Company("company"): EntityType
     ListedCompany("listed company") -> Company.
 ```
 
-#### Defining Attributes and Relationships
+##### 2.3.1.1 Defining Attributes and Relationships
 
 ```yaml
 Company("company"): EntityType
@@ -234,7 +235,7 @@ Company("company"): EntityType
         subCompany("sub company"): Company
 ```
 
-#### Defining sub-properties
+##### 2.3.1.2 Defining sub-properties
 
 ```yaml
 Company("company"): EntityType
@@ -246,7 +247,7 @@ Company("company"): EntityType
         industry("industry"): Industry
 ```
 
-#### Defines the predicate logic
+##### 2.3.1.3 Defines the predicate logic
 
 ```yaml
 Company("company"): EntityType
@@ -261,7 +262,7 @@ Company("company"): EntityType
             ] ]
 ```
 
-### Define concept types
+#### 2.3.2 Define concept types
 
 ```yaml
 Industry("Company Industry Classification"): ConceptType
@@ -269,7 +270,7 @@ Industry("Company Industry Classification"): ConceptType
     hypernymPredicate: isA
 ```
 
-### Define the event type
+#### 2.3.3 Define the event type
 
 ```yaml
 CompanyRiskEvent("Corporate risk events"): EventType
@@ -278,7 +279,7 @@ CompanyRiskEvent("Corporate risk events"): EventType
         subject: Company
 ```
 
-## schema example
+### 2.4 schema example
 
 ```yaml
 namespace DEFAULT
@@ -320,7 +321,7 @@ Disease("disease"): EntityType
                 shape("shape"): Text
 ```
 
-# Objectified Schema
+## 3 Objectified Schema
 
 After the Schema is released, a python class is generated based on the project prefix：<br />
 knext/example/schema/project/DEFAULT.py<br />knext/example/schema/project/Fraud.py
@@ -389,7 +390,6 @@ class DEFAULT:
 ```
 
 The code is as follows when the user uses schema:
-
 > You need to import the project schema class first.
 
 ```python
@@ -412,17 +412,17 @@ if __name__ == '__main__':
 
 ```
 
-# Create schema with the python API
+## 4 Create schema with the python API
 
-### Syntax
+### 4.1 Interface
 
-#### initialize
+#### 4.1.1 Initialize
 
 ```python
 schema = Schema()
 ```
 
-#### Schema interface
+#### 4.1.2 Schema interface
 
 ```python
 session = schema.create_session()
@@ -430,7 +430,7 @@ session = schema.create_session()
 
 > create_session represents the creation of a Schema change session, which will contain all the Schema information of the current project.
 
-#### Session interface
+#### 4.1.3 Session interface
 
 ```python
 session.create_type(disease)
@@ -443,7 +443,7 @@ session.commit()
 >
 > commit for committing Schema changes
 
-### example
+### 4.2 Example
 
 ```python
 schema = Schema()
@@ -453,57 +453,57 @@ session = schema.create_session()
 
 # The modeling example above, implemented in code：
 hospital_department = ConceptType(
-    name="DEFAULT.HospitalDepartment",
-    name_zh="医院科室",
-    hypernym_predicate=HypernymPredicateEnum.IsA
+  name="DEFAULT.HospitalDepartment",
+  name_zh="医院科室",
+  hypernym_predicate=HypernymPredicateEnum.IsA
 )
 
 body_part = ConceptType(
-    name="DEFAULT.BodyPart",
-    name_zh="人体部位",
-    hypernym_predicate=HypernymPredicateEnum.IsA
+  name="DEFAULT.BodyPart",
+  name_zh="人体部位",
+  hypernym_predicate=HypernymPredicateEnum.IsA
 )
 
 drug = EntityType(
-    name="DEFAULT.Drug",
-    name_zh="药品"
+  name="DEFAULT.Drug",
+  name_zh="药品"
 )
 
 symptom = EntityType(
-    name="DEFAULT.Symptom",
-    name_zh="症状"
+  name="DEFAULT.Symptom",
+  name_zh="症状"
 )
 
 disease = EntityType(
-    name="DEFAULT.Disease",
-    name_zh="疾病",
-    properties=[
-        Property(
-            name="commonSymptom",
-            name_zh="常见症状",
-            object_type_name="DEFAULT.Symptom"
-        ),
-        Property(
-            name="applicableDrug",
-            name_zh="适用药品",
-            object_type_name="DEFAULT.Drug"
-        ),
-        Property(
-            name="department",
-            name_zh="就诊科室",
-            object_type_name="DEFAULT.HospitalDepartment"
-        ),
-        Property(
-            name="diseaseSite",
-            name_zh="发病部位",
-            object_type_name="DEFAULT.BodyPart"
-        ),
-        Property(
-            name="complication",
-            name_zh="并发症",
-            object_type_name="DEFAULT.Disease"
-        )
-    ]
+  name="DEFAULT.Disease",
+  name_zh="疾病",
+  properties=[
+    Property(
+      name="commonSymptom",
+      name_zh="常见症状",
+      object_type_name="DEFAULT.Symptom"
+    ),
+    Property(
+      name="applicableDrug",
+      name_zh="适用药品",
+      object_type_name="DEFAULT.Drug"
+    ),
+    Property(
+      name="department",
+      name_zh="就诊科室",
+      object_type_name="DEFAULT.HospitalDepartment"
+    ),
+    Property(
+      name="diseaseSite",
+      name_zh="发病部位",
+      object_type_name="DEFAULT.BodyPart"
+    ),
+    Property(
+      name="complication",
+      name_zh="并发症",
+      object_type_name="DEFAULT.Disease"
+    )
+  ]
 )
 
 # create entity type
