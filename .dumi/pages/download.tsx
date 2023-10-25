@@ -5,8 +5,8 @@
  *  title: 下载白皮书
  *  order: 4
  */
-import { LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Steps, Tooltip, Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Col, Row, Steps, Typography } from 'antd';
 import { useSearchParams } from 'dumi';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl } from '../hooks/useIntl';
@@ -27,7 +27,7 @@ function Download() {
   const tokenFromUrl = searchParams.get(TokenKey);
   const [showBackup, setShowBackup] = useState(false);
   const [waitingForResult, setWaitingForResult] = useState(false);
-  const [downloadImmediately, setDownloadImmediately] = useState(false); // 是否立即下载
+  const [downloadImmediately, setDownloadImmediately] = useState(false);
   const [allow, setAllow] = useLocalStorage(AllowKey, false);
   const [timeStamp, setTimeStamp] = useLocalStorage(TimeStampKey, 0);
   const [currentStep, setCurrentStep] = useState(0);
@@ -36,6 +36,8 @@ function Download() {
     const now = new Date().getTime();
     return now - timeStamp > expireTime;
   }, [timeStamp]);
+
+  const ableToDownload = !isExpired && allow;
 
   useEffect(() => {
     if (tokenFromUrl === token) {
@@ -46,7 +48,7 @@ function Download() {
   }, [tokenFromUrl]);
 
   useEffect(() => {
-    if (!isExpired && allow) {
+    if (ableToDownload) {
       setWaitingForResult(false);
       setCurrentStep(1);
       downloadImmediately &&
@@ -74,7 +76,11 @@ function Download() {
   const download = () => {
     const url =
       'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/file/A*SgrORp9OJAMAAAAAAAAAAAAADtmcAQ/%E3%80%8A%E8%AF%AD%E4%B9%89%E5%A2%9E%E5%BC%BA%E5%8F%AF%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1SPG%E3%80%8B%E7%99%BD%E7%9A%AE%E4%B9%A6%20v1.0.pdf';
-    window.open(url);
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.download = '《语义增强可编程知识图谱SPG》白皮书 v1.0.pdf';
+    a.click();
   };
 
   return (
@@ -88,7 +94,7 @@ function Download() {
             title: (
               <Row gutter={10}>
                 <Col>{intl('问卷调查', 'Questionnaire Survey')}</Col>
-                {
+                {!ableToDownload && (
                   <Col>
                     <Button
                       size="small"
@@ -98,8 +104,8 @@ function Download() {
                       {intl('前往填写', 'Go to Fill')}
                     </Button>
                   </Col>
-                }
-                {showBackup && (
+                )}
+                {!ableToDownload && showBackup && (
                   <Col>
                     <Button
                       size="small"
