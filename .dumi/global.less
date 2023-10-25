@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+.dumi-default-header-right {
+  @media only screen and (max-width: 767px) {
+    -webkit-backdrop-filter: blur(30px);
+  }
+}
+
 [data-prefers-color='light'] .dumi-default-header {
   background-color: rgba(247, 249, 251, 0.6) !important;
 }
@@ -23,6 +29,7 @@
   --border-color: rgba(47, 84, 235, 0.2);
   --image-background-color: rgba(255, 255, 255, 1);
   --color-dark: rgba(21, 35, 55, 1);
+  --color-circle: rgba(62, 87, 228, 1);
 }
 
 [data-prefers-color='dark'] {
@@ -36,4 +43,5 @@
   --border-color: rgba(47, 84, 235, 0.2);
   --image-background-color: rgba(255, 255, 255, 1);
   --color-dark: rgba(21, 35, 55, 1);
+  --color-circle: rgba(247, 188, 219, 1);
 }

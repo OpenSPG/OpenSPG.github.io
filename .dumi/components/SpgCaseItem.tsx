@@ -57,7 +57,7 @@ const Circle = styled.div`
   width: 0.8rem;
   height: 0.8rem;
   border-radius: 0.4rem;
-  border: 0.15rem solid var(--text-color-light);
+  border: 0.15rem solid var(--color-circle);
   flex-shrink: 0;
 `;
 
