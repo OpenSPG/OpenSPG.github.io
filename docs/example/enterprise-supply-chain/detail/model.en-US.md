@@ -1,6 +1,6 @@
 ---
 title: Schema modeling
-order: 2
+order: 1
 ---
 
 # 1 Schema details
@@ -139,7 +139,7 @@ Company(企业): EntityType
               ]]
 ```
 
-You can refer to the examples in Scenario 1 and Scenario 2 of the [Enterprise Supply Chain Query](./enterprise_supply_chain_query) for specific details.
+You can refer to the examples in Scenario 1 and Scenario 2 of the [Enterprise Supply Chain Query](./query) for specific details.
 
 ### 2.3 Concepts vs Entitys
 
@@ -186,4 +186,4 @@ CompanyEvent(公司事件): EventType
 		belongTo(属于): TaxOfCompanyEvent
 ```
 
-In the above event, all attribute types are defined SPG types, without any basic type expressions. OpenSPG utilizes this declaration to implement the expression of multiple elements in an event. Specific application examples can be found in the detailed description of Scenario 3 in the [Enterprise Supply Chain Query](./enterprise_supply_chain_query) document.
+In the above event, all attribute types are defined SPG types, without any basic type expressions. OpenSPG utilizes this declaration to implement the expression of multiple elements in an event. Specific application examples can be found in the detailed description of Scenario 3 in the [Enterprise Supply Chain Query](./query) document.

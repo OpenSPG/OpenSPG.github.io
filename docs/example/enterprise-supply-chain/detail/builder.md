@@ -1,23 +1,23 @@
 ---
-title: Knowledge Construction
-order: 4
+title: 知识构建
+order: 3
 ---
 
-In this case, all the data is structured data. There are two main capabilities required in this case:
+本例中数据均为结构化数据，本例中主要需要两个部分能力：
 
-- Structured Mapping: The original data and the schema-defined table fields are not completely consistent, so a data field mapping process needs to be defined.
-- Entity Linking: In relationship building, entity linking is a very important construction method. This example demonstrates a simple case of implementing entity linking capability for companies.
+- 结构化Mapping：原始数据和schema定义表字段并不完全一致，需要定义数据字段映射过程
+- 实体链指：在关系构建中，实体链指是非常重要的建设手段，本例演示一个简单case，实现公司的链指能力
 
-#### Structured Mapping from Source Data to SPG Data
+#### 源数据到SPG数据的Mapping能力
 
-Taking the import of `Company` instances as an example:
+以导入company数据为例：
 
 ```yaml
 id,name,products
 CSF0000000254,北大*药*份限公司,"医疗器械批发,医药批发,制药,其他化学药品"
 ```
 
-The code for importing `Company` instances is as follows, with detailed explanations provided in the comments:
+导入company的代码如下，详细内容如注释：
 
 ````python
 # -*- coding: utf-8 -*-
@@ -26,26 +26,25 @@ from knext.core.builder.pipeline.builder_job import BuilderJob
 from knext.core.builder.pipeline.model.component import SourceCsvComponent, SinkToKgComponent, EntityMappingComponent, \
 RelationMappingComponent
 
-# To create a import task, it must inherit from BuilderJob class.
-# Importing basic information of company
+# 导入基本信息任务，必须继承BuilderJob
 class Company(BuilderJob):
-    # Parallelization Parameter
+    # 并行化参数
     parallelism = 6
 
     ```
-    Create a construction task pipeline, which should have a source node and a sink node.
-    Here, the mapping node is a structured data mapping node.
+    返回构建任务pipeline，每个导入任务都需要有一个source节点，一个sink节点
+    这里mappiing节点为一个结构化数据映射节点
     ```
     def build(self):
         source = SourceCsvComponent(
-            # Specify the data source address
+            # 指定数据源地址
             local_path="./builder/task/data/Company.csv",
             columns=["id", "name", "products"],
             start_row=2
         )
 
-        # spg_type_name  Specifies which data type to import to
-        # add_field      Specifies which field from the data source to import into the field defined in the schema
+        # spg_type_name代表是向哪个数据类型导入
+        # add_field表示从数据源的哪个字段导入到schema中定义的哪个字段
         mapping = EntityMappingComponent(
             spg_type_name="DEFAULT.Company"
         ).add_field("id", "id") \
@@ -58,11 +57,11 @@ class Company(BuilderJob):
         return source >> mapping >> sink
 
 
-# Importing financial relations between companies.
+# 导入公司间的资金关系
 class CompanyFundTrans(BuilderJob):
 
     ```
-    Similar to the import of basic information, the RelationMappingComponent represents the relation mapping node.
+    和基本信息导入类似，此处RelationMappingComponent代表关系隐射节点
     ```
     def build(self):
         source = SourceCsvComponent(
@@ -71,8 +70,8 @@ class CompanyFundTrans(BuilderJob):
             start_row=2
         )
 
-        # For the relation mapping node, specify the specific relation
-        # add_field  Specifies which field from the data source to import into the field defined in the schema
+        # 关系映射节点需要指定是哪条具体关系
+        # add_field表示从数据源的哪个字段导入到schema中定义的哪个字段
         mapping = RelationMappingComponent(
             subject_name='DEFAULT.Company',
             predicate_name='fundTrans',
@@ -88,24 +87,24 @@ class CompanyFundTrans(BuilderJob):
 
 ````
 
-To submit the task, execute the following command:
+在knext中执行如下命令提交任务：
 
 ```shell
 knext builder submit Company,CompanyFundTrans
 ```
 
-In general, this mapping relationship can satisfy the import of structured data. However, in some scenarios, it may be necessary to manipulate the data to meet specific requirements. In such cases, we need to implemented a self-defined operator.
+一般情况下这种映射关系基本能够满足结构化数据导入，但在一些场景下可能需要对数据进行部分数据才能满足要求，此时就需要实现自定义算子来处理问题。
 
-#### Self-defined Entity Linking Operator
+#### 自定义算子实现链指能力
 
-For example, consider the following data:
+例如如下数据：
 
 ```python
 id,name,age,legalRep
 0,路**,63,"新疆*花*股*限公司,三角*胎股*限公司,传化*联*份限公司"
 ```
 
-The "legalRep" field is the company name, but the company ID is set as the primary key, it is not possible to directly associate the company name with a specific company. Assuming there is a search service available that can convert the company name to an ID, a Self-defined linking operator needs to be developed to perform this conversion. The operator should be placed in the following directory:
+legalRep字段为公司名字，但在系统中已经将公司id设置成为主键，直接通过公司名是无法关联到具体公司，假定存在一个搜索服务，可将公司名转换为id，此时需要自定开发一个链指算子，实现该过程的转换。算子放在如下目录：
 
 ```python
 |_event
@@ -114,7 +113,7 @@ The "legalRep" field is the company name, but the company ID is set as the prima
         	|_company_operator.py
 ```
 
-The specific implementation code is as follows：
+具体实现代码如下：
 
 ```python
 # -*- coding: utf-8 -*-
@@ -138,7 +137,7 @@ def llm_infer(word, recall):
         "prompt": prompt_text,
         "history": None
     }
-    llm_response = requests.post('http://11.166.207.228:8888', json=param)
+    llm_response = requests.post('http://127.0.0.1:8888', json=param)
     if llm_response.status_code == 200:
         content = llm_response.content
         if content.startswith("输出结果:"):
@@ -146,15 +145,15 @@ def llm_infer(word, recall):
     else:
         return "null"
 
-# The linking operator must be inherited from EntityLinkOp
+# 必须继承EntityLinkOp 才为链指算子
 class CompanyLinkerOperator(EntityLinkOp):
-    # bind it to the SupplyChain.Company type, all the linking relations to this entity will excute the linking operation.
+    # 绑定到SupplyChain.Company类型，所有链指到该实体的关系均会进行链指操作
     bind_to = "SupplyChain.Company"
 
     def __init__(self):
         super().__init__()
         self.search_client = SearchClient("SupplyChain.Company")
-        # The default setting is to disable advanced ranking capabilities for llms.
+        # 默认关闭大模型精排能力
         self.enable_llm = False
 
     def eval(self, record: Vertex) -> EvalResult[List[Vertex]]:
@@ -188,13 +187,13 @@ class CompanyLinkerOperator(EntityLinkOp):
 
 ```
 
-To publish the operator, execute the following command:
+执行如下命令提交：
 
 ```shell
 knext operator publish CompanyLinkerOperator
 ```
 
-After the submission is completed, the construction of the "person" entity can be done following the normal mapping process. Here is an example of the "person" entity:
+提交完成后，person构建只需按照正常mapping流程即可，如下person代码：
 
 ```python
 # -*- coding: utf-8 -*-
@@ -237,7 +236,7 @@ class Person(BuilderJob):
         return source >> mapping >> sink
 ```
 
-Finally, submit the task:
+最后提交person任务即可：
 
 ```shell
 knext builder submit Person

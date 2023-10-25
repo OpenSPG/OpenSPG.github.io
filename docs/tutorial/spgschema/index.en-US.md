@@ -123,7 +123,7 @@ Here is an example of concept instances for school classification:
 # Declarative Schema
 
 Operators are not defined in the declarative Schema, they are bound by the release of KNext (refer
-to [KNext Tutorial](tutorial/knext) for operator development).
+to [KNext Tutorial](/tutorial/knext) for operator development).
 
 ## KeyWords
 

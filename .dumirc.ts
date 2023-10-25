@@ -11,14 +11,14 @@ export default defineConfig({
     //     { title: '快速开始', link: '/Guide' },
     //     {
     //       title: '案例',
-    //       link: '/example/enterprise-supply-chain/enterprise_supply_chain_introduce_quickstart',
+    //       link: '/example/enterprise-supply-chain/introduce_quickstart',
     //     },
     //   ],
     //   'en-US': [
     //     { title: 'Quick Start', link: '/en-US/Guide' },
     //     {
     //       title: 'Case Study',
-    //       link: '/en-US/example/enterprise-supply-chain/enterprise_supply_chain_introduce_quickstart',
+    //       link: '/en-US/example/enterprise-supply-chain/introduce_quickstart',
     //     },
     //   ],
     // },
@@ -28,7 +28,7 @@ export default defineConfig({
     //       children: [
     //         {
     //           title: 'A',
-    //           link: '/example/enterprise-supply-chain/enterprise_supply_chain_introduce_quickstart',
+    //           link: '/example/enterprise-supply-chain/introduce_quickstart',
     //         },
     //         {
     //           title: 'B',

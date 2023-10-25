@@ -117,6 +117,6 @@ services:
 **相关文档链接**：
 
 1. [KNext命令行工具和SDK教程](tutorial/knext)
-2. [企业供应链图谱](enterprise_supply_chain_introduce_quickstart)
+2. [企业供应链图谱](introduce_quickstart)
 3. [黑产挖掘图谱](example/risk-mining/risk_mining_introduce_quickstart)
 4. [医疗知识图谱](example/medical/medical_introduce_quickstart)

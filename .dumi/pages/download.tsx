@@ -1,6 +1,9 @@
 /**
  * title: 白皮书
  * order: 4
+ * nav:
+ *  title: 下载白皮书
+ *  order: 4
  */
 import { LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Steps, Tooltip, Typography } from 'antd';

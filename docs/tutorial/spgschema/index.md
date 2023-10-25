@@ -125,7 +125,7 @@ behavior(行为): Behavior
 
 # 声明式Schema
 
-在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](tutorial/knext)）。
+在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](/tutorial/knext)）。
 
 ## 关键字
 

@@ -1,11 +1,11 @@
 ---
 title: Schema 建模
-order: 2
+order: 1
 ---
 
 # 1、建模文件
 
-建模描述文档参见[spg schema](tutorial/spgschema)
+建模描述文档参见[spg schema](/tutorial/spgschema)
 ，建模参考文件[企业供应链图谱schema](https://github.com/OpenSPG/openspg/blob/master/python/knext/examples/supplychain/schema/supplychain.schema)
 执行以下脚本，完成schema创建：
 
@@ -136,7 +136,7 @@ Company(企业): EntityType
               ]]
 ```
 
-具体内容可参见[查询任务](./enterprise_supply_chain_query)场景一、场景二的示例
+具体内容可参见[查询任务](./query)场景一、场景二的示例
 
 ### 2.3、概念体系 vs 实体体系
 
@@ -186,5 +186,5 @@ CompanyEvent(公司事件): EventType
 		belongTo(属于): TaxOfCompanyEvent
 ```
 
-上述的事件中，属性类型均为已被定义类型，没有基本类型表达，SPG基于此申明实现事件多元要素表达，具体应用示例可见[查询任务](/enterprise_supply_chain_query)
+上述的事件中，属性类型均为已被定义类型，没有基本类型表达，SPG基于此申明实现事件多元要素表达，具体应用示例可见[查询任务](/query)
 场景3具体描述

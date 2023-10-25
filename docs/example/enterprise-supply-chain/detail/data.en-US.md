@@ -1,6 +1,6 @@
 ---
 title: Data Introduction
-order: 3
+order: 2
 ---
 
 ###### 1 Directory Structure

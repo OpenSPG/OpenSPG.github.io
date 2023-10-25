@@ -49,9 +49,9 @@ OpenSPG核心能力模型包括：
 
 - [安装说明](install)
 - 通过案例快速上手:
-  - [企业供应链图谱](enterprise_supply_chain_introduce_quickstart)
-  - [黑产挖掘图谱](example/risk-mining/risk_mining_introduce_quickstart)
-  - [医疗知识图谱](example/medical/medical_introduce_quickstart)
+  - [企业供应链图谱](example/enterprise-supply-chain)
+  - [黑产挖掘图谱](example/risk-mining)
+  - [医疗知识图谱](example/medical)
 
 ## 进阶教程
 

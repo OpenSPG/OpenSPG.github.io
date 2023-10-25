@@ -45,7 +45,7 @@ OpenSPG Core Capabilities:
 
 - [Install OpenSPG](install)
 - Quick start with examples:
-  - [Enterprise Supply Chain Knowledge Graph](enterprise_supply_chain_introduce_quickstart)
+  - [Enterprise Supply Chain Knowledge Graph](introduce_quickstart)
   - [Risk Mining Knowledge Graph](example/risk-mining/risk_mining_introduce_quickstart)
   - [Medical Knowledge Graph](example/medical/medical_introduce_quickstart)
 

@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react';
 
 export const useIntl = () => {
   const { id: lang } = useLocale();
-
   const intl = useCallback(
     (zh: string, en?: string) => {
       if (!en) return zh;
