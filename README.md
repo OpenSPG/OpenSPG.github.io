@@ -1,8 +1,10 @@
 # spg-site-doc
 
-A static site base on [dumi](https://d.umijs.org).
+Official website of [OpenSPG](http://spg.openkg.cn/)
 
 ## Development
+
+> To confirm that you have installed [pnpm](https://pnpm.io/installation)
 
 ```bash
 # install dependencies
