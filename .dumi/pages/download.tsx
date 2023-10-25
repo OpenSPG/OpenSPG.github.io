@@ -88,7 +88,7 @@ function Download() {
             title: (
               <Row gutter={10}>
                 <Col>{intl('问卷调查', 'Questionnaire Survey')}</Col>
-                {currentStep === 0 && (
+                {
                   <Col>
                     <Button
                       size="small"
@@ -98,18 +98,15 @@ function Download() {
                       {intl('前往填写', 'Go to Fill')}
                     </Button>
                   </Col>
-                )}
-                {currentStep === 0 && showBackup && (
+                }
+                {showBackup && (
                   <Col>
                     <Button
                       size="small"
-                      type="primary"
                       onClick={() => goToQuestionnaire(true)}
                     >
                       {intl('备用渠道', 'Backup Channel')}
                     </Button>
-                    &nbsp;
-                    <QuestionCircleOutlined />
                   </Col>
                 )}
               </Row>
