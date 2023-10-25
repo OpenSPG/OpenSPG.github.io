@@ -3,7 +3,7 @@
  */
 
 import { useEffect } from 'react';
-import { history } from 'dumi';
+import { history, usePrefersColor } from 'dumi';
 import { Button, Descriptions, Tabs } from 'antd';
 import styled from 'styled-components';
 import AboutUs from '../components/AboutUs';
@@ -201,17 +201,17 @@ const FrameworkInfo = styled(BaseInfo)`
   margin-bottom: 16px;
 `;
 
-const Case = styled.div`
+const Case = styled.div<{ theme: string }>`
   text-align: center;
   padding: 56px 120px 36px;
-
   background-size: cover;
 
-  background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original)
-    no-repeat;
+  ${(props) =>
+    props.theme === 'light' &&
+    `background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original) no-repeat;`}
 
-  [data-prefers-color='dark'] {
-  }
+  ${(props) =>
+    props.theme === 'dark' && `background-color: var(--background-color);`}
 
   @media (max-width: 768px) {
     padding: 36px 40px 36px;
@@ -250,17 +250,15 @@ const Footer = styled.div`
   user-select: none;
 `;
 
-const Bottom = styled.div`
+const Bottom = styled.div<{ theme: string }>`
   padding: 40px 120px;
   background-color: var(--background-color-invert);
   background-repeat: no-repeat;
   user-select: none;
-  &[data-prefers-color='light'] {
-    background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');
-  }
-  &[data-prefers-color='dark'] {
-    background-color: rgba(44, 44, 44, 1);
-  }
+
+  ${(props) =>
+    props.theme === 'light' &&
+    `background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');`}
 
   @media (max-width: 768px) {
     padding: 40px 40px;
@@ -294,6 +292,7 @@ const MainPage = () => {
       SPG_POINT_CONFIG,
     },
   } = useIntl();
+  const [prefersColor] = usePrefersColor();
 
   useEffect(() => {
     const main = document.querySelector('body .dumi-default-doc-layout > main');
@@ -389,7 +388,7 @@ const MainPage = () => {
           <img src={PARAGRAPH.AccelerateDataIntegrationImg} />
         </FrameworkContent>
       </Framework>
-      <Case>
+      <Case theme={prefersColor}>
         <CaseContent>
           <CaseTitle>{PARAGRAPH.SPGCaseStudies}</CaseTitle>
           {SPG_CASE_CONFIG.map((item, index) => {
@@ -408,7 +407,7 @@ const MainPage = () => {
           {PARAGRAPH.WhitepaperDownload}
         </Button>
       </Footer>
-      <Bottom>
+      <Bottom theme={prefersColor}>
         <BottomContent>
           {COPYRIGHT_INFORMATION_CONFIG.map((item) => {
             return (
