@@ -85,7 +85,12 @@ function Download() {
 
   return (
     <div>
-      <Title level={3}>填写完成后方可下载白皮书</Title>
+      <Title level={3}>
+        {intl(
+          '填写完成后方可下载白皮书',
+          'The whitepaper can be downloaded after completing the questionnaire',
+        )}
+      </Title>
       <Steps
         current={currentStep}
         direction="vertical"
