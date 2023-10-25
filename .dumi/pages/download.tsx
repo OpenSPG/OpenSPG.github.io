@@ -6,9 +6,10 @@
  *  order: 4
  */
 import { LoadingOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Steps, Typography } from 'antd';
+import { Button, Col, Row, Steps, Typography, message } from 'antd';
 import { useSearchParams } from 'dumi';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
+import { instantiate } from '../components/release';
 import { useIntl } from '../hooks/useIntl';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
@@ -20,16 +21,20 @@ const TokenKey = 'token';
 
 const expireTime = 1000 * 60 * 60 * 24;
 
+type ValidateFn = (value: string) => string;
+
 function Download() {
-  const token = '0a735e9a-72ea-11ee-b962-0242ac120002';
   const { intl } = useIntl();
   const [searchParams] = useSearchParams();
-  const tokenFromUrl = searchParams.get(TokenKey);
+  const [url, setUrl] = useState('');
+  const validateRef = useRef<ValidateFn>();
+  const tokenFromUrl = searchParams.get(TokenKey) || '';
   const [showBackup, setShowBackup] = useState(false);
   const [waitingForResult, setWaitingForResult] = useState(false);
   const [downloadImmediately, setDownloadImmediately] = useState(false);
   const [allow, setAllow] = useLocalStorage(AllowKey, false);
   const [timeStamp, setTimeStamp] = useLocalStorage(TimeStampKey, 0);
+  const [token, setToken] = useLocalStorage(TokenKey, '');
   const [currentStep, setCurrentStep] = useState(0);
 
   const isExpired = useMemo(() => {
@@ -40,12 +45,34 @@ function Download() {
   const ableToDownload = !isExpired && allow;
 
   useEffect(() => {
-    if (tokenFromUrl === token) {
+    fetch('release.wasm')
+      .then((response) => response.arrayBuffer())
+      .then((bytes) => instantiate(bytes))
+      .then(({ validate }: { validate: ValidateFn }) => {
+        validateRef.current = validate;
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!validateRef.current) return;
+    const result = validateRef.current(tokenFromUrl);
+    if (result) {
+      setUrl(result);
       setAllow(true);
+      setToken(tokenFromUrl);
       setTimeStamp(new Date().getTime());
       window.close();
     }
-  }, [tokenFromUrl]);
+  }, [validateRef.current, tokenFromUrl]);
+
+  useEffect(() => {
+    if (!token || !validateRef.current) return;
+    const result = validateRef.current(token);
+    if (result) {
+      setUrl(result);
+      setAllow(true);
+    }
+  }, [validateRef.current, token]);
 
   useEffect(() => {
     if (ableToDownload) {
@@ -74,8 +101,15 @@ function Download() {
   };
 
   const download = () => {
-    const url =
-      'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/file/A*SgrORp9OJAMAAAAAAAAAAAAADtmcAQ/%E3%80%8A%E8%AF%AD%E4%B9%89%E5%A2%9E%E5%BC%BA%E5%8F%AF%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1SPG%E3%80%8B%E7%99%BD%E7%9A%AE%E4%B9%A6%20v1.0.pdf';
+    if (!url) {
+      message.error(
+        intl(
+          '下载链接获取失败，请稍后再试',
+          'Download link acquisition failed, please try again later',
+        ),
+      );
+      return;
+    }
     const a = document.createElement('a');
     a.href = url;
     a.target = '_blank';
