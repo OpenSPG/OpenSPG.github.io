@@ -68,12 +68,12 @@ knext builder get --id ${jobId}
 knext schema reg_concept_rule --file ./schema/concept.rule
 ```
 
-schema建模详细内容可参见 [基于SPG建模的产业链企业图谱](detail/model)
+schema建模详细内容可参见 [基于SPG建模的产业链企业图谱](model)
 
 ## step4：知识构建
 
-知识构建将数据导入到系统中，数据介绍参见文档[产业链案例数据介绍](detail/data)。
-本例主要为结构化数据，故演示结构化数据转换和实体链指，具体细节可参见文档[产业链案例知识构建](detail/builder)
+知识构建将数据导入到系统中，数据介绍参见文档[产业链案例数据介绍](data)。
+本例主要为结构化数据，故演示结构化数据转换和实体链指，具体细节可参见文档[产业链案例知识构建](builder)
 
 **第一步：提交自定义实体链指算子**
 
@@ -103,7 +103,7 @@ SPG支持ISO GQL写法，可用如下命令行执行查询任务
 knext reasoner query --dsl "${ql}"
 ```
 
-具体任务详情可参见文档[产业链企业信用图谱查询任务](detail/query)
+具体任务详情可参见文档[产业链企业信用图谱查询任务](query)
 信用评级因子获取：
 
 ```cypher

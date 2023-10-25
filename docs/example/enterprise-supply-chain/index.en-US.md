@@ -58,11 +58,11 @@ knext builder submit TaxOfProdEvent
 knext schema reg_concept_rule --file ./schema/concept.rule
 ```
 
-You can refer to [The Schemas of Enterprise Supply Chain Knowledge Graph](detail/model) for detailed information on schema modeling.
+You can refer to [The Schemas of Enterprise Supply Chain Knowledge Graph](model) for detailed information on schema modeling.
 
 ## Step 4: Knowledge Construction
 
-Knowledge construction involves importing data into the knowledge graph storage. For data introduction, please refer to the document:[Introduction to Enterprise Supply Chain Case Data](detail/data). In this example, we will demonstrate the conversion of structured data and entity linking. For specific details, please refer to the document: [Enterprise Supply Chain Case Knowledge Construction](detail/builder).
+Knowledge construction involves importing data into the knowledge graph storage. For data introduction, please refer to the document:[Introduction to Enterprise Supply Chain Case Data](data). In this example, we will demonstrate the conversion of structured data and entity linking. For specific details, please refer to the document: [Enterprise Supply Chain Case Knowledge Construction](builder).
 
 **First：submit a self-defined entity linking operator**
 
@@ -88,7 +88,7 @@ OpenSPG supports the ISO GQL syntax. You can use the following command-line to e
 knext reasoner query --dsl "${ql}"
 ```
 
-For specific task details, please refer to the document：[Enterprise Credit Graph Query Tasks in Supply Chain](detail/query).
+For specific task details, please refer to the document：[Enterprise Credit Graph Query Tasks in Supply Chain](query).
 
 For example:
 

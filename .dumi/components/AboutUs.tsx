@@ -16,6 +16,7 @@ const ImgContainer = styled.div`
   background-color: #fff;
   overflow: hidden;
   white-space: nowrap;
+  background-color: var(--background-color);
   box-shadow:
     0 3px 6px -4px rgba(0, 0, 0, 0.12),
     0 6px 16px 0 rgba(0, 0, 0, 0.08),

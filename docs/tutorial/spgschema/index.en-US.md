@@ -1,5 +1,6 @@
 ---
 title: SPG Schema
+order: 4
 ---
 
 # SPG-Schema

@@ -1,5 +1,6 @@
 ---
 title: KNext
+order: 1
 ---
 
 # KNext命令和SDK教程

@@ -1,19 +1,10 @@
 import styled from 'styled-components';
+import { Space, Typography } from 'antd';
+
+const { Title, Text } = Typography;
 
 const Container = styled.div`
   margin-bottom: 45px;
-`;
-
-const Title = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
-`;
-
-const Desc = styled.div`
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.45);
-  margin-bottom: 24px;
 `;
 
 const ContentContainer = styled.div`
@@ -39,7 +30,7 @@ const Content = styled.div`
 `;
 
 const ItemBackground = styled.div`
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--background-color-pure);
   border-radius: 15px;
 `;
 
@@ -55,7 +46,7 @@ const Point = styled.div`
   width: 100%;
   display: flex;
   gap: 5px;
-  color: #1a1b25;
+  color: var(--text-color-light);
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
@@ -66,7 +57,7 @@ const Circle = styled.div`
   width: 0.8rem;
   height: 0.8rem;
   border-radius: 0.4rem;
-  border: 0.15rem solid #2f54eb;
+  border: 0.15rem solid var(--text-color-light);
   flex-shrink: 0;
 `;
 
@@ -76,15 +67,15 @@ const ItemList = styled.div`
 
 const Item = styled.div`
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--text-color);
 `;
 
 const ImgContainer = styled.div`
   border-radius: 16px;
   img {
-    border: 1px solid rgba(47, 84, 235, 0.2);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    background-color: #fff;
+    background-color: var(--image-background-color);
     padding: 20px;
     width: 100%;
     height: 100%;
@@ -108,31 +99,33 @@ const SpgCaseItem = (props: CaseItemProps) => {
   return (
     <Container>
       <Title>{title}</Title>
-      <Desc>{desc}</Desc>
-      <ContentContainer>
-        <Content>
-          {details.map((item) => {
-            return (
-              <ItemBackground key={item.point}>
-                <ItemContainer>
-                  <Point>
-                    <Circle />
-                    {item.point}
-                  </Point>
-                  <ItemList>
-                    {item.infoList.map((info) => {
-                      return <Item key={info}>• {info}</Item>;
-                    })}
-                  </ItemList>
-                </ItemContainer>
-              </ItemBackground>
-            );
-          })}
-        </Content>
-        <ImgContainer style={{ order: reverse ? -1 : 0 }}>
-          <img src={imgUrl} alt="" />
-        </ImgContainer>
-      </ContentContainer>
+      <Space direction="vertical">
+        <Text type="secondary">{desc}</Text>
+        <ContentContainer>
+          <Content>
+            {details.map((item) => {
+              return (
+                <ItemBackground key={item.point}>
+                  <ItemContainer>
+                    <Point>
+                      <Circle />
+                      {item.point}
+                    </Point>
+                    <ItemList>
+                      {item.infoList.map((info) => {
+                        return <Item key={info}>• {info}</Item>;
+                      })}
+                    </ItemList>
+                  </ItemContainer>
+                </ItemBackground>
+              );
+            })}
+          </Content>
+          <ImgContainer style={{ order: reverse ? -1 : 0 }}>
+            <img src={imgUrl} alt="" />
+          </ImgContainer>
+        </ContentContainer>
+      </Space>
     </Container>
   );
 };

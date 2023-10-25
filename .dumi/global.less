@@ -1,3 +1,39 @@
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
+}
+
+[data-prefers-color='light'] .dumi-default-header {
+  background-color: rgba(247, 249, 251, 0.6) !important;
+}
+
+[data-prefers-color='dark'] .dumi-default-header {
+  background-color: rgba(rgba(5, 7, 9, 0.85)) !important;
+}
+
+[data-prefers-color='light'] {
+  --background-color-pure: rgba(255, 255, 255, 1);
+  --background-color: rgba(243, 247, 255, 1);
+  --background-color-invert: rgba(21, 35, 55, 1);
+  --text-color: rgba(26, 27, 37, 0.88);
+  --text-color-light: rgba(26, 27, 37, 0.65);
+  --text-color-invert: rgba(255, 255, 255, 0.88);
+  --text-color-invert-light: rgba(255, 255, 255, 0.65);
+  --border-color: rgba(47, 84, 235, 0.2);
+  --image-background-color: rgba(255, 255, 255, 1);
+  --color-dark: rgba(21, 35, 55, 1);
+}
+
+[data-prefers-color='dark'] {
+  --background-color-pure: rgba(44, 44, 44, 1);
+  --background-color: rgba(0, 0, 0, 1);
+  --background-color-invert: rgba(5, 7, 9, 1);
+  --text-color: rgba(198, 201, 205, 1);
+  --text-color-light: rgba(247, 249, 253, 1);
+  --text-color-invert: rgba(255, 255, 255, 0.88);
+  --text-color-invert-light: rgba(255, 255, 255, 0.65);
+  --border-color: rgba(47, 84, 235, 0.2);
+  --image-background-color: rgba(255, 255, 255, 1);
+  --color-dark: rgba(21, 35, 55, 1);
 }

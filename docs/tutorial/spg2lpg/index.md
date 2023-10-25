@@ -1,5 +1,6 @@
 ---
 title: SPG2LPG Translator
+order: 2
 ---
 
 # SPG2LPG-Translator适配新的图数据库

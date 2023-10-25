@@ -1,5 +1,6 @@
 ---
 title: SPG Reasoner
+order: 3
 ---
 
 # SPG-Reasoner logical reasoning

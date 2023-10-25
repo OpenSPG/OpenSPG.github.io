@@ -10,7 +10,6 @@ import AboutUs from '../components/AboutUs';
 import CustomItem from '../components/CustomItem';
 import SpgCaseItem from '../components/SpgCaseItem';
 import { useIntl } from '../hooks/useIntl';
-import { useTheme } from '../hooks/useTheme';
 
 const Banner = styled.div`
   height: 400px;
@@ -57,7 +56,7 @@ const LeftTitleContainer = styled.div`
 const BaseTitle = styled.div`
   font-size: 32px;
   font-weight: 600;
-  color: rgba(26, 27, 37, 0.88);
+  color: var(--text-color);
   text-align: center;
 
   @media (max-width: 768px) {
@@ -71,6 +70,7 @@ const BaseTitle = styled.div`
 
 const Title = styled(BaseTitle)`
   text-align: left;
+  color: var(--color-dark);
 `;
 
 const BtnGroup = styled.div`
@@ -92,7 +92,7 @@ const BtnGroup = styled.div`
 `;
 
 const BaseInfo = styled.div`
-  color: rgba(26, 27, 37, 0.65);
+  color: var(--text-color-light);
   font-size: 14px;
 `;
 
@@ -102,7 +102,7 @@ const SPG = styled.div`
   width: 100%;
   padding: 72px 120px;
   text-align: center;
-  background-color: #fff;
+  background-color: var(--background-color-pure);
   @media (max-width: 768px) {
     padding: 50px 40px;
   }
@@ -129,7 +129,7 @@ const SPGList = styled.div`
 `;
 
 const Point = styled.div`
-  background-color: rgba(243, 247, 255, 1);
+  background-color: var(--background-color);
   padding: 40px 120px;
   text-align: center;
   @media (max-width: 768px) {
@@ -145,7 +145,7 @@ const PointContent = styled.div`
   margin: 0 auto;
 
   img {
-    background-color: #fff;
+    background-color: var(--image-background-color);
     border-radius: 16px;
     min-height: 500px;
     max-height: 500px;
@@ -169,7 +169,7 @@ const PointTitle = styled(BaseTitle)`
 const Framework = styled.div`
   text-align: center;
   padding: 38px 120px 72px;
-  background-color: #fff;
+  background-color: var(--background-color-pure);
 
   @media (max-width: 768px) {
     padding: 38px 40px 72px;
@@ -184,9 +184,9 @@ const FrameworkContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   img {
-    border: 1px solid rgba(47, 84, 235, 0.2);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    background-color: rgba(243, 247, 255, 1);
+    background-color: var(--image-background-color);
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -204,9 +204,17 @@ const FrameworkInfo = styled(BaseInfo)`
 const Case = styled.div`
   text-align: center;
   padding: 56px 120px 36px;
-  background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original)
-    no-repeat;
+
   background-size: cover;
+
+  &[data-prefers-color='light'] {
+    background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original)
+      no-repeat;
+  }
+
+  [data-prefers-color='dark'] {
+  }
+
   @media (max-width: 768px) {
     padding: 36px 40px 36px;
   }
@@ -238,7 +246,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(243, 247, 255, 1);
+  background-color: var(--background-color);
   background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*Rs5FTKaUgTIAAAAAAAAAAAAADtmcAQ/original');
   background-repeat: no-repeat;
   user-select: none;
@@ -246,13 +254,20 @@ const Footer = styled.div`
 
 const Bottom = styled.div`
   padding: 40px 120px;
-  background-color: #152337;
-  background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');
+  background-color: var(--background-color-invert);
   background-repeat: no-repeat;
   user-select: none;
+  &[data-prefers-color='light'] {
+    background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');
+  }
+  &[data-prefers-color='dark'] {
+    background-color: rgba(44, 44, 44, 1);
+  }
+
   @media (max-width: 768px) {
     padding: 40px 40px;
   }
+
   @media (max-width: 480px) {
     padding: 40px 20px;
   }
@@ -264,11 +279,11 @@ const BottomContent = styled.div`
     flex-direction: column;
   }
   .ant-descriptions-title {
-    color: rgba(255, 255, 255, 0.88);
+    color: var(--text-color-invert);
     font-size: 14px;
   }
   .ant-descriptions-item-content {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--text-color-invert-light);
   }
 `;
 
@@ -281,8 +296,6 @@ const MainPage = () => {
       SPG_POINT_CONFIG,
     },
   } = useIntl();
-
-  const theme = useTheme();
 
   useEffect(() => {
     const main = document.querySelector('body .dumi-default-doc-layout > main');
@@ -309,25 +322,6 @@ const MainPage = () => {
   return (
     <div className="home">
       <Banner>
-        {/* <Header>
-          <img src="https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*D5uYQpLS8dsAAAAAAAAAAAAADtmcAQ/original" />
-          <Divider type="vertical" />
-          <Language>
-            <GlobalOutlined />
-            <Select
-              value={lang}
-              bordered={false}
-              onChange={(value) => {
-                localStorage.setItem('lang', value);
-                setLang(value);
-              }}
-              options={[
-                { label: '中文(简体)', value: 'zh-CN' },
-                { label: 'English(US)', value: 'en-US' },
-              ]}
-            />
-          </Language>
-        </Header> */}
         <Middle>
           <LeftTitleContainer>
             <Title>
