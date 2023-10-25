@@ -1,28 +1,24 @@
 ---
-title: KNext
+title: KNext命令及使用
 order: 1
 ---
-
-# KNext命令和SDK教程
 
 本文将会介绍OpenSPG中python SDK -- KNext的使用方法，包括命令行工具，以及可编程SDK。
 使用KNext命令行工具，可以完成创建图谱项目、schema变更和查询、图谱查询和推理等功能。
 
-# 安装指南
+## 1 安装指南
 
-## 支持的Python版本
+### 1.2 支持的Python版本
 
 python>=3.8
 
-## 安装 knext
-
-### MacOS
+### 1.3 安装 knext
 
 建议创建虚拟环境后安装knext，避免knext依赖包与系统包的冲突问题。
 使用pip工具安装knext指定版本：
 
 ```bash
-pip install openspg-knext==0.0.1
+pip install openspg-knext
 ```
 
 检验knext是否安装成功，使用以下命令查看knext版本：
@@ -31,15 +27,11 @@ pip install openspg-knext==0.0.1
 knext --version
 ```
 
-### Windows
-
-### Ubuntu
-
-# 快速开始
+## 2 快速开始
 
 该示例可以帮助快速开始一个简单的图谱数据导入和分析推理。
 
-### 设置服务端地址
+### 2.1 设置服务端地址
 
 执行以下命令，设置OpenSPG服务端地址（默认为本地地址 [http://127.0.0.1:8887](http://127.0.0.1:8887) ）：
 
@@ -47,7 +39,7 @@ knext --version
 knext config edit --global host_addr=http://127.0.0.1:8887
 ```
 
-### 创建一个示例项目
+### 2.2 创建一个示例项目
 
 执行以下命令，创建一个项目，会在当前目录下生成示例项目文件夹，文件夹名为namespace的小写：
 
@@ -55,7 +47,7 @@ knext config edit --global host_addr=http://127.0.0.1:8887
 knext project create --name 示例项目 --namespace Prj --desc 这是一个示例项目
 ```
 
-### 切换项目
+### 2.3 切换项目
 
 执行以下命令，进入项目目录，所有对于该项目的操作需要在项目目录内进行：
 
@@ -67,7 +59,7 @@ cd prj
 
 - 一个示例实体 `Prj.Demo`，声明在 `/schema/prj.schema`，用于创建项目schema：
 
-```bash
+```
 namespace Prj
 
 Demo(示例实体): EntityType
@@ -75,13 +67,13 @@ Demo(示例实体): EntityType
         demoProperty(示例属性): Text
 ```
 
-- 一个构建任务 `Demo`，定义在`builder/task/demo.py` ，用于导入 `Prj.Demo`实体：
+- 一个构建任务 `Demo`，定义在`builder/job/demo.py` ，用于导入 `Prj.Demo`实体：
 
 ```python
 # -*- coding: utf-8 -*-
 
-from knext.core.builder.pipeline.builder_job import BuilderJob
-from knext.core.builder.pipeline.model.component import SourceCsvComponent, EntityMappingComponent, SinkToKgComponent
+from knext.core.builder.job.model.builder_job import BuilderJob
+from knext.core.builder.job.model.component import SourceCsvComponent, EntityMappingComponent, SinkToKgComponent
 from schema.prj_schema_helper import Prj
 
 
@@ -89,7 +81,7 @@ class Demo(BuilderJob):
 
     def build(self):
         source = SourceCsvComponent(
-            local_path="./builder/task/data/Demo.csv",
+            local_path="./builder/job/data/Demo.csv",
             columns=["id", 'prop'],
             start_row=2
         )
@@ -110,25 +102,30 @@ class Demo(BuilderJob):
 ```python
 # -*- coding: utf-8 -*-
 
-from typing import List
+from typing import List, Dict
 
-from knext.core.builder.operator import Vertex, EvalResult
+from knext.core.builder.operator import Vertex
 from knext.core.builder.operator.model.op import KnowledgeExtractOp
 
 
 class DemoExtractOp(KnowledgeExtractOp):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, params: Dict[str, str] = None):
+        super().__init__(params)
 
-    def eval(self, record: Vertex) -> EvalResult[List[Vertex]]:
-        return EvalResult([record])
+    def eval(self, record: Dict[str, str]) -> List[Vertex]:
+
+        return [Vertex(properties=record)]
 
 ```
 
 - 一个DSL查询语句，声明在 `reasoner/demo.dsl`，用于查询所有 `Prj.Demo`实体：
+```
+MATCH (s:Prj.Demo)
+RETURN s.id, s.demoProperty
+```
 
-### schema创建
+### 2.4 创建schema
 
 ```bash
 knext schema commit
@@ -136,7 +133,7 @@ knext schema commit
 
 - 执行此命令后，会将`/schema/prj.schema`内的schema声明，提交到服务端。
 
-### 算子发布
+### 2.5 发布算子
 
 ```bash
 knext operator publish DemoExtractOp
@@ -144,15 +141,15 @@ knext operator publish DemoExtractOp
 
 - 执行此命令后，会扫描 `builder/operator`下的所有算子，并将 `DemoExtractOp` 发布到服务端。
 
-### 知识加工
+### 2.6 知识加工
 
 ```bash
 knext builder submit Demo
 ```
 
-- 执行此命令后，会扫描 `builder/task`下的所有加工任务（需要继承`BuilderJob`类），并将 `Demo`提交到服务端。
+- 执行此命令后，会扫描 `builder/job`下的所有加工任务（需要继承`BuilderJob`类），并将 `Demo`提交到服务端。
 
-### dsl查询
+### 2.7 dsl查询
 
 ```bash
 knext reasoner query --file reasoner/demo.dsl
@@ -160,7 +157,7 @@ knext reasoner query --file reasoner/demo.dsl
 
 - 执行此命令后，会将 `--file` 指定的文件中的dsl查询语句，提交到服务端进行查询，并同步返回查询结果。
 
-# 命令行工具
+## 3 命令行工具
 
 通过`knext`命令行工具，以及定义的多个子命令，实现完整的图谱构建与使用流程。
 
@@ -181,7 +178,7 @@ Commands:
 
 ```
 
-## config
+### 3.1 config
 
 ```bash
 Usage: knext config [OPTIONS] COMMAND [ARGS]...
@@ -192,12 +189,12 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  set   Edit global or local configs.
   list  List global and local knext configs.
+  set   Edit global or local configs.
 
 ```
 
-### 修改配置
+#### 3.1.1 修改配置
 
 ```bash
 knext config set [--help]
@@ -222,7 +219,7 @@ knext config set --global host_addr=http://127.0.0.1:8887
 host_addr = http://127.0.0.1:8887
 ```
 
-### 展示配置
+#### 3.1.2 展示配置
 
 ```bash
 knext config list [--help]
@@ -243,7 +240,7 @@ host_addr = http://127.0.0.1:8887
 
 ```
 
-## project
+### 3.2 project
 
 ```bash
 Usage: knext project [OPTIONS] COMMAND [ARGS]...
@@ -259,11 +256,11 @@ Commands:
 
 ```
 
-### 创建项目
+#### 3.2.1 创建项目
 
 ```bash
 knext project create [--help]
-                     [--name name]
+                     [--name name] 
                      [--namespace namespace]
                      [--desc desc]
                      [--prj_path prj_path]
@@ -283,14 +280,14 @@ knext project create --name 示例项目 --namespace Prj --desc 这是一个示�
 结果：
 执行成功后会在当前目录下创建出prj目录，执行`cd prj`进入示例项目。
 
-```bash
+```
 .
 └── prj
     ├── builder
     │   ├── model
     │   ├── operator
     │   │   └── demo_extract_op.py
-    │   └── task
+    │   └── job
     │       ├── data
     │       │   └── Demo.csv
     │       └── demo.py
@@ -298,10 +295,10 @@ knext project create --name 示例项目 --namespace Prj --desc 这是一个示�
     │   └── demo.dsl
     ├── schema
     │   ├── prj.schema
-    └── start.sh
+    └── README.md
 ```
 
-### 展示所有项目
+#### 3.2.2 展示所有项目
 
 ```bash
 knext project list [--help]
@@ -323,7 +320,7 @@ knext project list
 |    2 | 示例项目        | Prj         | 这是一个示例项目  |
 ```
 
-## schema
+### 3.3 schema
 
 ```bash
 Usage: knext schema [OPTIONS] COMMAND [ARGS]...
@@ -336,12 +333,11 @@ Options:
 Commands:
   commit            Commit local schema and generate schema helper.
   diff              Print differences of schema between local and server.
-  list              List all server-side schemas.
   reg_concept_rule  Register a concept rule according to DSL file.
 
 ```
 
-### 提交schema
+#### 3.3.1 提交schema
 
 ```bash
 knext schema commit [--help]
@@ -361,23 +357,35 @@ Schema is successfully committed.
 SchemaHelper is created in schema/prj_schema_helper.py.
 ```
 
-### 展示schema diff（不提交）
+#### 3.3.2 展示schema diff（不提交）
 
 ```bash
 knext schema diff [--help]
 ```
 
-### 提交概念规则
+#### 3.3.3 提交概念规则
 
 ```bash
 knext schema reg_concept_rule [--help]
-                            	[--file file]
+                              [--file file]
 ```
 
 - 【必填】--file concept rule文件路径
 
 使用实例：
 
+schema/concept.rule
+```
+namespace DEFAULT
+
+`TaxOfRiskApp`/`赌博应用`:
+    rule: [[
+        ...
+    ]]
+
+```
+
+执行命令：
 ```bash
 knext schema reg_concept_rule --file schema/concept.rule
 ```
@@ -390,13 +398,7 @@ Defined belongTo rule for ...
 Concept rule is successfully registered.
 ```
 
-### 展示项目schema
-
-```bash
-knext schema list [--help]
-```
-
-## operator
+### 3.4 operator
 
 ```bash
 Usage: knext operator [OPTIONS] COMMAND [ARGS]...
@@ -412,7 +414,7 @@ Commands:
 
 ```
 
-### 发布算子
+#### 3.4.1 发布算子
 
 ```bash
 knext operator publish [OP_NAMES]
@@ -423,6 +425,7 @@ knext operator publish [OP_NAMES]
 
 使用实例：
 
+builder/operator/demo_extract_op.py
 ```python
 ...
 
@@ -433,6 +436,7 @@ class DemoExtractOp(KnowledgeExtractOp):
 ...
 ```
 
+执行命令：
 ```bash
 knext operator publish DemoExtractOp
 ```
@@ -443,7 +447,7 @@ knext operator publish DemoExtractOp
 Operator [DemoExtractOp] has been successfully published. The latest version is 1.
 ```
 
-### 展示所有算子
+#### 3.4.2 展示所有算子
 
 ```bash
 knext operator list [--help]
@@ -455,7 +459,7 @@ knext operator list [--help]
 knext operator list
 ```
 
-## builder
+### 3.5 builder
 
 ```bash
 Usage: knext builder [OPTIONS] COMMAND [ARGS]...
@@ -471,17 +475,18 @@ Commands:
 
 ```
 
-### 提交构建任务
+#### 3.5.1 提交构建任务
 
 ```bash
 knext builder submit [JOB_NAMES]
 ```
 
-- 【必填】JOB_NAMES 提交的构建任务名，多个任务间用`,`分隔开。所有任务必须实现在 `builder/task/`下，且需要继承`BuilderJob`
+- 【必填】JOB_NAMES 提交的构建任务名，多个任务间用`,`分隔开。所有任务必须实现在 `builder/job/`下，且需要继承`BuilderJob`
   ，任务名默认为类名。
 
 使用实例：
 
+builder/job/demo.py
 ```python
 ...
 
@@ -491,7 +496,7 @@ class Demo(BuilderJob):
 
 ...
 ```
-
+执行命令：
 ```bash
 knext builder submit Demo
 ```
@@ -502,7 +507,7 @@ knext builder submit Demo
 Operator [DemoExtractOp] has been successfully published. The latest version is 1.
 ```
 
-### 查询构建任务
+#### 3.5.2 查询构建任务
 
 ```bash
 knext builder get [--help]
@@ -511,7 +516,7 @@ knext builder get [--help]
 
 - 【必填】--id 查询的任务id（成功提交任务后会返回），结果返回单个任务实例。
 
-## reasoner
+### 3.6 reasoner
 
 ```bash
 Usage: knext reasoner [OPTIONS] COMMAND [ARGS]...
@@ -522,12 +527,14 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  query  Query dsl by providing a string or file.
+  get     Query submitted reasoner job status.
+  query   Query dsl by providing a string or file.
+  submit  Submit asynchronous reasoner jobs to server by providing DSL file or string.
 
 ```
 
-### DSL查询
-
+#### 3.6.1 DSL查询
+提交DSL查询任务，结果同步返回，查询任务耗时超过3分钟会报错。
 ```bash
 knext reasoner query [--help]
                      [--file file]
@@ -539,11 +546,12 @@ knext reasoner query [--help]
 
 使用实例：
 
+reasoner/demo.dsl:
 ```bash
 MATCH (s:Prj.Demo)
 RETURN s.id, s.demoProperty
 ```
-
+执行命令：
 ```bash
 knext reasoner query --file reasoner/demo.dsl
 ```
@@ -555,16 +563,26 @@ knext reasoner query --file reasoner/demo.dsl
 |--------|------------------|
 |     00 | demo             |
 ```
-
+#### 3.6.2 提交DSL推理任务
+提交查询任务，结果异步生成。
 ```bash
 knext reasoner submit [--help]
                       [--file file]
                       [--dsl file]
 ```
+- 【二选一】--file 查询的dsl文件。
+- 【二选一】--dsl 查询的dsl语法，用双引号括起来。
 
-# 默认项目结构
-
+#### 3.6.3 查询推理任务
 ```bash
+knext reasoner get [--help]
+                  [--id id]
+```
+【必填】--id 查询的任务id（成功提交任务后会返回），结果返回单个任务实例。
+
+## 4 默认项目结构
+
+```
 .
 └── riskmining
     ├── builder # 知识加工
@@ -574,8 +592,8 @@ knext reasoner submit [--help]
     │   |   ├── demo_extract_op.py
     │   │   └── ...
     │   └── job # 加工任务目录
-    │       ├── demo1.py
-    │       ├── demo2.py
+    │       ├── demo1.py 
+    │       ├── demo2.py 
     │       ├── data # 数据目录
     │       │   ├── Demo1.csv
     │       │   ├── Demo2.csv
@@ -587,13 +605,13 @@ knext reasoner submit [--help]
     ├── reasoner # 规则推理
     │   ├── demo.dsl
     │   └── result
-    │       ├── spgreasoner_job_1_result.csv
-    │       ├── spgreasoner_job_2_result.csv
+    │       ├── spgreasoner_job_1_result.csv 
+    │       ├── spgreasoner_job_2_result.csv 
     │       └── ...
     ├── schema # schema定义
-    │   ├── riskmining.schema
-    │   ├── riskmining_schema_helper.py
-    │   └── concept.rule
+    │   ├── riskmining.schema 
+    │   ├── riskmining_schema_helper.py 
+    │   └── concept.rule 
     ├── README.md
     └── .knext.cfg
 ```
@@ -641,28 +659,29 @@ reasoner_result_dir = reasoner/result
   - 项目schema声明文件以`.schema`为结尾，通过`knext schema commit`解析schema文件，并提交到服务端。每个项目只允许唯一的schema声明文件。
   - 概念规则以`.rule` 为结尾，通过`knext schema reg_concept_rule [--file]`，将文件中定义的规则注册到对应概念上。
 
-# python SDK
+## 5 python SDK
 
-## 编写一个加工任务
+### 5.1 编写一个加工任务
 
 `Builderjob`是所有知识加工任务的基类。
 所有在`{builder_job_dir}`下继承了`BuilderJob`
 的类，都会被knext识别为一个加工任务。加工任务可以通过`knext builder submit [name]`命令提交到服务端异步执行。
 所有加工任务**必须**实现`build`方法，用来定义任务的执行流程。
 
-### 参数
+#### 5.1.1 参数
 
-| 参数               | 类型              | 是否必填 | 示例值                                            | 描述                                                         |
-| ------------------ | ----------------- | -------- | ------------------------------------------------- | ------------------------------------------------------------ |
-| **parallelism**    | int               | 否       | 1                                                 | 加工任务执行并发度【默认为1】                                |
-| **operation_type** | OperationTypeEnum | 否       | OperationTypeEnum.Create/OperationTypeEnum.Delete | 加工任务操作类型【默认为Create，即数据以增量更新的方式写入】 |
+| 参数                 | 类型                | 是否必填 | 示例值                      | 描述                                |
+|--------------------|-------------------|------|--------------------------|-----------------------------------|
+| **parallelism**    | int               | 否    | 1                        | 加工任务执行并发度【默认为1】                   |
+| **operation_type** | OperationTypeEnum | 否    | OperationTypeEnum.Create | 加工任务操作类型【默认为Create，即数据以增量更新的方式写入】 |
+| **lead_to**        | bool              | 否    | True                     | 加工任务是否执行因果关系【默认为False】            |
 
-### 接口
+#### 5.1.2 接口
 
-#### build(self)
+##### build(self)
 
 用来编写加工任务的执行逻辑，本质上是定义各个执行节点间的pipeline流程，每个执行节点都是一个继承了`Component`基类的组件。
-通过`>>`右移符号（knext对**rshift**实现了重载），定义各个组件之间的依赖关系，build方法需要返回pipeline结构，以下为示例：
+通过`>>`右移符号（knext对`__rshift__`实现了重载），定义各个组件之间的依赖关系，build方法需要返回pipeline结构，以下为示例：
 
 ```python
 class App(BuilderJob):
@@ -677,46 +696,46 @@ class App(BuilderJob):
         return source >> mapping >> sink
 ```
 
-## 组件
+### 5.2 组件
 
-### SourceCsvComponent（CSV数据源）
+#### 5.2.1 SourceCsvComponent（CSV数据源）
 
 csv数据源组件，用来上传本地csv文件，并逐行读取数据
 
-#### 参数
+##### 5.2.1.1 参数
 
-| 名称           | 类型      | 是否必填 | 示例值                        | 描述                                                         |
-| -------------- | --------- | -------- | ----------------------------- | ------------------------------------------------------------ |
-| **local_path** | str       | 是       | './builder/job/data/App.csv'  | 文件路径                                                     |
-| **columns**    | list[str] | 是       | ['id', 'riskMark', 'useCert'] | 输入列                                                       |
-| **start_row**  | int       | 是       | 2                             | 数据读取起始行数【若希望从csv第一行开始读取，则start_row=1】 |
+| 名称             | 类型        | 是否必填 | 示例值                            | 描述                                    |
+|----------------|-----------|------|--------------------------------|---------------------------------------|
+| **local_path** | str       | 是    | './builder/job/data/App.csv'  | 文件路径                                  |
+| **columns**    | list[str] | 是    | ['id', 'riskMark', 'useCert'] | 输入列                                   |
+| **start_row**  | int       | 是    | 2                              | 数据读取起始行数【若希望从csv第一行开始读取，则start_row=1】 |
 
-#### 接口
+##### 5.2.1.2 接口
 
 无
 
-### KnowledgeExtractComponent（知识抽取）
+#### 5.2.2 KnowledgeExtractComponent（知识抽取）
 
-将非结构化数据转化为结构化数据。抽取组件上需要设置`KnowledgeExtractOp`抽取类型算子。
+将非结构化数据转化为结构化数据。抽取组件上必须设置`KnowledgeExtractOp`抽取类型算子。
 
-#### 参数
+##### 5.2.2.1 参数
 
-| 名称              | 类型      | 是否必填 | 示例值                        | 描述     |
-| ----------------- | --------- | -------- | ----------------------------- | -------- |
-| **output_fields** | List[str] | 是       | ['id', 'riskMark', 'useCert'] | 输出字段 |
+| 名称                | 类型        | 是否必填 | 示例值                            | 描述   |
+|-------------------|-----------|------|--------------------------------|------|
+| **output_fields** | List[str] | 是    | ['id', 'riskMark', 'useCert'] | 输出字段 |
 
-#### 接口
+##### 5.2.2.2 接口
 
-##### set_operator
+###### set_operator
 
 设置抽取算子，取已发布的最新版本的算子。
 
-| 参数        | 类型           | 是否必填 | 示例值                           | 描述                                            |
-| ----------- | -------------- | -------- | -------------------------------- | ----------------------------------------------- |
-| **op_name** | str            | 是       | Operator("DemoKnowledgeExtract") | 抽取算子名                                      |
-| **params**  | Dict[str, str] | 否       | {"": ""}                         | 抽取算子参数，在算子内可以通过self.params获取。 |
+| 参数          | 类型             | 是否必填 | 示例值                              | 描述                            |
+|-------------|----------------|------|----------------------------------|-------------------------------|
+| **op_name** | str            | 是    | Operator("DemoKnowledgeExtract") | 抽取算子名                         |
+| **params**  | Dict[str, str] | 否    | {"": ""}                         | 抽取算子参数，在算子内可以通过self.params获取。 |
 
-#### 示例
+##### 5.2.2.3 示例
 
 ```python
 extract = KnowledgeExtractComponent(
@@ -724,38 +743,38 @@ extract = KnowledgeExtractComponent(
 ).set_operator("DemoExtractOp")
 ```
 
-### EntityMappingComponent（实体映射组件）
+#### 5.2.3 EntityMappingComponent（实体映射组件）
 
 将非标准输入字段映射到SPG实体（EntityType/EventType/ConceptType/StandardType）的属性上（**必须包含到**`**id**`**属性的映射
 **）。若SPG实体的属性类型上绑定了 `EntityLinkOp/PropertyNormalizeOp`，会在字段映射后执行链指拉边和概念标化挂载；否则，会以属性值作为id，召回出目标实体进行拉边和概念挂载。
 
-#### 参数
+##### 5.2.3.1 参数
 
-| 名称              | 类型 | 是否必填 | 示例值      | 描述        |
-| ----------------- | ---- | -------- | ----------- | ----------- |
-| **spg_type_name** | str  | 是       | DEFAULT.App | SPG实体类型 |
+| 名称                  | 类型  | 是否必填 | 示例值         | 描述      |
+|---------------------|-----|------|-------------|---------|
+| **spg_type_name** | str | 是    | DEFAULT.App | SPG实体类型 |
 
-#### 接口
+##### 5.2.3.2 接口
 
-##### add_field
+###### add_field
 
 添加从源数据字段到SPG属性之间的映射关系。
 
-| 参数             | 类型 | 是否必填 | 示例值              | 描述        |
-| ---------------- | ---- | -------- | ------------------- | ----------- |
-| **source_field** | str  | 是       | "useCert"           | 源字段      |
-| **target_field** | str  | 是       | DEFAULT.App.useCert | SPG实体属性 |
+| 参数               | 类型  | 是否必填 | 示例值                  | 描述      |
+|------------------|-----|------|----------------------|---------|
+| **source_field** | str | 是    | "useCert"           | 源字段     |
+| **target_field** | str | 是    | DEFAULT.App.useCert | SPG实体属性 |
 
-##### add_filter
+###### add_filter
 
 添加字段筛选条件，数据满足`column_name=column_value`条件的会执行映射。若不设置筛选条件，则全部数据会执行映射。
 
-| 参数             | 类型 | 是否必填 | 示例值 | 描述     |
-| ---------------- | ---- | -------- | ------ | -------- |
-| **column_name**  | str  | 是       | "type" | 筛选字段 |
-| **column_value** | str  | 是       | "App"  | 筛选值   |
+| 参数                | 类型  | 是否必填 | 示例值    | 描述   |
+|-------------------|-----|------|--------|------|
+| **column_name**  | str | 是    | "type" | 筛选字段 |
+| **column_value** | str | 是    | "App"  | 筛选值  |
 
-#### 示例
+##### 5.2.3.3 示例
 
 ```python
 mapping = EntityMappingComponent(
@@ -766,23 +785,23 @@ mapping = EntityMappingComponent(
 .add_field("useCert", DEFAULT.App.useCert)
 ```
 
-### RelationMappingComponent（关系映射组件）
+#### 5.2.4 RelationMappingComponent（关系映射组件）
 
 将非标准输入字段映射到SPG关系的属性上（**必须包含到**`**srcId**`**和**`**dstId**`**的映射**）。
 
-#### 参数
+##### 5.2.4.1 参数
 
-| 名称               | 类型 | 是否必填 | 示例值              | 描述     |
-| ------------------ | ---- | -------- | ------------------- | -------- |
-| **subject_name**   | str  | 是       | DEFAULT.App         | 主体类型 |
-| **predicate_name** | str  | 是       | DEFAULT.App.useCert | 谓词关系 |
-| **object_name**    | str  | 是       | DEFAULT.Cert        | 客体类型 |
+| 名称                  | 类型  | 是否必填 | 示例值                  | 描述   |
+|---------------------|-----|------|----------------------|------|
+| **subject_name**   | str | 是    | DEFAULT.App          | 主体类型 |
+| **predicate_name** | str | 是    | DEFAULT.App.useCert | 谓词关系 |
+| **object_name**    | str | 是    | DEFAULT.Cert        | 客体类型 |
 
-#### 接口
+##### 5.2.4.2 接口
 
 同EntityMappingComponent
 
-#### 示例代码
+##### 5.2.4.3 示例代码
 
 ```python
 mapping = RelationMappingComponent(
@@ -793,45 +812,45 @@ mapping = RelationMappingComponent(
 .add_field("dst_id", "dstId")
 ```
 
-### SPGMappingComponent（SPG映射组件）
+#### 5.2.5 SPGMappingComponent（SPG映射组件）
 
 指定SPG类型作为主体类型，根据schema定义，从长文本中抽取SPO关系组，即以SPG类型为中心的关系子图。
 SPG映射组件需要设置知识抽取算子。
 
-#### 参数
+##### 5.2.5.1 参数
 
-| 名称              | 类型 | 是否必填 | 示例值      | 描述        |
-| ----------------- | ---- | -------- | ----------- | ----------- |
-| **spg_type_name** | str  | 是       | DEFAULT.App | SPG实体类型 |
+| 名称                  | 类型  | 是否必填 | 示例值         | 描述      |
+|---------------------|-----|------|-------------|---------|
+| **spg_type_name** | str | 是    | DEFAULT.App | SPG实体类型 |
 
-#### 接口
+##### 5.2.5.2 接口
 
-##### set_operator
+###### set_operator
 
 设置抽取算子，取已发布的最新版本的算子。
 
-| 参数        | 类型           | 是否必填 | 示例值            | 描述                                            |
-| ----------- | -------------- | -------- | ----------------- | ----------------------------------------------- |
-| **op_name** | str            | 是       | "DemoExtractOp"   | 抽取算子名                                      |
-| **params**  | Dict[str, str] | 否       | {"hit_num": "10"} | 抽取算子参数，在算子内可以通过self.params获取。 |
+| 参数          | 类型             | 是否必填 | 示例值               | 描述                            |
+|-------------|----------------|------|-------------------|-------------------------------|
+| **op_name** | str            | 是    | "DemoExtractOp"   | 抽取算子名                         |
+| **params**  | Dict[str, str] | 否    | {"hit_num": "10"} | 抽取算子参数，在算子内可以通过self.params获取。 |
 
-### SinkToKgComponent（图谱写入）
+#### 5.2.6 SinkToKgComponent（图谱写入）
 
-#### 参数
+##### 5.2.6.1 参数
 
 无
 
-#### 接口
+##### 5.2.6.2 接口
 
-##### 无
+无
 
-#### 示例
+##### 5.2.6.3 示例
 
 ```python
 sink = SinkToKgComponent()
 ```
 
-## 算子
+### 5.3 算子
 
 `BaseOp`是所有算子的基类，`KnowledgeExtractOp/EntityLinkOp/PropertyNormalizeOp/EntityFuseOp` 继承自`BaseOp`
 ，用于区分不同类型的算子。
@@ -839,40 +858,40 @@ sink = SinkToKgComponent()
 的四个子类的类，都会被knext识别为一个算子。算子可以通过`knext operator publish [op_name]`命令发布到服务端。
 所有算子**必须**实现`eval`方法，用来定义算子的执行逻辑。
 
-#### 参数
+#### 5.3.1 参数
 
-| 参数        | 类型 | 是否必填 | 示例值            | 描述                                                             |
-| ----------- | ---- | -------- | ----------------- | ---------------------------------------------------------------- |
-| **desc**    | str  | 否       | "证书链指算子"    | 算子描述【默认为空】                                             |
-| **bind_to** | str  | 否       | "RiskMining.Cert" | 算子绑定的实体类型名，抽取类型算子不支持绑定实体类型【默认为空】 |
+| 参数          | 类型  | 是否必填 | 示例值               | 描述                               |
+|-------------|-----|------|-------------------|----------------------------------|
+| **desc**    | str | 否    | "证书链指算子"          | 算子描述【默认为空】                       |
+| **bind_to** | str | 否    | "RiskMining.Cert" | 算子绑定的实体类型名，抽取类型算子不支持绑定实体类型【默认为空】 |
 
-#### 接口
+#### 5.3.2 接口
 
-##### **init**(self, params: Dict[str, str] = None)
+##### 5.3.2.1 __init__(self, params: Dict[str, str] = None)
 
 所有算子的初始化方法，仅在加工任务提交后的初始化阶段执行一次。不同算子类型继承当前`__init__`方法。
 若自定义算子内不复写初始化方法，默认执行`self.params=params`。当组件通过`set_operator`方法设置了算子参数`params`
 时，在算子内可以通过`self.params[key]`获取到对应参数的`value`，从而实现同个算子针对不同加工任务的复用。
 当自定义算子内需要初始化一些外部Client，例如`SearchClient`，可以复写`__init__`方法，避免Client的重复初始化。
 
-##### eval(self, \*args)
+##### 5.3.2.2 eval(self, *args)
 
 所有自定义算子都需要复写`eval` 方法，用来实现你的算子执行逻辑。
 不同算子类型的`eval`方法，输入参数和输出结果类型也存在不同。
 
-#### 数据结构
+#### 5.3.3 数据结构
 
-##### Vertex
+##### 5.3.3.1 Vertex
 
 将算子输入以及输出的实体信息（包括实体id、实体类型、实体属性）封装在`Vertex`类型中。
 
-| 名称            | 类型           | 是否必填 | 示例值                                                                  | 描述     |
-| --------------- | -------------- | -------- | ----------------------------------------------------------------------- | -------- |
-| **biz_id**      | str            | 是       | "1"                                                                     | 实体id   |
-| **vertex_type** | str            | 否       | DEFAULT.Cert                                                            | 实体类型 |
-| **properties**  | Dict[str, str] | 否       | {"id": "1", "name": "1", "certNum": "68802adde35845d76eeb172ff8ea6825"} | 实体属性 |
+| 名称              | 类型             | 是否必填 | 示例值                                                                      | 描述   |
+|-----------------|----------------|------|--------------------------------------------------------------------------|------|
+| **biz_id**      | str            | 否    | "1"                                                                      | 实体id |
+| **vertex_type** | str            | 否    | DEFAULT.Cert                                                             | 实体类型 |
+| **properties**  | Dict[str, str] | 是    | {"id": "1", "name": "1", "certNum": "68802adde35845d76eeb172ff8ea6825"} | 实体属性 |
 
-#### 示例
+#### 5.3.4 示例
 
 ```python
 class CertLinkerOperator(EntityLinkOp):
@@ -894,23 +913,24 @@ class CertLinkerOperator(EntityLinkOp):
 参数绑定算子新版本到`DEFAULT.Cert`实体schema上。
 在执行包含映射到`DEAFAULT.Cert`类型属性的加工任务时，会在映射后执行eval方法进行链指拉边。
 
-### KnowledgeExtractOp（知识抽取算子）
+
+#### 5.3.5 KnowledgeExtractOp（知识抽取算子）
 
 所有知识抽取算子需要继承`KnowledgeExtractOp`，其功能是从非结构化数据中抽取结构化数据，也可进行数据的预处理。
 
-#### 接口
+##### 5.3.5.1 接口
 
-##### eval(self, record: Vertex) -> List[Vertex]:
+###### eval(self, record: Dict[str, str]) -> List[Vertex]:
 
-### PropertyNormalizeOp（属性标化算子）
+#### 5.3.6 PropertyNormalizeOp（属性标化算子）
 
 属性标化算子一般绑定在概念类型`ConceptType`上，其功能是将概念属性值标准化后，进行概念挂载。
 `knext.api`提供属性标化算子基础类`PropertyNormalizeOp`，可通过继承并实现`eval`方法，来完成自定义标化算子的开发。knext
 pipeline支持在知识映射组件的实体属性上配置链指算子，在当前任务中覆盖schema上已绑定的算子。
 
-#### 接口
+##### 5.3.6.1 接口
 
-##### eval(self, property: str, record: Vertex) -> str:
+###### eval(self, property: str, record: Vertex) -> str:
 
 输入：
 
@@ -921,15 +941,14 @@ pipeline支持在知识映射组件的实体属性上配置链指算子，在当
 
 - 标化后的属性值
 
-#### 示例
 
-### EntityLinkOp（实体链指算子）
+#### 5.3.7 EntityLinkOp（实体链指算子）
 
 实体链指算子一般绑定在实体类型`EntityType`或事件类型`EventType`上，其功能是根据实体属性值，召回链指目标，并在源实体和目标实体之间生成关系。
 实体链指算子也可用于实体融合去重中，在算子中召回出同类型的实体，根据规则或执行融合算子，进行属性融合或实体去重。
 `knext.api`提供实体链指算子基础类`EntityLinkOp`，可通过继承并实现`eval`方法，来完成链指算子的开发。
 
-#### 接口
+#####  5.3.7.1 接口
 
 ##### eval(self, property: str, record: Vertex) -> List[Vertex]:
 
@@ -942,6 +961,6 @@ pipeline支持在知识映射组件的实体属性上配置链指算子，在当
 
 - 链指出的实体列表
 
-### EntityFuseOp（实体融合算子）
+####  5.3.8 EntityFuseOp（实体融合算子）
 
 暂未支持
