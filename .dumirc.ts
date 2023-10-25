@@ -2,42 +2,14 @@ import { defineConfig } from 'dumi';
 
 export default defineConfig({
   themeConfig: {
+    prefersColor: {
+      default: 'auto',
+      switch: false,
+    },
     socialLinks: {
       github: 'https://github.com/OpenSPG/openspg',
     },
     footer: false,
-    // nav: {
-    //   'zh-CN': [
-    //     { title: '快速开始', link: '/Guide' },
-    //     {
-    //       title: '案例',
-    //       link: '/example/enterprise-supply-chain/introduce_quickstart',
-    //     },
-    //   ],
-    //   'en-US': [
-    //     { title: 'Quick Start', link: '/en-US/Guide' },
-    //     {
-    //       title: 'Case Study',
-    //       link: '/en-US/example/enterprise-supply-chain/introduce_quickstart',
-    //     },
-    //   ],
-    // },
-    // sidebar: {
-    //   '/example': [
-    //     {
-    //       children: [
-    //         {
-    //           title: 'A',
-    //           link: '/example/enterprise-supply-chain/introduce_quickstart',
-    //         },
-    //         {
-    //           title: 'B',
-    //           link: '/example/medical/medical_introduce_quickstart',
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   },
   favicons: [
     'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*JiTDRaNWTQkAAAAAAAAAAAAADtmcAQ/original',
