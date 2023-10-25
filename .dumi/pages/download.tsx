@@ -132,10 +132,12 @@ function Download() {
                 </Col>
               </Row>
             ) : (
-              intl(
-                '等待问卷填写完成',
-                'Waiting for the questionnaire to be completed',
-              )
+              <Col>
+                {intl(
+                  '等待问卷填写完成',
+                  'Waiting for the questionnaire to be completed',
+                )}
+              </Col>
             ),
             icon: waitingForResult ? <LoadingOutlined /> : null,
           },
