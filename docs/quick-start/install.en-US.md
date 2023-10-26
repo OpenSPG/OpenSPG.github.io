@@ -114,7 +114,7 @@ Once the server and client are installed and started, we can begin creating our 
 
 **Related documentation**：
 
-1. [KNext command tool and SDK Tutorial](doc/core/knext_tutorial_en.md)
-2. [Enterprise Supply Chain Knowledge Graph](./doc/example/EnterpriseSupplyChain/enterprise_supply_chain_introduce_quickstart_en.md)
-3. [Risk Mining Knowledge Graph](./doc/example/RiskMining/risk_mining_introduce_quickstart_en.md)
-4. [Medical Knowledge Graph](./doc/example/Medical/medical_introduce_quickstart_en.md)
+1. [KNext command tool and SDK Tutorial](../tutorial/knext/index.en-US.md)
+2. [Enterprise Supply Chain Knowledge Graph](../example/enterprise-supply-chain/index.en-US.md)
+3. [Risk Mining Knowledge Graph](../example/risk-mining/index.en-US.md)
+4. [Medical Knowledge Graph](../example/medical/index.en-US.md)
