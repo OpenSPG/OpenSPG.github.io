@@ -295,7 +295,6 @@ const MainPage = () => {
   const locale = useLocale();
 
   const [prefersColor] = usePrefersColor();
-  console.log(locale);
 
   const push = (link: string) => {
     // @ts-ignore
