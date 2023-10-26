@@ -44,7 +44,5 @@ export default defineConfig({
     { id: 'en-US', name: 'English' },
   ],
   logo: 'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*D5uYQpLS8dsAAAAAAAAAAAAADtmcAQ/original',
-  legacy: {},
-  targets: { ie: 10 },
   ...(process.env.NODE_ENV === 'production' ? ProductionConfig : {}),
 });
