@@ -14,11 +14,13 @@
   }
 }
 
-[data-prefers-color='light'] .dumi-default-header {
+[data-prefers-color='light']
+  .dumi-default-header:not([data-mobile-active='true']) {
   background-color: rgba(247, 249, 251, 0.6) !important;
 }
 
-[data-prefers-color='dark'] .dumi-default-header {
+[data-prefers-color='dark']
+  .dumi-default-header:not([data-mobile-active='true']) {
   background-color: rgba(rgba(5, 7, 9, 0.85)) !important;
 }
 

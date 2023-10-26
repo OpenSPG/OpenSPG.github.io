@@ -1,13 +1,19 @@
 import { ConfigProvider, Result, theme, Modal } from 'antd';
 import { useOutlet, usePrefersColor } from 'dumi';
-import React, { useEffect } from 'react';
-import { isMobile } from 'react-device-detect';
+import React, { useState, useEffect } from 'react';
+import { useIntl } from '../../hooks/useIntl';
+import { isMobile as isMobileDevice } from 'react-device-detect';
 
 const GlobalLayout: React.FC = () => {
+  const { intl } = useIntl();
   const outlet = useOutlet();
   const [color] = usePrefersColor();
-  const [isBtnVisible, setIsBtnVisible] = React.useState(true);
-  const isCompact = isMobile && isBtnVisible;
+  const [screenWidth, setScreenWidth] = useState(window.screen.availWidth);
+  const [isBtnVisible, setIsBtnVisible] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
+  const isMobileScreen = screenWidth < 900;
+  const isMobile = isMobileDevice && isMobileScreen;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -20,24 +26,33 @@ const GlobalLayout: React.FC = () => {
           }
         });
       },
-      {
-        threshold: 0.5,
-      },
+      { threshold: 0.5 },
     );
+
+    const handleResize = () => {
+      setScreenWidth(window.screen.availWidth);
+    };
 
     const element = document.getElementsByClassName(
       'dumi-default-header-menu-btn',
     )?.[0];
     if (element) {
-      observer.observe(element);
+      setTimeout(() => {
+        observer.observe(element);
+      }, 1000);
     }
 
+    window.addEventListener('resize', handleResize);
+
     return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
+      if (element) observer.unobserve(element);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (isMobile) setShowModal(!isBtnVisible);
+  }, [isMobile, isBtnVisible]);
 
   return (
     <ConfigProvider
@@ -47,16 +62,18 @@ const GlobalLayout: React.FC = () => {
           color === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      <Modal open={false} footer={null} closeIcon={false}>
+      <Modal
+        open={showModal}
+        footer={null}
+        onCancel={() => setShowModal(false)}
+      >
         <Result
-          status="error"
-          title={'不兼容的浏览器\nUnsupported browser!'}
-          subTitle={
-            <>
-              <div>请更换浏览器访问</div>
-              <div>Please change your browser</div>
-            </>
-          }
+          status="warning"
+          title={intl('兼容性报告', 'Compatibility report')}
+          subTitle={intl(
+            '你的浏览器可能无法完整显示内容，请尝试更换浏览器访问。你仍可在关闭此窗口后继续访问，但可能会影响阅读体验。',
+            'Your browser may not be able to display the full content. Please try to change your browser. You can still continue to access after closing this window, but it may affect the reading experience.',
+          )}
         />
       </Modal>
       {outlet}
