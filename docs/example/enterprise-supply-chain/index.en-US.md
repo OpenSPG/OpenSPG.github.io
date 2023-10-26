@@ -1,6 +1,9 @@
 ---
 title: Enterprise Supply Chain
-order: 1
+nav:
+  second:
+    title: Enterprise Supply Chain
+    order: 2
 ---
 
 ## 1 Background
@@ -22,7 +25,6 @@ Concept knowledge maintains industry chain-related data, including hierarchical 
 ![Inductive Deduction of Industrial Chain Events](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*X2TES7hf9ycAAAAAAAAAAAAADtmcAQ/original)
 
 <center style="font-size:14px;color:#c0c0c0;text-decoration:underline">Figure 2：Inductive Deduction of Industrial Chain Events  </center>
-
 
 Within the industrial chain, categories of product and company events are established. These categories are a
 combination of indicators and trends. For example, an increase in price consists of the indicator "price" and the trend "upward". Causal knowledge sets the events of a company's profit decrease and cost increase due to a rise in product prices. When a specific event occurs, such as a significant increase in rubber prices, it is categorized under the event of a price increase. As per the causal knowledge, a price increase in a product leads to two event types: a decrease in company profits and an increase in company costs. Consequently, new events are generated:"Triangle** Tire Company cost increase" and "Triangle** Tire Company profit decrease".
@@ -103,9 +105,9 @@ knext reasoner query --dsl "
 MATCH
     (s:SupplyChain.Company)
 RETURN
-    s.id, s.fundTrans1Month, s.fundTrans3Month, 
-    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn, 
-    s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month, 
+    s.id, s.fundTrans1Month, s.fundTrans3Month,
+    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn,
+    s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month,
     s.cashflowDiff6Month
 "
 ```

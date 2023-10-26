@@ -1,6 +1,9 @@
 ---
 title: SPG知识建模
-order: 2
+nav:
+  second:
+    title: SPG知识建模
+    order: 2
 ---
 
 ## 1 Schema类型
@@ -24,26 +27,26 @@ order: 2
 以学校举例，实体类型的属性可以有如下：
 
 ```yaml
-enName(英文名):      Text
-shortName(简称):     Text
-founder(创办人):      Person
-foundDate(创立日期):  STD.Date
-category(类别):      TaxonomySchool
-address(地址):       Text
+enName(英文名): Text
+shortName(简称): Text
+founder(创办人): Person
+foundDate(创立日期): STD.Date
+category(类别): TaxonomySchool
+address(地址): Text
 ```
 
 那学校实体类型的实例可以是：
 
 ```json
 {
-    "id": "zjdx",
-    "name": "浙江大学",
-    "enName": "Zhejiang University",
-    "shortName": "浙大、ZJU",
-    "founder": "林启",
-    "foundDate": "18970521",
-    "category": "公立大学",
-    "address": "西溪校区：杭州市西湖区天目山路148号"
+  "id": "zjdx",
+  "name": "浙江大学",
+  "enName": "Zhejiang University",
+  "shortName": "浙大、ZJU",
+  "founder": "林启",
+  "foundDate": "18970521",
+  "category": "公立大学",
+  "address": "西溪校区：杭州市西湖区天目山路148号"
 }
 ```
 
@@ -56,24 +59,24 @@ address(地址):       Text
 以企业事件类型举例，其属性可以有如下：
 
 ```yaml
-subject(主体):   Company
-object(客体):    Text
-time(时间):      STD.Date
-location(地点):  Text
-behavior(行为):  Behavior
+subject(主体): Company
+object(客体): Text
+time(时间): STD.Date
+location(地点): Text
+behavior(行为): Behavior
 ```
 
 那学校实体类型的实例可以是：
 
 ```json
 {
-    "id": "2023100820394930",
-    "name": "XX公司在10月28日在深交所挂牌上市",
-    "subject": "XX公司",
-    "object": "深交所",
-    "time": "20231028",
-    "location": "深交所",
-    "behavior": "上市"
+  "id": "2023100820394930",
+  "name": "XX公司在10月28日在深交所挂牌上市",
+  "subject": "XX公司",
+  "object": "深交所",
+  "time": "20231028",
+  "location": "深交所",
+  "behavior": "上市"
 }
 ```
 
@@ -122,8 +125,6 @@ behavior(行为):  Behavior
 - IND: 归纳关系(Induction)，是指从一类有共同特征的实体中得出对这些实体概括性的概念，这种个体和概念之间的关系就是归纳关系。目前可用的谓词有belongTo，其他谓词尚待扩展。
 - INC: 包含关系(Inclusion)，表达部分与整体的关系。目前可用的谓词有isPartOf，其他谓词尚待扩展。
 
-
-
 ## 2 声明式Schema
 
 在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](../knext/index.md)）。
@@ -142,7 +143,7 @@ NotNull, MultiValue, Enum, Regular
 
 > -> 用于表达类型的继承关系，A -> B
 >
-> STD.*表示以STD.开头的都是预留关键字，作标准类型名称
+> STD.\*表示以STD.开头的都是预留关键字，作标准类型名称
 
 ### 2.2 基础句法
 
@@ -158,7 +159,7 @@ NotNull, MultiValue, Enum, Regular
   - P为要继承自的父类型
 - **namespace A**
   - A表示项目前缀，在Schema文件的第一行必须出现。项目前缀会在Schema提交的时候自动拼接到实体类型名称的前面
-- **[[ ... ]]**
+- **[[...]]**
   - 规则脚本的定界符，仅用于rule的定义，类似于Python的"""用法
 
 声明式Schema脚本采用逐行解析的方式，定义上要遵循顺序原则，即父类型要在子类型之前定义、属性上使用的类型也需要在其所属类型定义之前先定义好。
@@ -260,7 +261,7 @@ Company(公司): EntityType
             # 这里定义关系的谓词逻辑，使用 [[ 和 ]] 作为逻辑规则的定界符
             rule: [[
                Define (s:Comapny)-[p:risk]->(o:Company) {
-                    ... ...                                  
+                    ... ...
                }
             ]]
 ```
@@ -306,16 +307,16 @@ Disease(疾病): EntityType
 
         commonSymptom(常见症状): Symptom
             constraint: MultiValue
-            
+
         applicableDrug(适用药品): Drug
             constraint: MultiValue
-            
+
         department(就诊科室): HospitalDepartment
             constraint: MultiValue
-            
+
         diseaseSite(发病部位): BodyPart
             constraint: MultiValue
-            
+
     relations:
         abnormal(异常指征): Indicator
             properties:
@@ -393,13 +394,14 @@ class Medical:
 ```
 
 用户使用的时候，代码如此写：
+
 > 需要先import项目schema类
 
 ```python
 from knext.examples.medical.schema.medical_schema_helper import Medical
 
 if __name__ == '__main__':
-    
+
     disease_name = Medical.Disease.name
     ... ...
     common_symptom = Medical.Disease.commomSymptom
@@ -412,7 +414,7 @@ if __name__ == '__main__':
         .add_field("name", Medical.Disease.name) \
         .add_field("commonSymptom", Medical.Disease.commonSymptom) \
         .add_field("applicableDrug", Medical.Disease.applicableDrug) \
-        .add_field("complication", Medical.Disease.complication)        
+        .add_field("complication", Medical.Disease.complication)
 ```
 
 ## 4 通过python API创建schema

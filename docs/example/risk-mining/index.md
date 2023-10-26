@@ -1,6 +1,9 @@
 ---
 title: 黑产挖掘
-order: 3
+nav:
+  second:
+    title: 黑产挖掘
+    order: 1
 ---
 
 ## 黑产挖掘图谱
@@ -66,7 +69,6 @@ knext reasoner query --dsl "${ql}"
 
 ![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*uKcjRqTdy7cAAAAAAAAAAAAADtmcAQ/original)
 
-
 电话号码：标准属性 vs 文本属性。
 
 编辑dsl_task.txt，输入如下内容：
@@ -115,7 +117,7 @@ Define (s:Person)-[p:developed]->(o:App) {
         (s)-[:hasDevice]->(d:Device)-[:install]->(o)
     }
     Constraint {
-        deviceNum = group(s,o).count(d)    
+        deviceNum = group(s,o).count(d)
         R1("设备超过5"): deviceNum > 5
     }
 }

@@ -1,6 +1,9 @@
 ---
-title: KNext command line tool and SDK tutorial
-order: 1
+title: KNext Command Line Tool
+nav:
+  second:
+    title: KNext Command Line Tool
+    order: 1
 ---
 
 This article will introduce the usage of KNext, the Python SDK in OpenSPG, including both the command line tool and the programmable SDK.
@@ -120,6 +123,7 @@ class DemoExtractOp(KnowledgeExtractOp):
 ```
 
 - A DSL query statement, declared in `reasoner/demo.dsl`, used to query all `Prj.Demo` entities.
+
 ```
 MATCH (s:Prj.Demo)
 RETURN s.id, s.demoProperty
@@ -260,7 +264,7 @@ Commands:
 
 ```bash
 knext project create [--help]
-                     [--name name] 
+                     [--name name]
                      [--namespace namespace]
                      [--desc desc]
                      [--prj_path prj_path]
@@ -377,6 +381,7 @@ knext schema reg_concept_rule [--help]
 Example:
 
 schema/concept.rule
+
 ```
 namespace DEFAULT
 
@@ -388,6 +393,7 @@ namespace DEFAULT
 ```
 
 Command:
+
 ```bash
 knext schema reg_concept_rule --file schema/concept.rule
 ```
@@ -427,6 +433,7 @@ knext operator publish [OP_NAMES]
 Example:
 
 builder/operator/demo_extract_op.py
+
 ```python
 ...
 
@@ -438,6 +445,7 @@ class DemoExtractOp(KnowledgeExtractOp):
 ```
 
 Command:
+
 ```bash
 knext operator publish DemoExtractOp
 ```
@@ -487,6 +495,7 @@ knext builder submit [JOB_NAMES]
 Example:
 
 builder/job/demo.py
+
 ```python
 ...
 
@@ -498,6 +507,7 @@ class Demo(BuilderJob):
 ```
 
 Command:
+
 ```bash
 knext builder submit Demo
 ```
@@ -536,8 +546,10 @@ Commands:
 ```
 
 #### 3.6.1 KGDSL query
+
 Submit a KGDSL query job and generate result synchronously.
 If the query job takes more than 3 minutes, an exception will be thrown.
+
 ```bash
 knext reasoner query [--help]
                      [--file file]
@@ -550,12 +562,14 @@ knext reasoner query [--help]
 Example:
 
 reasoner/demo.dsl:
+
 ```bash
 MATCH (s:Prj.Demo)
 RETURN s.id, s.demoProperty
 ```
 
 Command:
+
 ```bash
 knext reasoner query --file reasoner/demo.dsl
 ```
@@ -568,9 +582,10 @@ Result：
 |     00 | demo             |
 ```
 
-
 #### 3.6.2 Submit KGDSL job
+
 Submit KGDSL query job and generate result asynchronously.
+
 ```bash
 knext reasoner submit [--help]
                       [--file file]
@@ -589,7 +604,6 @@ knext reasoner get [--help]
 
 - [Required] --id Query the job by its ID (returned after successfully submitting the job). This will return a single job instance.
 
-
 ## 4 Default directory structure of the project
 
 ```
@@ -602,8 +616,8 @@ knext reasoner get [--help]
     │   |   ├── demo_extract_op.py
     │   │   └── ...
     │   └── job # Building job directory
-    │       ├── demo1.py 
-    │       ├── demo2.py 
+    │       ├── demo1.py
+    │       ├── demo2.py
     │       ├── data # Data directory
     │       │   ├── Demo1.csv
     │       │   ├── Demo2.csv
@@ -615,13 +629,13 @@ knext reasoner get [--help]
     ├── reasoner # reasoning job
     │   ├── demo.dsl
     │   └── result
-    │       ├── spgreasoner_job_1_result.csv 
-    │       ├── spgreasoner_job_2_result.csv 
+    │       ├── spgreasoner_job_1_result.csv
+    │       ├── spgreasoner_job_2_result.csv
     │       └── ...
     ├── schema # Schema definition
-    │   ├── riskmining.schema 
-    │   ├── riskmining_schema_helper.py 
-    │   └── concept.rule 
+    │   ├── riskmining.schema
+    │   ├── riskmining_schema_helper.py
+    │   └── concept.rule
     ├── README.md
     └── .knext.cfg
 ```
@@ -647,27 +661,26 @@ reasoner_dir = reasoner
 reasoner_result_dir = reasoner/result
 ```
 
-- `project_name`  The name of the project, specified when creating the project using the [--name] parameter. It cannot be modified.
-- `description`   The description of the project, specified when creating the project using the [--desc] parameter.
-- `project_id`    The project ID, automatically assigned when creating the project. If using the `knext project create [--prj_pth]` command, a new ID will be generated and replace the original one.
-- `namespace`     The prefix for project schemas, specified when creating the project using the [--namespace] parameter. It cannot be modified.
-- `project_dir`   The root directory of the project, defaulting to `namespace.lower()` when creating the project. If the folder already exists, this configuration needs to be modified.
-- `schema_dir`    The directory for schemas, defaulting to `schema` when creating the project.
-- `schema_file`   The file name for the schema declaration, defaulting to `${namespace.lower()}.schema` when creating the project. If the file already exists, this configuration needs to be modified.
-- `builder_dir`   The directory for building jobs, defaulting to `builder` when creating the project. If the directory changes, this configuration needs to be modified.
-- `builder_operator_dir`   The directory for operators, defaulting to `builder/operator` when creating the project. If the directory changes, this configuration needs to be modified.
-- `builder_record_dir`     The directory for storing records of building jobs, defaulting to `builder/record` when creating the project. If the directory changes, this configuration needs to be modified.
-- `builder_job_dir`        The directory for jobs, defaulting to `builder/job` when creating the project. If the directory changes, this configuration needs to be modified.
-- `builder_model_dir`      The directory for algorithm models, defaulting to `builder/model` when creating the project. If the directory changes, this configuration needs to be modified.
-- `reasoner_dir`           The directory for reasoning jobs, defaulting to `reasoner` when creating the project. If the directory changes, this configuration needs to be modified.
-- `reasoner_result_dir`    The directory for storing rule inference results, defaulting to `reasoner/result` when creating the project. If the directory changes, this configuration needs to be modified.
-- `builder`    The directory used to store all the knowledge building jobs, source data dependencies, self-defined operators, algorithm models, and error records.
-- `reasoner`   The directory used to store KGDSL syntax files and execution results.
+- `project_name` The name of the project, specified when creating the project using the [--name] parameter. It cannot be modified.
+- `description` The description of the project, specified when creating the project using the [--desc] parameter.
+- `project_id` The project ID, automatically assigned when creating the project. If using the `knext project create [--prj_pth]` command, a new ID will be generated and replace the original one.
+- `namespace` The prefix for project schemas, specified when creating the project using the [--namespace] parameter. It cannot be modified.
+- `project_dir` The root directory of the project, defaulting to `namespace.lower()` when creating the project. If the folder already exists, this configuration needs to be modified.
+- `schema_dir` The directory for schemas, defaulting to `schema` when creating the project.
+- `schema_file` The file name for the schema declaration, defaulting to `${namespace.lower()}.schema` when creating the project. If the file already exists, this configuration needs to be modified.
+- `builder_dir` The directory for building jobs, defaulting to `builder` when creating the project. If the directory changes, this configuration needs to be modified.
+- `builder_operator_dir` The directory for operators, defaulting to `builder/operator` when creating the project. If the directory changes, this configuration needs to be modified.
+- `builder_record_dir` The directory for storing records of building jobs, defaulting to `builder/record` when creating the project. If the directory changes, this configuration needs to be modified.
+- `builder_job_dir` The directory for jobs, defaulting to `builder/job` when creating the project. If the directory changes, this configuration needs to be modified.
+- `builder_model_dir` The directory for algorithm models, defaulting to `builder/model` when creating the project. If the directory changes, this configuration needs to be modified.
+- `reasoner_dir` The directory for reasoning jobs, defaulting to `reasoner` when creating the project. If the directory changes, this configuration needs to be modified.
+- `reasoner_result_dir` The directory for storing rule inference results, defaulting to `reasoner/result` when creating the project. If the directory changes, this configuration needs to be modified.
+- `builder` The directory used to store all the knowledge building jobs, source data dependencies, self-defined operators, algorithm models, and error records.
+- `reasoner` The directory used to store KGDSL syntax files and execution results.
   - KGDSL syntax files have the `.dsl` extension and are used to store KGDSL query statements.
-- `schema`     The directory used to store the schema declarations and concept rules of the project.
+- `schema` The directory used to store the schema declarations and concept rules of the project.
   - Project schema declaration files have the `.schema` extension. They are parsed and committed to the server using the `knext schema commit` command. Each project can have only one unique schema declaration file.
   - Concept rules have the `.rule` extension and can be registered to corresponding concepts using the `knext schema reg_concept_rule [--file]` command.
-
 
 ## 5 python SDK
 
@@ -680,7 +693,7 @@ All building jobs must implement the `build` method, which defines the execution
 #### 5.1.1 Parameters
 
 | Parameter          | Type              | Required or not | Example                  | Description                                                                                                           |
-|--------------------|-------------------|-----------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| ------------------ | ----------------- | --------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------- |
 | **parallelism**    | int               | no              | 1                        | Concurrency level for executing building jobs [default is 1].                                                         |
 | **operation_type** | OperationTypeEnum | no              | OperationTypeEnum.Create | Operation type for the building job [default is Create, which means data is written in an incremental update manner]. |
 | **lead_to**        | bool              | no              | True                     | Whether to execute CAU(causality) [default is False].                                                                 |
@@ -714,11 +727,11 @@ CSVDataSource component, used to upload local CSV files and read data line by li
 
 ##### 5.2.1.1 Parameters
 
-| Parameter | Type | Required or not | Example | Description |
-|----------------|-----------|------|--------------------------------|---------------------------------------|
-| **local_path** | str       | yes | './builder/job/data/App.csv'  | path of the data file  |
-| **columns**    | list[str] | yes | ['id', 'riskMark', 'useCert'] | the names of the input columns |
-| **start_row**  | int       | yes | 2                              | Starting row number for data reading [if you want to start reading from the first row of a CSV, then start_row=1] |
+| Parameter      | Type      | Required or not | Example                       | Description                                                                                                       |
+| -------------- | --------- | --------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **local_path** | str       | yes             | './builder/job/data/App.csv'  | path of the data file                                                                                             |
+| **columns**    | list[str] | yes             | ['id', 'riskMark', 'useCert'] | the names of the input columns                                                                                    |
+| **start_row**  | int       | yes             | 2                             | Starting row number for data reading [if you want to start reading from the first row of a CSV, then start_row=1] |
 
 ##### 5.2.1.2 Interface
 
@@ -730,9 +743,9 @@ Convert unstructured data into structured knowledge. The Extraction component mu
 
 ##### 5.2.2.1 Parameters
 
-| Parameter | Type | Required or not | Example | Description |
-|-------------------|-----------|------|--------------------------------|------|
-| **output_fields** | List[str] | yes    | ['id', 'riskMark', 'useCert'] | output fields |
+| Parameter         | Type      | Required or not | Example                       | Description   |
+| ----------------- | --------- | --------------- | ----------------------------- | ------------- |
+| **output_fields** | List[str] | yes             | ['id', 'riskMark', 'useCert'] | output fields |
 
 ##### 5.2.2.2 Interface
 
@@ -740,10 +753,10 @@ Convert unstructured data into structured knowledge. The Extraction component mu
 
 设置抽取算子，取已发布的最新版本的算子。
 
-| Parameter | Type | Required or not | Example | Description |
-|-------------|----------------|------|----------------------------------|-------------------------------|
-| **op_name** | str            | yes   | Operator("DemoKnowledgeExtract") | the name of the extraction operator                         |
-| **params**  | Dict[str, str] | no   | {"": ""}                         | the parameters of the extraction operator, which can be accessed within the operator using `self.params`|
+| Parameter   | Type           | Required or not | Example                          | Description                                                                                              |
+| ----------- | -------------- | --------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **op_name** | str            | yes             | Operator("DemoKnowledgeExtract") | the name of the extraction operator                                                                      |
+| **params**  | Dict[str, str] | no              | {"": ""}                         | the parameters of the extraction operator, which can be accessed within the operator using `self.params` |
 
 ##### 5.2.2.3 Example
 
@@ -759,9 +772,9 @@ Mapping the non-standard input fields to the properties of the SPG entities (Ent
 
 ##### 5.2.3.1 Parameters
 
-| Parameter | Type | Required or not | Example | Description |
-|---------------------|-----|------|-------------|---------|
-| **spg_type_name** | str | yes    | DEFAULT.App | the name of the SPG type |
+| Parameter         | Type | Required or not | Example     | Description              |
+| ----------------- | ---- | --------------- | ----------- | ------------------------ |
+| **spg_type_name** | str  | yes             | DEFAULT.App | the name of the SPG type |
 
 ##### 5.2.3.2 Interface
 
@@ -769,19 +782,19 @@ Mapping the non-standard input fields to the properties of the SPG entities (Ent
 
 Add mapping relationships between source data fields and SPG properties.
 
-| Parameter | Type | Required or not | Example | Description |
-|------------------|-----|------|----------------------|---------|
-| **source_field** | str | yes    | "useCert"           | the name of source field |
-| **target_field** | str | yes    | DEFAULT.App.useCert | the name of SPG property |
+| Parameter        | Type | Required or not | Example             | Description              |
+| ---------------- | ---- | --------------- | ------------------- | ------------------------ |
+| **source_field** | str  | yes             | "useCert"           | the name of source field |
+| **target_field** | str  | yes             | DEFAULT.App.useCert | the name of SPG property |
 
 ###### add_filter
 
 Add filtering conditions where data that satisfies the condition `column_name=column_value` will undergo mapping. If no filtering conditions are set, all data will undergo mapping.
 
-| Parameter | Type | Required or not | Example | Description |
-|-------------------|-----|------|--------|------|
-| **column_name**  | str | yes    | "type" | the column need to be filtered |
-| **column_value** | str | yes    | "App"  | filter value  |
+| Parameter        | Type | Required or not | Example | Description                    |
+| ---------------- | ---- | --------------- | ------- | ------------------------------ |
+| **column_name**  | str  | yes             | "type"  | the column need to be filtered |
+| **column_value** | str  | yes             | "App"   | filter value                   |
 
 ##### 5.2.3.3 Example
 
@@ -800,11 +813,11 @@ Mapping non-standard input fields to properties of SPG relationships, and mappin
 
 ##### 5.2.4.1 Parameters
 
-| Parameter | Type | Required or not | Example | Description |
-|---------------------|-----|------|----------------------|------|
-| **subject_name**   | str | yes    | DEFAULT.App          | subject type |
-| **predicate_name** | str | yes    | DEFAULT.App.useCert | predicate |
-| **object_name**    | str | yes    | DEFAULT.Cert        | object name |
+| Parameter          | Type | Required or not | Example             | Description  |
+| ------------------ | ---- | --------------- | ------------------- | ------------ |
+| **subject_name**   | str  | yes             | DEFAULT.App         | subject type |
+| **predicate_name** | str  | yes             | DEFAULT.App.useCert | predicate    |
+| **object_name**    | str  | yes             | DEFAULT.Cert        | object name  |
 
 ##### 5.2.4.2 Interface
 
@@ -829,9 +842,9 @@ The SPG Mapping component must set a knowledge extraction operator.
 
 ##### 5.2.5.1 Parameters
 
-| Parameter | Type | Required or not | Example | Description |
-|---------------------|-----|------|-------------|---------|
-| **spg_type_name** | str | yes    | DEFAULT.App | SPG type |
+| Parameter         | Type | Required or not | Example     | Description |
+| ----------------- | ---- | --------------- | ----------- | ----------- |
+| **spg_type_name** | str  | yes             | DEFAULT.App | SPG type    |
 
 ##### 5.2.5.2 Interface
 
@@ -839,10 +852,10 @@ The SPG Mapping component must set a knowledge extraction operator.
 
 Set the extraction operator, which is the latest published.
 
-| Parameter | Type | Required or not | Example | Description |
-|-------------|----------------|------|-------------------|-------------------------------|
-| **op_name** | str            | yes    | "DemoExtractOp"   | the name of the operator  |
-| **params**  | Dict[str, str] | no    | {"hit_num": "10"} | The parameters of the extraction operator which can be accessed within the operator using `self.params` |
+| Parameter   | Type           | Required or not | Example           | Description                                                                                             |
+| ----------- | -------------- | --------------- | ----------------- | ------------------------------------------------------------------------------------------------------- |
+| **op_name** | str            | yes             | "DemoExtractOp"   | the name of the operator                                                                                |
+| **params**  | Dict[str, str] | no              | {"hit_num": "10"} | The parameters of the extraction operator which can be accessed within the operator using `self.params` |
 
 #### 5.2.6 SinkToKgComponent
 
@@ -870,14 +883,14 @@ All operators must implement the `eval` method, which defines the execution logi
 
 #### 5.3.1 Parameters
 
-| Parameter | Type | Required or not | Example | Description |
-|-------------|-----|------|-------------------|----------------------------------|
-| **desc**    | str | no    | "The operator for certificate entity linking" | The description of the operator. <br> [Default is empty] |
-| **bind_to** | str | no    | "RiskMining.Cert" | The entity type which is bounded to the operator. <br> The extraction operator does not support binding entity types. <br> [Default is empty] |
+| Parameter   | Type | Required or not | Example                                       | Description                                                                                                                                   |
+| ----------- | ---- | --------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **desc**    | str  | no              | "The operator for certificate entity linking" | The description of the operator. <br> [Default is empty]                                                                                      |
+| **bind_to** | str  | no              | "RiskMining.Cert"                             | The entity type which is bounded to the operator. <br> The extraction operator does not support binding entity types. <br> [Default is empty] |
 
 #### 5.3.2 Interface
 
-##### 5.3.2.1 __init__(self, params: Dict[str, str] = None)
+##### 5.3.2.1 **init**(self, params: Dict[str, str] = None)
 
 The initialization method for the operators, which is executed only once during the initialization stage after the building job is submitted. Different operators inherit the `__init__` method.
 
@@ -885,10 +898,9 @@ If the self-defined operator does not override the initialization method, it wil
 
 If the self-defined operator needs to initialize external clients such as `SearchClient`, you can override the `__init__` method to avoid repeated initialization of the client.
 
-##### 5.3.2.2 eval(self, *args)
+##### 5.3.2.2 eval(self, \*args)
 
 The self-defined operators need to override the `eval` method to implement the execution logic. The `eval` method of different operators may have different input parameters and output result.
-
 
 #### 5.3.3 Data structure
 
@@ -896,10 +908,10 @@ The self-defined operators need to override the `eval` method to implement the e
 
 The input and output entity information (including entity ID, entity type, and entity properties) of the operator is encapsulated in the `Vertex` type.
 
-| Parameter | Type | Required or not | Example | Description |
-|-----------------|----------------|-----------------|--------------------------------------------------------------------------|------|
-| **biz_id**      | str            | no              | "1" | entity ID |
-| **vertex_type** | str            | no              | DEFAULT.Cert | entity type |
+| Parameter       | Type           | Required or not | Example                                                                 | Description       |
+| --------------- | -------------- | --------------- | ----------------------------------------------------------------------- | ----------------- |
+| **biz_id**      | str            | no              | "1"                                                                     | entity ID         |
+| **vertex_type** | str            | no              | DEFAULT.Cert                                                            | entity type       |
 | **properties**  | Dict[str, str] | yes             | {"id": "1", "name": "1", "certNum": "68802adde35845d76eeb172ff8ea6825"} | entity properties |
 
 #### 5.3.4 Example
@@ -924,7 +936,6 @@ Executing the command `knext operator publish CertLinkerOperator` will publish a
 
 When executing a building job of the `DEFAULT.Cert` entity type, the `eval` method will be executed to perform certificate linking.
 
-
 #### 5.3.5 KnowledgeExtractOp
 
 The knowledge extraction operators need to inherit `KnowledgeExtractOp`, which is responsible for extracting structured data from unstructured data and can also perform data preprocessing.
@@ -945,13 +956,12 @@ The `knext.api` provides the base class `PropertyNormalizeOp` for the property n
 
 Input:
 
-- property     The property to be normalized
-- record       The entity instance
+- property The property to be normalized
+- record The entity instance
 
 Output:
 
 - The normalized property
-
 
 #### 5.3.7 EntityLinkOp
 
@@ -961,20 +971,18 @@ The entity linking operators can also be used in entity fusion and deduplication
 
 The `knext.api` provides the base class `EntityLinkOp` for the entity linking operators. You can develop a linking operators by inheriting and implementing the `eval` method.
 
-
 ##### 5.3.7.1 Interface
 
 ###### eval(self, property: str, record: Vertex) -> List[Vertex]:
 
 Input:
 
-- property   The property for linking
-- record     The entity instance
+- property The property for linking
+- record The entity instance
 
 Output:
 
 - The list of entities retrieved from the linking
-
 
 #### 5.3.8 EntityFuseOp
 
