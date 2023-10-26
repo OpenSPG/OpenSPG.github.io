@@ -47,7 +47,7 @@ const GlobalLayout: React.FC = () => {
           color === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      <Modal open={!isCompact} footer={null} closeIcon={false}>
+      <Modal open={false} footer={null} closeIcon={false}>
         <Result
           status="error"
           title={'不兼容的浏览器\nUnsupported browser!'}
