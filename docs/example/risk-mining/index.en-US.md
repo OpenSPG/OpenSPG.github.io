@@ -1,6 +1,9 @@
 ---
 title: Risk Mining
-order: 3
+nav:
+  second:
+    title: Risk Mining
+    order: 1
 ---
 
 ## Risk Mining Knowledge Graph
@@ -66,7 +69,6 @@ knext reasoner query --dsl "${ql}"
 
 ![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*uKcjRqTdy7cAAAAAAAAAAAAADtmcAQ/original)
 
-
 MobilePhone: "standard attribute" compare to "text attribute".
 
 Edit the `dsl_task.txt` file and enter the following query:
@@ -115,7 +117,7 @@ Define (s:Person)-[p:developed]->(o:App) {
         (s)-[:hasDevice]->(d:Device)-[:install]->(o)
     }
     Constraint {
-        deviceNum = group(s,o).count(d)    
+        deviceNum = group(s,o).count(d)
         R1("设备超过5"): deviceNum > 5
     }
 }

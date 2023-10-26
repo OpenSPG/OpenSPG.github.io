@@ -1,6 +1,9 @@
 ---
 title: 医疗领域
-order: 2
+nav:
+  second:
+    title: 医疗领域
+    order: 3
 ---
 
 ## 从文本构建医疗图谱
@@ -53,7 +56,7 @@ knext operator publish DiseaseExtractor
 
 ```shell
 python builder/model/dataset/convert_util.py \
-    --entity_type Medical.Disease \ 
+    --entity_type Medical.Disease \
     --task_type RE \
     --src_path builder/model/dataset/RE/sample.json \
     --tgt_path builder/model/dataset/RE/processed.json \
@@ -63,6 +66,7 @@ python builder/model/dataset/convert_util.py \
 **2、模型微调**
 
 执行以下命令，使用 [p-tuning-v2](https://github.com/THUDM/ChatGLM2-6B/tree/main/ptuning#p-tuning-v2) 对模型参数进行微调
+
 ```shell
 sh builder/model/train.sh
 ```
@@ -70,6 +74,7 @@ sh builder/model/train.sh
 **第三步：部署大模型(ChatGLM2)推理服务**
 
 将p-tuning的结果参数文件覆盖原模型参数文件，并执行以下命令部署模型服务
+
 ```bash
 sh builder/model/deploy.sh
 ```

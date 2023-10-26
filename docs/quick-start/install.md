@@ -114,8 +114,8 @@ services:
 
 **相关文档链接**：
 
-1. [KNext命令行工具和SDK教程](doc/core/knext_tutorial.md)
-2. [企业供应链图谱](./doc/example/EnterpriseSupplyChain/enterprise_supply_chain_introduce_quickstart.md)
-3. [黑产挖掘图谱](./doc/example/RiskMining/risk_mining_introduce_quickstart.md)
-4. [医疗知识图谱](./doc/example/Medical/medical_introduce_quickstart.md)
+1. [KNext命令行工具和SDK教程](../tutorial/knext/index.md)
+2. [企业供应链图谱](../example/enterprise-supply-chain/index.md)
+3. [黑产挖掘图谱](../example/risk-mining/index.md)
+4. [医疗知识图谱](../example/medical/index.md)
 

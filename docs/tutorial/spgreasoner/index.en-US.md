@@ -1,6 +1,9 @@
 ---
-title: SPG-Schema
-order: 2
+title: SPG KGDSL
+nav:
+  second:
+    title: SPG KGDSL
+    order: 3
 ---
 
 Note: KGDSL is case-insensitive.
@@ -10,7 +13,7 @@ Note: KGDSL is case-insensitive.
 ### 1.1 Common Keywords
 
 | kewords                                                 | description                         | scopes                    |
-|---------------------------------------------------------|-------------------------------------|---------------------------|
+| ------------------------------------------------------- | ----------------------------------- | ------------------------- |
 | Define                                                  | keywords for define predicate       | global                    |
 | Structure                                               | Keywords for subgraph description   | global                    |
 | Constraint                                              | Keywords for Constraint description | global                    |
@@ -23,23 +26,23 @@ Note: KGDSL is case-insensitive.
 ### 1.2 Special Keywords
 
 | keywords           | description                              | scopes            |
-|--------------------|------------------------------------------|-------------------|
-| __start__          | Start symbol                             | Structure         |
-| __per_node_limit__ | limit symbol                             | Structure         |
-| __label__          | type of entity or relation               | Constraint/Action |
-| __property_map__   | mapping object for property              | Constraint/Action |
-| __path__           | Obtain paths that satisfy the conditions | Constraint/Action |
-| __id__             | unique id of the entity                  | Constraint/Action |
-| __from__           | source entity id of the relation         | Constraint/Action |
-| __to__             | destination entity id of the relation    | Constraint/Action |
+| ------------------ | ---------------------------------------- | ----------------- |
+| **start**          | Start symbol                             | Structure         |
+| **per_node_limit** | limit symbol                             | Structure         |
+| **label**          | type of entity or relation               | Constraint/Action |
+| **property_map**   | mapping object for property              | Constraint/Action |
+| **path**           | Obtain paths that satisfy the conditions | Constraint/Action |
+| **id**             | unique id of the entity                  | Constraint/Action |
+| **from**           | source entity id of the relation         | Constraint/Action |
+| **to**             | destination entity id of the relation    | Constraint/Action |
 
 ## 2 Data Type
 
 ### 2.1 Basic Data Type
 
 | Data Type | description    | example    |
-|-----------|----------------|------------|
-| int       | integer number | 1，2，3      |
+| --------- | -------------- | ---------- |
+| int       | integer number | 1，2，3    |
 | float     | float number   | 23.11      |
 | string    | string         | "abcdef"   |
 | bool      | boolean        | true/false |
@@ -48,7 +51,7 @@ Note: KGDSL is case-insensitive.
 ### 2.2 Complex Data Type
 
 | Data Type     | description            | example                                                                                                                                   |
-|---------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | list          | array type             | [1,2,3]                                                                                                                                   |
 | multi_version | multi version property | {<br>&nbsp;&nbsp;"20220111":value,<br>&nbsp;&nbsp;"20220112":value,<br>}                                                                  |
 | date          | date type              | /                                                                                                                                         |
@@ -60,16 +63,19 @@ Note: KGDSL is case-insensitive.
 ### 3.1 Expression format
 
 We use a combination of procedural and chaining expressions in our code. <br>
+
 > Chaining approach: It links multiple operations or lines of code together using dot notation (.) to improve code readability. <br>
 > Procedural approach: It describes a computation using multiple lines of code. <br>
 
-The chaining style is particularly suitable for data calculations. For example, consider the expression (1 + 2) * 3 - 4.
+The chaining style is particularly suitable for data calculations. For example, consider the expression (1 + 2) \* 3 - 4.
 If we need to compute it step by step, the procedural approach would be: <br>
+
 > a = 1+2 <br>
-> b = a *3 <br>
+> b = a \*3 <br>
 > d = b -4 <br>
 
 the chaining approach would be:
+
 > add(1,2).multiply(3).subtract(4) <br>
 
 using the chaining style allows us to express a complete computational flow in a single line, making it particularly
@@ -80,10 +86,10 @@ when dealing with data transformations, aggregations, or other data processing t
 ### 3.2 Compute Operators
 
 | Operator | example | description    | note            |
-|----------|---------|----------------|-----------------|
+| -------- | ------- | -------------- | --------------- |
 | +        | a+b     | addition       |                 |
 | -        | a-b     | subtraction    |                 |
-| *        | a*b     | Multiplication |                 |
+| \*       | a\*b    | Multiplication |                 |
 | /        | a/b     | division       | Non divisible 0 |
 | %        | a%b     | modulus        | b can't be 0    |
 | =        | a=b     | Assignment     |                 |
@@ -91,31 +97,31 @@ when dealing with data transformations, aggregations, or other data processing t
 ### 3.3 Logical Operators
 
 | Operator | example               | description   | note                                                            |
-|----------|-----------------------|---------------|-----------------------------------------------------------------|
+| -------- | --------------------- | ------------- | --------------------------------------------------------------- |
 | and      | a and b               | and operation |                                                                 |
 | or       | a or b                | or operation  |                                                                 |
-| not，!    | not a, !a             | not operation | Not can be applied globally, but ! Can only apply in Constraint |
+| not，!   | not a, !a             | not operation | Not can be applied globally, but ! Can only apply in Constraint |
 | xor      | a xor b               | XOR operation |                                                                 |
 | optional | optional (a)-[e]->(b) | optional path | optional can be applied in Structure                            |
 |          |                       |               |                                                                 |
 
 ### 3.4 Compare Opeators
 
-| Operator | example                    | description                           | note                                                                                       |
-|----------|----------------------------|---------------------------------------|--------------------------------------------------------------------------------------------|
-| ==       | a == b                     | equal                                 | can be applied to int/float/string/node/edge,<br>specailly,node/edge will compared with id |
-| >        | a > b                      | bigger                                |                                                                                            |
-| >=       | a>=b                       | bigger or equal                       |                                                                                            |
-| <        | a < b                      | smaller                               |                                                                                            |
-| <=       | a<=b                       | smaller or equal                      |                                                                                            |
-| !=       | a != b                     | not equal                             |                                                                                            |
-| in       | a in [1,2,3]               | contain                               |                                                                                            |
+| Operator | example                    | description                            | note                                                                                       |
+| -------- | -------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------ |
+| ==       | a == b                     | equal                                  | can be applied to int/float/string/node/edge,<br>specailly,node/edge will compared with id |
+| >        | a > b                      | bigger                                 |                                                                                            |
+| >=       | a>=b                       | bigger or equal                        |                                                                                            |
+| <        | a < b                      | smaller                                |                                                                                            |
+| <=       | a<=b                       | smaller or equal                       |                                                                                            |
+| !=       | a != b                     | not equal                              |                                                                                            |
+| in       | a in [1,2,3]               | contain                                |                                                                                            |
 | BT       | a bt [1,5] <br> a bt (1,5) | between operator，a is between 1 and 5 | can be applied to int/float/string                                                         |
 
 ### 3.5 String Operators
 
 | Operator       | example                                                                   | description                                                                             | return value | note                   |
-|----------------|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|--------------|------------------------|
+| -------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------ | ---------------------- |
 | contains       | contains(a,b)                                                             | Determine whether the a string contains the b string                                    | bool         |                        |
 | like, not like | a like b, a not like b                                                    | String matching, % is a wildcard character                                              | bool         | "abc" like "a%" = true |
 | concat, +      | concat(a,b), a+b, <br> concat(a,b,c), a+b+c <br> concat(a,...,f), a+...+f | String concatenation, concat supports n input parameters,<br>can also be used + opeator | string       | not implemented        |
@@ -128,8 +134,8 @@ when dealing with data transformations, aggregations, or other data processing t
 ### 3.6 Type Conversion Operators
 
 | Operator                        | example                                                                                                                                                                                                                                                                                                            | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | note            |
-|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| cast(a, 'int'/'float'/'string') | <br> cast(1,'string')  <br> cast('1', 'int')                                                                                                                                                                                                                                                                       | Convert a base type to another base type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| cast(a, 'int'/'float'/'string') | <br> cast(1,'string') <br> cast('1', 'int')                                                                                                                                                                                                                                                                        | Convert a base type to another base type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |                 |
 | to_date(time_str,format)        | to_date('20220101', 'yyMMdd')                                                                                                                                                                                                                                                                                      | Convert a string to a date type<br>format can be a combination of<br>time types <br> - s: Seconds//Unix timestamp<br> - m: minutes <br> - h: hours <br> - d: day <br> - M: month <br> - y: year <br> Can be combined with various reasonable formats <br> - yyMMdd <br> - yyMMdd hh:mm:ss                                                                                                                                                                                                                                                                                                                                         | not implemented |
 | window(version_express, unit)   | A.cost_every_day <br> A.cost_every_day.window(cur in [1@M,2@M,3@M], M) <br> A.cost_every_day.window(start > -30@d, d) <br> A.cost_every_day.window(end <-15@d, d) <br> A.cost_every_day.window(start > -30@d and end <-15@d, d) <br> A.cost_every_day.window((start > -30@d and end <-15@d) and (start > -7@d), d) | Convert a multi-version attribute to a list for calculation purposes. The **version_express** consists of three keywords: <br> - start: Starting version number <br> - end: Ending version number <br> - cur: Current version number. Expressions can be combined using logical operators like AND/OR.<br>**unit** The unit parameter defines the unit of the attribute, with options: <br> - M: Retrieve data by month <br> - d: Retrieve data by day <br> - seq: Default value, retrieves data by sequence if no unit is specified. <br> Note: If retrieving data by month or day, the data must be aggregated by day or month. | Not implemented |
 
@@ -146,27 +152,27 @@ array = [{age:10},{age:20},{age:30}]
 
 the operations on this array are as follows:
 
-| Operator                        | Example                                                                                                           | Description                                                   | Input type | Output type      | Element Type     |
-|---------------------------------|-------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|------------|------------------|------------------|
-| max(alias_name)                 | array.mark_alias(a).max(a.age) <br>//return 30                                                                    | Get the maximum value                                         | list       | int/float/string | int,float,string |
-| min(alias_name)                 | array.mark_alias(a).min(a.age) <br>//return 10                                                                    | Get the minimum value                                         | list       | int/float/string | int,float,string |
-| sum(alias_name)                 | array.mark_alias(a).sum(a.age) <br>// return 60                                                                   | Accumulate the values in the list                             | list       | int/float        | int,float,string |
-| avg(alias_name)                 | array.mark_alias(a).avg(a.age) <br>// return 20                                                                   | Get the average value                                         | list       | int/float        | int,float,string |
-| count()                         | array.count() <br>//return 3                                                                                      | Get the size of the list                                      | list       | int              | All types        |
-| filter(operator_express)        | array.mark_alias(a).filter(a.age <18) <br>//return [{age:10}]                                                     | Filter the list based on the given expression                 | list       | list             | All types        |
-| sort(alias_name, 'desc'/'asc')  | array.mark_alias(a).sort(a.age, 'desc') <br>//return [{age:30},{age:20},{age:10}]                                 | Sort the list in ascending or descending order                | list       | list             | All types        |
-| slice(start_index,end_index)    | array.mark_alias(a).slice(1,2) <br>//return [{age:10},{age:20}]                                                   | Get a slice of the list from the start index to the end index |            |                  | All types        |
-| get(index)                      | array.mark_alias(a).get(1) <br>//return {age:10}                                                                  | Get the element at the specified index                        |            |                  |                  |
-| str_join(alias_name, tok)       | array.mark_alias(a).str_join(cast(a.age, 'string'), ',') <br>//return "10,20,30"                                  | Join the elements of the list into a string using a delimiter |            |                  | string           |
-| accumlate(operator, alias_name) | array.mark_alias(a).accumlate('*', a.age) //return 6000<br> array.mark_alias(a).accumlate('+', a.age) //return 60 | Perform cumulative calculation on the list using the operator |            |                  | int,float        |
+| Operator                        | Example                                                                                                            | Description                                                   | Input type | Output type      | Element Type     |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | ---------- | ---------------- | ---------------- |
+| max(alias_name)                 | array.mark_alias(a).max(a.age) <br>//return 30                                                                     | Get the maximum value                                         | list       | int/float/string | int,float,string |
+| min(alias_name)                 | array.mark_alias(a).min(a.age) <br>//return 10                                                                     | Get the minimum value                                         | list       | int/float/string | int,float,string |
+| sum(alias_name)                 | array.mark_alias(a).sum(a.age) <br>// return 60                                                                    | Accumulate the values in the list                             | list       | int/float        | int,float,string |
+| avg(alias_name)                 | array.mark_alias(a).avg(a.age) <br>// return 20                                                                    | Get the average value                                         | list       | int/float        | int,float,string |
+| count()                         | array.count() <br>//return 3                                                                                       | Get the size of the list                                      | list       | int              | All types        |
+| filter(operator_express)        | array.mark_alias(a).filter(a.age <18) <br>//return [{age:10}]                                                      | Filter the list based on the given expression                 | list       | list             | All types        |
+| sort(alias_name, 'desc'/'asc')  | array.mark_alias(a).sort(a.age, 'desc') <br>//return [{age:30},{age:20},{age:10}]                                  | Sort the list in ascending or descending order                | list       | list             | All types        |
+| slice(start_index,end_index)    | array.mark_alias(a).slice(1,2) <br>//return [{age:10},{age:20}]                                                    | Get a slice of the list from the start index to the end index |            |                  | All types        |
+| get(index)                      | array.mark_alias(a).get(1) <br>//return {age:10}                                                                   | Get the element at the specified index                        |            |                  |                  |
+| str_join(alias_name, tok)       | array.mark_alias(a).str_join(cast(a.age, 'string'), ',') <br>//return "10,20,30"                                   | Join the elements of the list into a string using a delimiter |            |                  | string           |
+| accumlate(operator, alias_name) | array.mark_alias(a).accumlate('\*', a.age) //return 6000<br> array.mark_alias(a).accumlate('+', a.age) //return 60 | Perform cumulative calculation on the list using the operator |            |                  | int,float        |
 
 ### 3.8 Graph Aggregation Operators
 
 Since there are often aggregation calculations on graphs, we define a graph aggregation operator that can aggregate a
 subgraph according to a specified pattern and perform array calculations based on aliases.
 
-| operator | Example             | Description                                     | Input type | Output type | Note                                                                     |
-|----------|---------------------|-------------------------------------------------|------------|-------------|--------------------------------------------------------------------------|
+| operator | Example              | Description                                     | Input type | Output type | Note                                                                     |
+| -------- | -------------------- | ----------------------------------------------- | ---------- | ----------- | ------------------------------------------------------------------------ |
 | group()  | group(a)，group(a,b) | Aggregate vertices or edges and return an array | Graph      | Array       | Input must be vertices or edges, and the starting point must be included |
 
 Explanation of graph grouping: <br>
@@ -176,8 +182,11 @@ The query subgraph pattern is:<br>
 ![group_a_data](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*oomuTKurb6UAAAAAAAAAAAAADtmcAQ/original) <br>
 
 group operator examples: <br>
+
 #### 3.8.1 example 1：group(A) <br>
+
 The grouping of A in this case would result in the following operations: <br>
+
 > The return type is a list. Since the entire subgraph is grouped into one, the length of the returned list would be 1,
 > and the subsequent results can only output one row of data. <br>
 > group(A).count(e1) // Count the edges of type e1, should return [2] <br>
@@ -186,19 +195,23 @@ The grouping of A in this case would result in the following operations: <br>
 > group(A).count(e2) // Count the edges of type e2, should return [5] because there are 5 edges <br>
 
 #### 3.8.2 example 2：group(A,B) <br>
+
 Suppose we have graph datas: <br>
 ![group_a_b](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*E-ZBT5jz0iUAAAAAAAAAAAAADtmcAQ/original) <br>
+
 > The return type is a list. Since the entire subgraph is grouped into two, the length of the returned list would be 2,
 > and the subsequent results can only output two rows of data. <br>
-> group(A,B).count(A) // return [1,1]  <br>
+> group(A,B).count(A) // return [1,1] <br>
 > group(A,B),count(B) // return [1,1] <br>
 > group(A,B).count(C) // return [3,1] <br>
 > group(A,B).count(e1) // return [1,1] <br>
 > group(A,B).count(e2) // return [3,2] <br>
 
 #### 3.8.3 example 3：group(A,B,C) <br>
+
 Suppose we have graph datas: <br>
 ![group_a_b_c](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*P7rpSZfyFdoAAAAAAAAAAAAADtmcAQ/original) <br>
+
 > The return type is a list. Since the entire subgraph is grouped into four, the length of the returned list would be 4,
 > and the subsequent results can only output four rows of data. <br>
 > group(A,B,C).count(C) // return [1,1,1,1] <br>
@@ -239,12 +252,12 @@ in incorrect results. This constraint is mainly considered for implementation fa
 To facilitate data retrieval from graphs, the following operators are defined:
 
 | Operator      | Example         | Description                        | Note |
-|---------------|-----------------|------------------------------------|------|
+| ------------- | --------------- | ---------------------------------- | ---- |
 | .             | A.id            | Retrieve attribute                 |      |
-| __label__     | A.__label__     | Return type                        |      |
-| __from__      | e.__from__      | Return the starting point ID       |      |
-| __to__        | e.__to__        | Return the ending point ID         |      |
-| __direction__ | e.__direction__ | Retrieve the direction of the edge |      |
+| **label**     | A.**label**     | Return type                        |      |
+| **from**      | e.**from**      | Return the starting point ID       |      |
+| **to**        | e.**to**        | Return the ending point ID         |      |
+| **direction** | e.**direction** | Retrieve the direction of the edge |      |
 
 Since KGDSL 2.0 has removed the if syntax, we need to use conditional operator operators to replace the logical
 conditions. <br>
@@ -255,9 +268,10 @@ conditions. <br>
   it returns true_value; if it is false, it returns false_value.
 
 Example:
+
 ```
 //if the result of the rule "OnlineDiscount" is true, it returns 1, otherwise it returns null.
-rule_value("OnlineDiscount", 1, null) 
+rule_value("OnlineDiscount", 1, null)
 ```
 
 **get_first_notnull** <br>
@@ -267,6 +281,7 @@ rule_value("OnlineDiscount", 1, null)
   prioritized retrieval of values.
 
 Example:
+
 ```
 Share10("Share more than 10 orders"): rakeBackCount > 10
 Share100("Share more than 100 orders"): rakeBackCount > 100
@@ -280,7 +295,7 @@ With the combination of these two UDFs, arbitrary if-else combinations can be ac
 The date type supports the following calculation operations:
 
 | Operator | Example                                                                                                          | Description   | Input type | Output type |
-|----------|------------------------------------------------------------------------------------------------------------------|---------------|------------|-------------|
+| -------- | ---------------------------------------------------------------------------------------------------------------- | ------------- | ---------- | ----------- |
 | +        | date1 = to_date('20220212', 'yyMMdd') <br> date2 = to_date('5','d') <br> date3 = date1 + date2 //return 20220217 | Add date      | date       | date        |
 | -        | date1 = to_date('20220212', 'yyMMdd')<br> date2 = to_date('5','d')<br> date3 = date1 - date2 //return 20220207   | Subtract date | date       | date        |
 
@@ -288,9 +303,11 @@ The date type supports the following calculation operations:
 
 To simplify the description and avoid the need for explicit to_date conversions for date types, the following format can
 be used for date initialization: <br>
+
 > Date/Unit <br>
 
 **Example 1: Simplified date initialization mode** <br>
+
 ```sql
 1@d
 1@h
@@ -301,6 +318,7 @@ be used for date initialization: <br>
 **Example 2: Relative date based on the current time** <br>
 To address the common requirement of expressing "last 30 days," "last 7 days," etc., the simplified form now() can be
 used to represent the current time. Examples include:<br>
+
 ```sql
 +1@d
 -1@d
@@ -315,6 +333,7 @@ In addition to these simplified date expressions, there are also other date func
 - Description: A date calculation function that returns the current date.
 
 Example:
+
 ```
 now()
 ```
@@ -326,6 +345,7 @@ now()
   yyyy-MM-dd HH:mm:ss or yyyyMMdd HH:mm:ss.
 
 Example:
+
 ```
 date1 = to_date('20220101', 'yyMMdd')
 date_format(date1, 's') // Converts to a Unix timestamp, with a value of 1640966400
@@ -346,7 +366,7 @@ Assuming the schema is as follows: <br>
 **User Entity**
 
 | Property Name | Type           | Description    |
-|---------------|----------------|----------------|
+| ------------- | -------------- | -------------- |
 | id            | string         | Primary key ID |
 | name          | string         | user name      |
 | age           | int            | age            |
@@ -355,55 +375,55 @@ Assuming the schema is as follows: <br>
 **Shop Entity**
 
 | Property Name | Type                    | Description              |
-|---------------|-------------------------|--------------------------|
+| ------------- | ----------------------- | ------------------------ |
 | id            | string                  | Primary key ID           |
 | name          | string                  | shop name                |
 | category      | Classification Concepts | Classification for shops |
 
-**(User)-[pay]->(User)  Relation**
+**(User)-[pay]->(User) Relation**
 
 the relation which represents the payment between users.
 
 | Property Name | Type  | Description                |
-|---------------|-------|----------------------------|
+| ------------- | ----- | -------------------------- |
 | amount        | float | The amount of the payment. |
 
-**(User)-[visit]->(Shop)  Relation**
+**(User)-[visit]->(Shop) Relation**
 
 the relation which represents the user browsed a certain store
 
 | Property Name | Type | Description                  |
-|---------------|------|------------------------------|
+| ------------- | ---- | ---------------------------- |
 | timestamp     | int  | The timestamp of the browse. |
 
-**(User)-[own]->(Shop)  Relation**
+**(User)-[own]->(Shop) Relation**
 
 The relation which represents the user owned a certain store. <br>
 Has no properties.
 
-**(User)-[consume]->(Shop)  Relation**
+**(User)-[consume]->(Shop) Relation**
 
 The relation which represents the user has made a purchase at a certain store.
 
 | Property Name | Type  | Description                    |
-|---------------|-------|--------------------------------|
+| ------------- | ----- | ------------------------------ |
 | amount        | float | The amount of the purchase.    |
 | timestamp     | int   | The timestamp of the purchase. |
 
 #### 4.1.2 Requirements
 
-| Requirement ID | Description | 
-|----------------|---------------------------------------| 
-| 1              | Determine if a User is a shop owner  |
-| 3              | Calculate the number of times a Shop has been browsed in the last 7 and 30 days   |
+| Requirement ID | Description                                                                                                            |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 1              | Determine if a User is a shop owner                                                                                    |
+| 3              | Calculate the number of times a Shop has been browsed in the last 7 and 30 days                                        |
 | 4              | Classify Shops into high attention and low attention based on the number of times they were browsed in the last 7 days |
-| 5              | Identify the top 3 Users with the highest spending based on the sales of a Shop in the last 7 days  |
-| 6              | Validate if a user has received more money in transfers than they have spent   |
-| 7              | Check if a user has made a transfer to themselvesxa   |
-| 8              | Get the list of other users that a User has transferred money to in the last 7 days  |
-| 9              | Users own their own shops and make purchases in their own shops |
-| 10             | Count the number of shops a User has made purchases or browsed in the last 7 days  |
-| 11             | Calculate the total expenditure of each user at a specific shop  |
+| 5              | Identify the top 3 Users with the highest spending based on the sales of a Shop in the last 7 days                     |
+| 6              | Validate if a user has received more money in transfers than they have spent                                           |
+| 7              | Check if a user has made a transfer to themselvesxa                                                                    |
+| 8              | Get the list of other users that a User has transferred money to in the last 7 days                                    |
+| 9              | Users own their own shops and make purchases in their own shops                                                        |
+| 10             | Count the number of shops a User has made purchases or browsed in the last 7 days                                      |
+| 11             | Calculate the total expenditure of each user at a specific shop                                                        |
 
 ### 4.2 Overall syntax description
 
@@ -418,7 +438,7 @@ Structure {
 Constraint {
     // rule express
 }
-#The Action section specifies the post-processing to be performed on the results that conform to the Structure and Constraint. 
+#The Action section specifies the post-processing to be performed on the results that conform to the Structure and Constraint.
 Action {
     // action desciption
 }
@@ -428,7 +448,7 @@ The syntax structure for defining new logical predicates is as follows:
 
 ```
 #Structure and Constraint are nested inside the Define section.
-#The Define section is used to define a new logical predicate. It allows you to create a custom predicate with its own Structure and Constraint. 
+#The Define section is used to define a new logical predicate. It allows you to create a custom predicate with its own Structure and Constraint.
 Define (s:sType)-[p:pType]->(o:oType) {
     Structure {
         // path desciption
@@ -554,7 +574,7 @@ categories:
 - **Logical Rule**
   Expressed as: <br>
   **RuleName("Rule description"): expression** <br>
-  The output of a logical rule is a boolean value. Commonly used operators include >, <, ==, >=, <=, !=, +, -, *, /, %, and so on. These operators can be extended as needed. <br>
+  The output of a logical rule is a boolean value. Commonly used operators include >, <, ==, >=, <=, !=, +, -, \*, /, %, and so on. These operators can be extended as needed. <br>
 
 - **Calculation Rule**
   Expressed as: <br>
@@ -608,12 +628,12 @@ Structure {
 }
 Constraint {
     R1("Adult"): s.age > 18
-              
+
     R2("Male"): s.gender == "male"
-    
+
     // The following sentence is correct: R3, composed of R1 and R2, is considered as a rule group.
     R3("Adult male"): R1 and R2
-    
+
     // The following sentence is incorrect: Non-rule variables are not allowed in a rule group.
     R3("Adult male"): R1 and s.gender == "male"
 }
@@ -629,14 +649,14 @@ Aggregation operators have the following features and limitations:
 
 The list of aggregation and statistical requirements in section 4.1.2 is as follows:
 
-| Requirement ID | Description | 
-|----------------|---------------------------------| 
-| 3              | Calculate the number of times a shop has been browsed in the past 7 days or 30 days  |
+| Requirement ID | Description                                                                                                            |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 3              | Calculate the number of times a shop has been browsed in the past 7 days or 30 days                                    |
 | 4              | Classify Shops into high attention and low attention based on the number of times they were browsed in the last 7 days |
-| 5              | Identify the top 3 Users with the highest spending based on the sales of a Shop in the last 7 days |
-| 6              | Validate if a user has received more money in transfers than he have spent |
-| 10             | Count the number of shops a User has made purchases or browsed in the last 7 days  |
-| 11             | Calculate the total expenditure of each user at a specific shop |
+| 5              | Identify the top 3 Users with the highest spending based on the sales of a Shop in the last 7 days                     |
+| 6              | Validate if a user has received more money in transfers than he have spent                                             |
+| 10             | Count the number of shops a User has made purchases or browsed in the last 7 days                                      |
+| 11             | Calculate the total expenditure of each user at a specific shop                                                        |
 
 **Example 1：Requirement 10, Requirement 3 and Requirement 4** <br>
 ![group_4_4_3_p1](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*FROwTLCV4HcAAAAAAAAAAAAADtmcAQ/original) <br>
@@ -678,7 +698,7 @@ Constraint {
 }
 ```
 
-**Example 3：Requirement 5**（**Not implemented**）** <br>
+**Example 3：Requirement 5**（**Not implemented**）\*\* <br>
 
 ![group_4_4_3_p3](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*e6ijSZWfOUEAAAAAAAAAAAAADtmcAQ/original) <br>
 In the given data example, the top 3 are Jobs, Mike and Alice. <br>
@@ -689,7 +709,7 @@ Structure {
 }
 Constraint {
     R1("Expenses within 7 days"): p.timestamp >= -7@d
-    R2("top3 users"): group(s).desc(p.amount).limit(3) 
+    R2("top3 users"): group(s).desc(p.amount).limit(3)
 }
 ```
 
@@ -707,7 +727,7 @@ Structure {
 Constraint {
     R("Expenses within 7 days"): p.timestamp >= -7@d
     // To assign the total amount of user expenses
-    userConsumeAmount("the total amount of user expenses") = group(s,o).sum(p.amount) 
+    userConsumeAmount("the total amount of user expenses") = group(s,o).sum(p.amount)
 }
 Action {
     get(s.name, userConsumeAmount)
@@ -729,6 +749,7 @@ For information about entities and concepts, please refer to the explanation in 
 Inductive semantics refers to the process of deriving general concepts from a group of entities with common characteristics. The relation between these individuals and concepts is known as an inductive relation.<br>
 
 The inductive semantics between entity types and concepts can be expressed through the following syntactic rules:<br>
+
 ```
 Define (s:TypeA)-[p:TypeP]->(o:TaxonomyOfTypeA/ConceptA) {
     Structure {
@@ -743,11 +764,11 @@ Define (s:TypeA)-[p:TypeP]->(o:TaxonomyOfTypeA/ConceptA) {
 ConceptA belongs to the TaxonomyOfTypeA. The above rule expresses that the entity s, under the premise of satisfying the above rule expression, it can be linked to the ConceptA through the TypeP predicate. For example: <br>
 According to the requirement in section 4.1.2, we can transform the following requirement into a concept definition.
 
-| Requirement ID | Description | 
-|----------------|-------------------------------------| 
-| 1              | Determine if a User is a shop owner |
+| Requirement ID | Description                                                                                                            |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 1              | Determine if a User is a shop owner                                                                                    |
 | 4              | Classify Shops into high attention and low attention based on the number of times they were browsed in the last 7 days |
-| 7              | Check if a user has made a transfer to themselves |
+| 7              | Check if a user has made a transfer to themselves                                                                      |
 
 Example 1：Determine if a User is a shop owner <br>
 Assuming the concept of "ShopKeeper" has been modeled and created, as shown below: <br>
@@ -811,8 +832,8 @@ Define (s:Shop)-[p:belongTo]->(o:TaxonomyOfShop/NamelessShop) {
 According to the requirement in section 4.1.2, we can define predicates between entity types in the following
 requirement.
 
-| Requirement ID | Description                                                                         | 
-|----------------|-------------------------------------------------------------------------------------| 
+| Requirement ID | Description                                                                         |
+| -------------- | ----------------------------------------------------------------------------------- |
 | 7              | Check if a user has made a transfer to themselves                                   |
 | 8              | Get the list of other users that a User has transferred money to in the last 7 days |
 | 11             | Calculate the total expenditure of each user at a specific shop                     |
@@ -822,8 +843,8 @@ The schema definitions are largely consistent with those in section 4.5.1. We ne
 
 There are mainly three types of relationships. <br>
 
-- (s:User)-[p:transSelf]->(s)  : "User performing a self-transfer"
-- (s:User)-[p:trans7Days]->(o:User) :  "Users who have made transfers within the past 7 days"
+- (s:User)-[p:transSelf]->(s) : "User performing a self-transfer"
+- (s:User)-[p:trans7Days]->(o:User) : "Users who have made transfers within the past 7 days"
 - (s:Shop)-[p:consumeAmount]->(o:User) : "Consumption amount of a particular user at a shop"
 
 Example 1: User performing a self-transfer <br>
@@ -871,8 +892,8 @@ Define (s:Shop)-[p:consumeAmount]->(o:User) {
 
 In the previous two sections, the main focus was on establishing relations between entity types and concepts. However, there are some requirements that do not interact with any other types, such as the following example.
 
-| Requirement ID | Description                                                                       | 
-|----------------|-----------------------------------------------------------------------------------| 
+| Requirement ID | Description                                                                       |
+| -------------- | --------------------------------------------------------------------------------- |
 | 1              | Determine if a User is a shop owner                                               |
 | 3              | Calculate the number of times a Shop has been browsed in the last 7 and 30 days   |
 | 6              | Validate if a user has received more money in transfers than they have spent      |
@@ -883,7 +904,7 @@ In the previous two sections, the main focus was on establishing relations betwe
 For the given requirement, we need to add properties to the User entity:
 
 | Property Name              | type    | Description                                                        |
-|----------------------------|---------|--------------------------------------------------------------------|
+| -------------------------- | ------- | ------------------------------------------------------------------ |
 | isShopOwner                | boolean | whether the user is a shop owner                                   |
 | isIncomeLargeOutcome       | boolean | whether the user's income is greater than their expenses           |
 | 7daysVisitOrConsumeShopNum | int     | Number of shops visited or consumed by the user in the past 7 days |
@@ -891,7 +912,7 @@ For the given requirement, we need to add properties to the User entity:
 We need to add properties to the Shop entity:
 
 | Property Name  | type | Description                            |
-|----------------|------|----------------------------------------|
+| -------------- | ---- | -------------------------------------- |
 | 7daysVisitNum  | int  | Number of visitors in the past 7 days  |
 | 30daysVisitNum | int  | Number of visitors in the past 30 days |
 
@@ -911,7 +932,7 @@ Define (s:User)-[p:7daysVisitOrConsumeShopNum]->(o:int) {
 }
 ```
 
-Example 2: Number of visitors in the past 7 days  <br>
+Example 2: Number of visitors in the past 7 days <br>
 
 ```
 Define (s:Shop)-[p:7daysVisitNum]->(o:int) {
@@ -925,7 +946,7 @@ Define (s:Shop)-[p:7daysVisitNum]->(o:int) {
 }
 ```
 
-Example 3: Number of visitors in the past 30 days  <br>
+Example 3: Number of visitors in the past 30 days <br>
 
 ```
 Define (s:Shop)-[p:30daysVisitNum]->(o:int) {
@@ -942,11 +963,11 @@ Define (s:Shop)-[p:30daysVisitNum]->(o:int) {
 ### 4.6 Action
 
 Action supports multiple operations:
+
 - createNodeInstance/createEdgeInstance: Used for the semantic expression of causal logic results.
 - get: Outputs the matched results, including entities, relations, and properties.
 
 The following examples will be shown.
-
 
 #### 4.6.1 Causal logic semantics
 
@@ -957,6 +978,7 @@ In a knowledge graph, causal relations need to be established under certain cond
 #### 4.6.1.1 createNodeInstance
 
 When the conditions for causal semantics between concepts are met, createNodeInstance will create a new instance. In this example, a new event instance is created using the following syntax:<br>
+
 ```
 Define (s: `ProductChain.TaxonomyOfCompanyAccident`/`周期性行业头部上市公司停产事故`)-[p: leadTo]->(o: `ProductChain.TaxonomyOfIndustryInfluence`/`成本上升`) {
     Structure {
@@ -1028,14 +1050,15 @@ Define (s: `ProductChain.TaxonomyOfCompanyAccident`/`周期性行业头部上市
 ```
 
 **createEdgeInstance Parameter Description:**<br>
+
 - type: Specifies the type of the edge.
 - src：Alias of the source node, which must exist in the Structure, or be an instance created through createNodeInstance in the Action.
 - dst: Alias of the destination node, which must also comply with the constraints of 'src'.
 - value: Attribute values of the edge, also in key-value pairs, can be empty.
 
 **Return Value:**<br>
-- None. The main reason is that edge instances are not referenced again in Action.
 
+- None. The main reason is that edge instances are not referenced again in Action.
 
 #### 4.6.2 get
 

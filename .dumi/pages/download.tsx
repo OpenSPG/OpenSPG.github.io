@@ -46,7 +46,7 @@ function Download() {
   const ableToDownload = !isExpired && allow && url;
 
   useEffect(() => {
-    fetch('release.wasm')
+    fetch('/release.wasm')
       .then((response) => response.arrayBuffer())
       .then((bytes) => instantiate(bytes))
       .then(({ validate }: { validate: ValidateFn }) => {

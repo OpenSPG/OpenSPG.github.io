@@ -1,6 +1,9 @@
 ---
 title: Medical
-order: 2
+nav:
+  second:
+    title: Medical
+    order: 3
 ---
 
 ## Building a medical knowledge graph from text
@@ -56,7 +59,7 @@ For the ChatGLM2 model, you need to prepare the structured samples. You can use 
 
 ```shell
 python builder/model/dataset/convert_util.py \
-    --entity_type Medical.Disease \ 
+    --entity_type Medical.Disease \
     --task_type RE \
     --src_path builder/model/dataset/RE/sample.json \
     --tgt_path builder/model/dataset/RE/processed.json \

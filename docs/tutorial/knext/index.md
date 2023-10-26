@@ -1,6 +1,9 @@
 ---
 title: KNext命令使用
-order: 1
+nav:
+  second:
+    title: KNext命令使用
+    order: 1
 ---
 
 本文将会介绍OpenSPG中python SDK -- KNext的使用方法，包括命令行工具，以及可编程SDK。
@@ -120,6 +123,7 @@ class DemoExtractOp(KnowledgeExtractOp):
 ```
 
 - 一个DSL查询语句，声明在 `reasoner/demo.dsl`，用于查询所有 `Prj.Demo`实体：
+
 ```
 MATCH (s:Prj.Demo)
 RETURN s.id, s.demoProperty
@@ -260,7 +264,7 @@ Commands:
 
 ```bash
 knext project create [--help]
-                     [--name name] 
+                     [--name name]
                      [--namespace namespace]
                      [--desc desc]
                      [--prj_path prj_path]
@@ -375,6 +379,7 @@ knext schema reg_concept_rule [--help]
 使用实例：
 
 schema/concept.rule
+
 ```
 namespace DEFAULT
 
@@ -386,6 +391,7 @@ namespace DEFAULT
 ```
 
 执行命令：
+
 ```bash
 knext schema reg_concept_rule --file schema/concept.rule
 ```
@@ -426,6 +432,7 @@ knext operator publish [OP_NAMES]
 使用实例：
 
 builder/operator/demo_extract_op.py
+
 ```python
 ...
 
@@ -437,6 +444,7 @@ class DemoExtractOp(KnowledgeExtractOp):
 ```
 
 执行命令：
+
 ```bash
 knext operator publish DemoExtractOp
 ```
@@ -487,6 +495,7 @@ knext builder submit [JOB_NAMES]
 使用实例：
 
 builder/job/demo.py
+
 ```python
 ...
 
@@ -496,7 +505,9 @@ class Demo(BuilderJob):
 
 ...
 ```
+
 执行命令：
+
 ```bash
 knext builder submit Demo
 ```
@@ -534,7 +545,9 @@ Commands:
 ```
 
 #### 3.6.1 DSL查询
+
 提交DSL查询任务，结果同步返回，查询任务耗时超过3分钟会报错。
+
 ```bash
 knext reasoner query [--help]
                      [--file file]
@@ -547,11 +560,14 @@ knext reasoner query [--help]
 使用实例：
 
 reasoner/demo.dsl:
+
 ```bash
 MATCH (s:Prj.Demo)
 RETURN s.id, s.demoProperty
 ```
+
 执行命令：
+
 ```bash
 knext reasoner query --file reasoner/demo.dsl
 ```
@@ -563,21 +579,27 @@ knext reasoner query --file reasoner/demo.dsl
 |--------|------------------|
 |     00 | demo             |
 ```
+
 #### 3.6.2 提交DSL推理任务
+
 提交查询任务，结果异步生成。
+
 ```bash
 knext reasoner submit [--help]
                       [--file file]
                       [--dsl file]
 ```
+
 - 【二选一】--file 查询的dsl文件。
 - 【二选一】--dsl 查询的dsl语法，用双引号括起来。
 
 #### 3.6.3 查询推理任务
+
 ```bash
 knext reasoner get [--help]
                   [--id id]
 ```
+
 【必填】--id 查询的任务id（成功提交任务后会返回），结果返回单个任务实例。
 
 ## 4 默认项目结构
@@ -592,8 +614,8 @@ knext reasoner get [--help]
     │   |   ├── demo_extract_op.py
     │   │   └── ...
     │   └── job # 加工任务目录
-    │       ├── demo1.py 
-    │       ├── demo2.py 
+    │       ├── demo1.py
+    │       ├── demo2.py
     │       ├── data # 数据目录
     │       │   ├── Demo1.csv
     │       │   ├── Demo2.csv
@@ -605,13 +627,13 @@ knext reasoner get [--help]
     ├── reasoner # 规则推理
     │   ├── demo.dsl
     │   └── result
-    │       ├── spgreasoner_job_1_result.csv 
-    │       ├── spgreasoner_job_2_result.csv 
+    │       ├── spgreasoner_job_1_result.csv
+    │       ├── spgreasoner_job_2_result.csv
     │       └── ...
     ├── schema # schema定义
-    │   ├── riskmining.schema 
-    │   ├── riskmining_schema_helper.py 
-    │   └── concept.rule 
+    │   ├── riskmining.schema
+    │   ├── riskmining_schema_helper.py
+    │   └── concept.rule
     ├── README.md
     └── .knext.cfg
 ```
@@ -670,11 +692,11 @@ reasoner_result_dir = reasoner/result
 
 #### 5.1.1 参数
 
-| 参数                 | 类型                | 是否必填 | 示例值                      | 描述                                |
-|--------------------|-------------------|------|--------------------------|-----------------------------------|
-| **parallelism**    | int               | 否    | 1                        | 加工任务执行并发度【默认为1】                   |
-| **operation_type** | OperationTypeEnum | 否    | OperationTypeEnum.Create | 加工任务操作类型【默认为Create，即数据以增量更新的方式写入】 |
-| **lead_to**        | bool              | 否    | True                     | 加工任务是否执行因果关系【默认为False】            |
+| 参数               | 类型              | 是否必填 | 示例值                   | 描述                                                         |
+| ------------------ | ----------------- | -------- | ------------------------ | ------------------------------------------------------------ |
+| **parallelism**    | int               | 否       | 1                        | 加工任务执行并发度【默认为1】                                |
+| **operation_type** | OperationTypeEnum | 否       | OperationTypeEnum.Create | 加工任务操作类型【默认为Create，即数据以增量更新的方式写入】 |
+| **lead_to**        | bool              | 否       | True                     | 加工任务是否执行因果关系【默认为False】                      |
 
 #### 5.1.2 接口
 
@@ -704,11 +726,11 @@ csv数据源组件，用来上传本地csv文件，并逐行读取数据
 
 ##### 5.2.1.1 参数
 
-| 名称             | 类型        | 是否必填 | 示例值                            | 描述                                    |
-|----------------|-----------|------|--------------------------------|---------------------------------------|
-| **local_path** | str       | 是    | './builder/job/data/App.csv'  | 文件路径                                  |
-| **columns**    | list[str] | 是    | ['id', 'riskMark', 'useCert'] | 输入列                                   |
-| **start_row**  | int       | 是    | 2                              | 数据读取起始行数【若希望从csv第一行开始读取，则start_row=1】 |
+| 名称           | 类型      | 是否必填 | 示例值                        | 描述                                                         |
+| -------------- | --------- | -------- | ----------------------------- | ------------------------------------------------------------ |
+| **local_path** | str       | 是       | './builder/job/data/App.csv'  | 文件路径                                                     |
+| **columns**    | list[str] | 是       | ['id', 'riskMark', 'useCert'] | 输入列                                                       |
+| **start_row**  | int       | 是       | 2                             | 数据读取起始行数【若希望从csv第一行开始读取，则start_row=1】 |
 
 ##### 5.2.1.2 接口
 
@@ -720,9 +742,9 @@ csv数据源组件，用来上传本地csv文件，并逐行读取数据
 
 ##### 5.2.2.1 参数
 
-| 名称                | 类型        | 是否必填 | 示例值                            | 描述   |
-|-------------------|-----------|------|--------------------------------|------|
-| **output_fields** | List[str] | 是    | ['id', 'riskMark', 'useCert'] | 输出字段 |
+| 名称              | 类型      | 是否必填 | 示例值                        | 描述     |
+| ----------------- | --------- | -------- | ----------------------------- | -------- |
+| **output_fields** | List[str] | 是       | ['id', 'riskMark', 'useCert'] | 输出字段 |
 
 ##### 5.2.2.2 接口
 
@@ -730,10 +752,10 @@ csv数据源组件，用来上传本地csv文件，并逐行读取数据
 
 设置抽取算子，取已发布的最新版本的算子。
 
-| 参数          | 类型             | 是否必填 | 示例值                              | 描述                            |
-|-------------|----------------|------|----------------------------------|-------------------------------|
-| **op_name** | str            | 是    | Operator("DemoKnowledgeExtract") | 抽取算子名                         |
-| **params**  | Dict[str, str] | 否    | {"": ""}                         | 抽取算子参数，在算子内可以通过self.params获取。 |
+| 参数        | 类型           | 是否必填 | 示例值                           | 描述                                            |
+| ----------- | -------------- | -------- | -------------------------------- | ----------------------------------------------- |
+| **op_name** | str            | 是       | Operator("DemoKnowledgeExtract") | 抽取算子名                                      |
+| **params**  | Dict[str, str] | 否       | {"": ""}                         | 抽取算子参数，在算子内可以通过self.params获取。 |
 
 ##### 5.2.2.3 示例
 
@@ -750,9 +772,9 @@ extract = KnowledgeExtractComponent(
 
 ##### 5.2.3.1 参数
 
-| 名称                  | 类型  | 是否必填 | 示例值         | 描述      |
-|---------------------|-----|------|-------------|---------|
-| **spg_type_name** | str | 是    | DEFAULT.App | SPG实体类型 |
+| 名称              | 类型 | 是否必填 | 示例值      | 描述        |
+| ----------------- | ---- | -------- | ----------- | ----------- |
+| **spg_type_name** | str  | 是       | DEFAULT.App | SPG实体类型 |
 
 ##### 5.2.3.2 接口
 
@@ -760,19 +782,19 @@ extract = KnowledgeExtractComponent(
 
 添加从源数据字段到SPG属性之间的映射关系。
 
-| 参数               | 类型  | 是否必填 | 示例值                  | 描述      |
-|------------------|-----|------|----------------------|---------|
-| **source_field** | str | 是    | "useCert"           | 源字段     |
-| **target_field** | str | 是    | DEFAULT.App.useCert | SPG实体属性 |
+| 参数             | 类型 | 是否必填 | 示例值              | 描述        |
+| ---------------- | ---- | -------- | ------------------- | ----------- |
+| **source_field** | str  | 是       | "useCert"           | 源字段      |
+| **target_field** | str  | 是       | DEFAULT.App.useCert | SPG实体属性 |
 
 ###### add_filter
 
 添加字段筛选条件，数据满足`column_name=column_value`条件的会执行映射。若不设置筛选条件，则全部数据会执行映射。
 
-| 参数                | 类型  | 是否必填 | 示例值    | 描述   |
-|-------------------|-----|------|--------|------|
-| **column_name**  | str | 是    | "type" | 筛选字段 |
-| **column_value** | str | 是    | "App"  | 筛选值  |
+| 参数             | 类型 | 是否必填 | 示例值 | 描述     |
+| ---------------- | ---- | -------- | ------ | -------- |
+| **column_name**  | str  | 是       | "type" | 筛选字段 |
+| **column_value** | str  | 是       | "App"  | 筛选值   |
 
 ##### 5.2.3.3 示例
 
@@ -791,11 +813,11 @@ mapping = EntityMappingComponent(
 
 ##### 5.2.4.1 参数
 
-| 名称                  | 类型  | 是否必填 | 示例值                  | 描述   |
-|---------------------|-----|------|----------------------|------|
-| **subject_name**   | str | 是    | DEFAULT.App          | 主体类型 |
-| **predicate_name** | str | 是    | DEFAULT.App.useCert | 谓词关系 |
-| **object_name**    | str | 是    | DEFAULT.Cert        | 客体类型 |
+| 名称               | 类型 | 是否必填 | 示例值              | 描述     |
+| ------------------ | ---- | -------- | ------------------- | -------- |
+| **subject_name**   | str  | 是       | DEFAULT.App         | 主体类型 |
+| **predicate_name** | str  | 是       | DEFAULT.App.useCert | 谓词关系 |
+| **object_name**    | str  | 是       | DEFAULT.Cert        | 客体类型 |
 
 ##### 5.2.4.2 接口
 
@@ -819,9 +841,9 @@ SPG映射组件需要设置知识抽取算子。
 
 ##### 5.2.5.1 参数
 
-| 名称                  | 类型  | 是否必填 | 示例值         | 描述      |
-|---------------------|-----|------|-------------|---------|
-| **spg_type_name** | str | 是    | DEFAULT.App | SPG实体类型 |
+| 名称              | 类型 | 是否必填 | 示例值      | 描述        |
+| ----------------- | ---- | -------- | ----------- | ----------- |
+| **spg_type_name** | str  | 是       | DEFAULT.App | SPG实体类型 |
 
 ##### 5.2.5.2 接口
 
@@ -829,10 +851,10 @@ SPG映射组件需要设置知识抽取算子。
 
 设置抽取算子，取已发布的最新版本的算子。
 
-| 参数          | 类型             | 是否必填 | 示例值               | 描述                            |
-|-------------|----------------|------|-------------------|-------------------------------|
-| **op_name** | str            | 是    | "DemoExtractOp"   | 抽取算子名                         |
-| **params**  | Dict[str, str] | 否    | {"hit_num": "10"} | 抽取算子参数，在算子内可以通过self.params获取。 |
+| 参数        | 类型           | 是否必填 | 示例值            | 描述                                            |
+| ----------- | -------------- | -------- | ----------------- | ----------------------------------------------- |
+| **op_name** | str            | 是       | "DemoExtractOp"   | 抽取算子名                                      |
+| **params**  | Dict[str, str] | 否       | {"hit_num": "10"} | 抽取算子参数，在算子内可以通过self.params获取。 |
 
 #### 5.2.6 SinkToKgComponent（图谱写入）
 
@@ -860,21 +882,21 @@ sink = SinkToKgComponent()
 
 #### 5.3.1 参数
 
-| 参数          | 类型  | 是否必填 | 示例值               | 描述                               |
-|-------------|-----|------|-------------------|----------------------------------|
-| **desc**    | str | 否    | "证书链指算子"          | 算子描述【默认为空】                       |
-| **bind_to** | str | 否    | "RiskMining.Cert" | 算子绑定的实体类型名，抽取类型算子不支持绑定实体类型【默认为空】 |
+| 参数        | 类型 | 是否必填 | 示例值            | 描述                                                             |
+| ----------- | ---- | -------- | ----------------- | ---------------------------------------------------------------- |
+| **desc**    | str  | 否       | "证书链指算子"    | 算子描述【默认为空】                                             |
+| **bind_to** | str  | 否       | "RiskMining.Cert" | 算子绑定的实体类型名，抽取类型算子不支持绑定实体类型【默认为空】 |
 
 #### 5.3.2 接口
 
-##### 5.3.2.1 __init__(self, params: Dict[str, str] = None)
+##### 5.3.2.1 **init**(self, params: Dict[str, str] = None)
 
 所有算子的初始化方法，仅在加工任务提交后的初始化阶段执行一次。不同算子类型继承当前`__init__`方法。
 若自定义算子内不复写初始化方法，默认执行`self.params=params`。当组件通过`set_operator`方法设置了算子参数`params`
 时，在算子内可以通过`self.params[key]`获取到对应参数的`value`，从而实现同个算子针对不同加工任务的复用。
 当自定义算子内需要初始化一些外部Client，例如`SearchClient`，可以复写`__init__`方法，避免Client的重复初始化。
 
-##### 5.3.2.2 eval(self, *args)
+##### 5.3.2.2 eval(self, \*args)
 
 所有自定义算子都需要复写`eval` 方法，用来实现你的算子执行逻辑。
 不同算子类型的`eval`方法，输入参数和输出结果类型也存在不同。
@@ -885,11 +907,11 @@ sink = SinkToKgComponent()
 
 将算子输入以及输出的实体信息（包括实体id、实体类型、实体属性）封装在`Vertex`类型中。
 
-| 名称              | 类型             | 是否必填 | 示例值                                                                      | 描述   |
-|-----------------|----------------|------|--------------------------------------------------------------------------|------|
-| **biz_id**      | str            | 否    | "1"                                                                      | 实体id |
-| **vertex_type** | str            | 否    | DEFAULT.Cert                                                             | 实体类型 |
-| **properties**  | Dict[str, str] | 是    | {"id": "1", "name": "1", "certNum": "68802adde35845d76eeb172ff8ea6825"} | 实体属性 |
+| 名称            | 类型           | 是否必填 | 示例值                                                                  | 描述     |
+| --------------- | -------------- | -------- | ----------------------------------------------------------------------- | -------- |
+| **biz_id**      | str            | 否       | "1"                                                                     | 实体id   |
+| **vertex_type** | str            | 否       | DEFAULT.Cert                                                            | 实体类型 |
+| **properties**  | Dict[str, str] | 是       | {"id": "1", "name": "1", "certNum": "68802adde35845d76eeb172ff8ea6825"} | 实体属性 |
 
 #### 5.3.4 示例
 
@@ -912,7 +934,6 @@ class CertLinkerOperator(EntityLinkOp):
 执行`knext operator publish CertLinkerOperator`命令，算子将发布一个新版本到服务端，并根据`bind_to`
 参数绑定算子新版本到`DEFAULT.Cert`实体schema上。
 在执行包含映射到`DEAFAULT.Cert`类型属性的加工任务时，会在映射后执行eval方法进行链指拉边。
-
 
 #### 5.3.5 KnowledgeExtractOp（知识抽取算子）
 
@@ -941,14 +962,13 @@ pipeline支持在知识映射组件的实体属性上配置链指算子，在当
 
 - 标化后的属性值
 
-
 #### 5.3.7 EntityLinkOp（实体链指算子）
 
 实体链指算子一般绑定在实体类型`EntityType`或事件类型`EventType`上，其功能是根据实体属性值，召回链指目标，并在源实体和目标实体之间生成关系。
 实体链指算子也可用于实体融合去重中，在算子中召回出同类型的实体，根据规则或执行融合算子，进行属性融合或实体去重。
 `knext.api`提供实体链指算子基础类`EntityLinkOp`，可通过继承并实现`eval`方法，来完成链指算子的开发。
 
-#####  5.3.7.1 接口
+##### 5.3.7.1 接口
 
 ##### eval(self, property: str, record: Vertex) -> List[Vertex]:
 
@@ -961,6 +981,6 @@ pipeline支持在知识映射组件的实体属性上配置链指算子，在当
 
 - 链指出的实体列表
 
-####  5.3.8 EntityFuseOp（实体融合算子）
+#### 5.3.8 EntityFuseOp（实体融合算子）
 
 暂未支持

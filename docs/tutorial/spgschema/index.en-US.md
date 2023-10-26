@@ -1,6 +1,9 @@
 ---
 title: SPG-Schema
-order: 2
+nav:
+  second:
+    title: SPG-Schema
+    order: 2
 ---
 
 ## 1 Introduction to the basics of Schema
@@ -36,14 +39,14 @@ An instance of the school entity type can look like:
 
 ```json
 {
-    "id": "zjdx",
-    "name": "Zhejiang University",
-    "englishName": "Zhejiang University",
-    "shortName": "ZJU",
-    "founder": "Lin Qi",
-    "foundDate": "18970521",
-    "category": "Public University",
-    "address": "Xixi Campus: No. 148, Tianmushan Road, Xihu District, Hangzhou City"
+  "id": "zjdx",
+  "name": "Zhejiang University",
+  "englishName": "Zhejiang University",
+  "shortName": "ZJU",
+  "founder": "Lin Qi",
+  "foundDate": "18970521",
+  "category": "Public University",
+  "address": "Xixi Campus: No. 148, Tianmushan Road, Xihu District, Hangzhou City"
 }
 ```
 
@@ -67,13 +70,13 @@ An instance of the enterprise event type can be:
 
 ```json
 {
-    "id": "2023100820394930",
-    "name": "XX company is listed on the Shenzhen Stock Exchange on October 28th",
-    "subject": "XX company",
-    "object": "Shenzhen Stock Exchange",
-    "time": "20231028",
-    "location": "Shenzhen Stock Exchange",
-    "behavior": "listing"
+  "id": "2023100820394930",
+  "name": "XX company is listed on the Shenzhen Stock Exchange on October 28th",
+  "subject": "XX company",
+  "object": "Shenzhen Stock Exchange",
+  "time": "20231028",
+  "location": "Shenzhen Stock Exchange",
+  "behavior": "listing"
 }
 ```
 
@@ -93,26 +96,24 @@ Here is an example of concept instances for school classification:
 
 ```json
 [
-    {
-        "name": "public institution",
-        "alias": "public, public school"
-    },
-    {
-        "name": "public institution-public university",
-        "alias": null
-    },
-    {
-        "name": "public institution-public university-comprehensive public university",
-        "alias": "public comprehensive university"
-    }
+  {
+    "name": "public institution",
+    "alias": "public, public school"
+  },
+  {
+    "name": "public institution-public university",
+    "alias": null
+  },
+  {
+    "name": "public institution-public university-comprehensive public university",
+    "alias": "public comprehensive university"
+  }
 ]
 ```
 
 ### 1.4 Semantic relations between SPG types
 
-
 ![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*3s79QouHNicAAAAAAAAAAAAADtmcAQ/original)
-
 
 - HYP: Hypernym, refers to the relation where a broader or more general concept includes or encompasses another more specific or particular concept. The available predicates are "isA" and "locateAt", while other predicates are yet to be expanded.
 - SYNANT: Synonymy/Antonymy, expresses whether concepts are synonymous or antonymous to each other. The available predicates are "synonym" and "antonym", while other predicates are yet to be expanded.
@@ -120,7 +121,6 @@ Here is an example of concept instances for school classification:
 - SEQ: Sequentiality, refers to a sequence of events or actions that occur in a specific order. The available predicate is "happenedBefore", while other predicates are yet to be expanded.
 - IND: Induction, refers to the relation where general concepts are derived from a group of entities with common characteristics. The available predicate is "belongTo", while other predicates are yet to be expanded.
 - INC: Inclusion, expresses the relation between a part and a whole. The available predicate for this relationship is "isPartOf", while other predicates are yet to be expanded.
-
 
 ## 2 Declarative Schema
 
@@ -141,7 +141,7 @@ NotNull, MultiValue, Enum, Regular
 
 > -> Used to express the inheritance relationship of a type, A -> B
 >
-> STD.* Anything beginning with STD. is a reserved keyword, used as a standard type name.
+> STD.\* Anything beginning with STD. is a reserved keyword, used as a standard type name.
 
 ### 2.2 Basic Syntax
 
@@ -390,6 +390,7 @@ class DEFAULT:
 ```
 
 The code is as follows when the user uses schema:
+
 > You need to import the project schema class first.
 
 ```python

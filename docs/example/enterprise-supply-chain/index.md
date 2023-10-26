@@ -1,6 +1,9 @@
 ---
-title: 案例演示
-order: 1
+title: 企业供应链
+nav:
+  second:
+    title: 企业供应链
+    order: 2
 ---
 
 ## 1 背景
@@ -17,13 +20,11 @@ order: 1
 
 <center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图1：产业链企业图谱深度语义关联 </center>
 
-
 概念知识维护着产业链相关数据，包括上下位层级、供应关系；实体实例仅有法人代表、转账信息，公司实例通过生产的产品属性和概念中的产品节点挂载，实现了公司实例之间的深度信息挖掘，例如供应商、同行业、同法人代表等关系。基于深度上下文信息，可提供更多的信用评估因子。
 
 ![产业链事件归纳演绎  ](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*X2TES7hf9ycAAAAAAAAAAAAADtmcAQ/original)
 
 <center style="font-size:14px;color:#c0c0c0;text-decoration:underline">图2：产业链事件归纳演绎  </center>
-
 
 产业链中建立了产品和公司事件类别，该类别属于指标和趋势的一种组合，例如价格上涨，是由指标：价格，趋势：上涨两部分构成。  
 事理知识设定了产品价格上涨引起公司利润下降及公司成本上涨事件，当发生某个具体事件时，例如“橡胶价格大涨事件”，被归类在产品价格上涨，由于事理知识中定义产品价格上涨会引起公司利润下降/公司成本上涨两个事件类型，会产出新事件：“三角\*\*轮胎公司成本上涨事件”、“三角\*\*轮胎公司利润下跌”。
@@ -117,9 +118,9 @@ knext reasoner query --dsl "
 MATCH
     (s:SupplyChain.Company)
 RETURN
-    s.id, s.name, s.fundTrans1Month, s.fundTrans3Month, 
-    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn, 
-    s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month, 
+    s.id, s.name, s.fundTrans1Month, s.fundTrans3Month,
+    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn,
+    s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month,
     s.cashflowDiff6Month
 "
 ```

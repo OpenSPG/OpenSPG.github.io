@@ -2,9 +2,9 @@
  * title: 语义增强可编程知识图谱
  */
 
-import { useEffect } from 'react';
-import { history, usePrefersColor } from 'dumi';
 import { Button, Descriptions, Tabs } from 'antd';
+import { history, useLocale, usePrefersColor } from 'dumi';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import AboutUs from '../components/AboutUs';
 import CustomItem from '../components/CustomItem';
@@ -292,7 +292,14 @@ const MainPage = () => {
       SPG_POINT_CONFIG,
     },
   } = useIntl();
+  const locale = useLocale();
+
   const [prefersColor] = usePrefersColor();
+
+  const push = (link: string) => {
+    // @ts-ignore
+    history.push(`${locale.base}/${link}`);
+  };
 
   useEffect(() => {
     const main = document.querySelector('body .dumi-default-doc-layout > main');
@@ -313,7 +320,7 @@ const MainPage = () => {
   }, []);
 
   const handleDownload = () => {
-    history.push('/download');
+    push('download');
   };
 
   return (
@@ -333,7 +340,7 @@ const MainPage = () => {
             <Button
               size="large"
               onClick={() => {
-                history.push('/quick-start');
+                push('quick-start');
               }}
             >
               {PARAGRAPH.QuickStart}
