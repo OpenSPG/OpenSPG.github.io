@@ -32,7 +32,7 @@
     "@types/react-dom": "^18.2.7",
     "antd": "^5.8.4",
     "copy-to-clipboard": "^3.3.3",
-    "dumi": "^2.2.13",
+    "dumi": "^2.2.14",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",

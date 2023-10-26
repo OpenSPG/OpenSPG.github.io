@@ -298,7 +298,9 @@ const MainPage = () => {
 
   const push = (link: string) => {
     // @ts-ignore
-    history.push(`${locale.base}/${link}`);
+    const base = locale.base;
+    if (base === '/') history.push(`/${link}`);
+    else history.push(`${base}/${link}`);
   };
 
   useEffect(() => {
