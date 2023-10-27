@@ -39,7 +39,7 @@ knext --version
 执行以下命令，设置OpenSPG服务端地址（默认为本地地址 [http://127.0.0.1:8887](http://127.0.0.1:8887) ）：
 
 ```bash
-knext config edit --global host_addr=http://127.0.0.1:8887
+knext config set --global host_addr=http://127.0.0.1:8887
 ```
 
 ### 2.2 创建一个示例项目
