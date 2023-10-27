@@ -16,6 +16,37 @@ const GlobalLayout: React.FC = () => {
   const isMobile = isMobileDevice && isMobileScreen;
 
   useEffect(() => {
+    const nav = document.getElementsByClassName('dumi-default-navbar')?.[0];
+    if (!nav) return;
+
+    // insert github and openKG in navbar
+
+    const createLink = (name: string, link: string, index: number) => {
+      const xpath = `//*[text()='${name}']`;
+      const element = document.evaluate(
+        xpath,
+        nav,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null,
+      ).singleNodeValue;
+      if (element) return;
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.innerText = name;
+      a.href = link;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      li.appendChild(a);
+      nav.insertBefore(li, nav.childNodes[index]);
+    };
+
+    createLink('Github', 'https://github.com/OpenSPG/openspg', 1);
+    createLink('OpenKG', 'http://openkg.cn/', 5);
+  }, []);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
