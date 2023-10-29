@@ -39,7 +39,7 @@ This example can help you quickly start with importing and analyzing inference o
 Execute the following command to set the server address of OpenSPG (by default it's http://127.0.0.1:8887 for local address):
 
 ```bash
-knext config edit --global host_addr=http://127.0.0.1:8887
+knext config set --global host_addr=http://127.0.0.1:8887
 ```
 
 ### 2.2 Create Project
