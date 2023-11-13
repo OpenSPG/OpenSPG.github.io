@@ -45,7 +45,7 @@ const GlobalLayout: React.FC = () => {
 
   useEffect(() => {
     createLinkIntervalRef.current = window.setInterval(() => {
-      createLink('Github', 'https://github.com/OpenSPG/openspg', 1);
+      createLink('GitHub', 'https://github.com/OpenSPG/openspg', 1);
       const result = createLink('OpenKG', 'http://openkg.cn/', 5);
       if (result) clearInterval(createLinkIntervalRef.current);
     }, 50);
