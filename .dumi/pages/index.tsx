@@ -208,7 +208,7 @@ const Case = styled.div<{ theme: string }>`
 
   ${(props) =>
     props.theme === 'light' &&
-    `background: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original) no-repeat;`}
+    `background-image: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original);`}
 
   ${(props) =>
     props.theme === 'dark' && `background-color: var(--background-color);`}
