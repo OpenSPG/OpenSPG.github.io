@@ -92,9 +92,15 @@ function Download() {
     setDownloadImmediately(true);
     setCurrentStep(1);
     window.open(
-      isBackup
-        ? 'https://survey.alipay.com/apps/zhiliao/K7MilJd4E'
-        : 'https://survey.aliyun.com/apps/zhiliao/wUwnL6sPC',
+      !isBackup
+        ? intl(
+            'https://survey.alipay.com/apps/zhiliao/K7MilJd4E',
+            'https://survey.alipay.com/apps/zhiliao/n33nRj5OV',
+          )
+        : intl(
+            'https://survey.aliyun.com/apps/zhiliao/wUwnL6sPC',
+            'https://survey.aliyun.com/apps/zhiliao/u7K_sLhva',
+          ),
     );
 
     setTimeout(() => {
