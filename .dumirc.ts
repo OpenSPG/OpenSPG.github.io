@@ -14,7 +14,7 @@ const ProductionConfig = {
 export default defineConfig({
   themeConfig: {
     prefersColor: {
-      default: 'auto',
+      default: 'dark',
       switch: false,
     },
     socialLinks: {

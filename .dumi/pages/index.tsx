@@ -2,42 +2,43 @@
  * title: 语义增强可编程知识图谱
  */
 
-import { Button, Descriptions, Tabs } from 'antd';
-import { history, useLocale, usePrefersColor } from 'dumi';
+import { Descriptions, Tabs, Typography } from 'antd';
+import { usePrefersColor } from 'dumi';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import AboutUs from '../components/AboutUs';
+import Announcement from '../components/Announcement';
+import BusinessApplicationItem from '../components/BusinessApplicationItem';
+import ButtonGroup from '../components/ButtonGroup';
+import Contact from '../components/Contact';
 import CustomItem from '../components/CustomItem';
-import SpgCaseItem from '../components/SpgCaseItem';
+import GitHub from '../components/GitHub';
+import { PREFIX } from '../constants/prefix';
 import { useIntl } from '../hooks/useIntl';
 
+const Container = styled.div`
+  background: #0f151d;
+`;
+
+const Abbr = styled.span`
+  color: rgba(67, 155, 255, 1);
+`;
+
+const FullTitle = styled.span``;
+
+const SubTitle = styled(Typography.Text)`
+  font-size: 1rem;
+  opacity: 0.45;
+  color: var(--text-color);
+`;
+
 const Banner = styled.div`
-  height: 400px;
-  background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*ZgvDRofu-FsAAAAAAAAAAAAADtmcAQ/original');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
+  position: relative;
   user-select: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0 120px;
-  @media (max-width: 768px) {
-    padding: 0px 60px;
-  }
-  @media (max-width: 480px) {
-    padding: 0px 20px;
-  }
-`;
-
-const Middle = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
   @media (max-width: 768px) {
     padding: 0 40px;
@@ -48,269 +49,164 @@ const Middle = styled.div`
   }
 `;
 
-const LeftTitleContainer = styled.div`
-  max-width: 680px;
-  margin-bottom: 20px;
-`;
-
 const BaseTitle = styled.div`
   font-size: 32px;
   font-weight: 600;
   color: var(--text-color);
   text-align: center;
+  margin: 60px 0 20px 0;
 
   @media (max-width: 768px) {
     font-size: 24px;
+    margin: 40px 0 15px 0;
   }
 
   @media (max-width: 480px) {
     font-size: 20px;
+    margin: 20px 0 10px 0;
   }
 `;
 
-const Title = styled(BaseTitle)`
-  text-align: left;
-  color: var(--color-dark);
-`;
-
-const BtnGroup = styled.div`
-  display: flex;
-  gap: 10px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    width: 50%;
-  }
-
-  @media (max-width: 480px) {
-    width: 60%;
-  }
-
-  @media (max-width: 360px) {
-    width: 100%;
-  }
-`;
-
-const BaseInfo = styled.div`
-  color: var(--text-color-light);
-  font-size: 14px;
-`;
-
-const Info = styled(BaseInfo)``;
-
-const SPG = styled.div`
+const TechnicalFeatures = styled.div`
+  position: relative;
   width: 100%;
-  padding: 72px 120px;
+  max-width: min(1200px, 90%);
+  margin: auto;
   text-align: center;
-  background-color: var(--background-color-pure);
-  @media (max-width: 768px) {
-    padding: 50px 40px;
-  }
-  @media (max-width: 480px) {
-    padding: 30px 20px;
-  }
 `;
 
-const SPGContent = styled.div`
-  max-width: 1200px;
+const TechnicalFeaturesContent = styled.div`
   width: 100%;
   margin: 0 auto;
 `;
 
-const SPGTitle = styled(BaseTitle)`
-  margin-bottom: 37px;
-`;
+const TechnicalFeaturesTitle = styled(BaseTitle)``;
 
-const SPGList = styled.div`
+const TechnicalFeaturesList = styled.div`
   display: grid;
   grid-gap: 45px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   width: 100%;
-`;
-
-const Point = styled.div`
-  background-color: var(--background-color);
-  padding: 40px 120px;
-  text-align: center;
-  @media (max-width: 768px) {
-    padding: 40px 40px;
-  }
-  @media (max-width: 480px) {
-    padding: 40px 20px;
-  }
-`;
-
-const PointContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-
-  img {
-    background-color: var(--image-background-color);
-    border-radius: 16px;
-    min-height: 500px;
-    max-height: 500px;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-
-    @media (max-width: 768px) {
-      min-height: 300px;
-    }
-    @media (max-width: 480px) {
-      min-height: 200px;
-    }
-  }
-`;
-
-const PointTitle = styled(BaseTitle)`
-  margin-bottom: 15px;
-`;
-
-const Framework = styled.div`
-  text-align: center;
-  padding: 38px 120px 72px;
-  background-color: var(--background-color-pure);
 
   @media (max-width: 768px) {
-    padding: 38px 40px 72px;
+    grid-gap: 30px;
   }
 
   @media (max-width: 480px) {
-    padding: 38px 20px 72px;
+    grid-gap: 20px;
   }
 `;
 
-const FrameworkContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  img {
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    background-color: var(--image-background-color);
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-`;
-
-const FrameworkTitle = styled(BaseTitle)`
-  margin-bottom: 15px;
-`;
-
-const FrameworkInfo = styled(BaseInfo)`
-  margin-bottom: 16px;
-`;
-
-const Case = styled.div<{ theme: string }>`
-  text-align: center;
-  padding: 56px 120px 36px;
-  background-size: cover;
-
-  ${(props) =>
-    props.theme === 'light' &&
-    `background-image: url(https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*-dj1SrmD6XQAAAAAAAAAAAAADtmcAQ/original);`}
-
-  ${(props) =>
-    props.theme === 'dark' && `background-color: var(--background-color);`}
-
-  @media (max-width: 768px) {
-    padding: 36px 40px 36px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 20px 20px 36px;
-  }
-`;
-
-const CaseContent = styled.div`
-  max-width: 1200px;
+const BusinessApplications = styled.div`
+  position: relative;
+  max-width: min(1200px, 90%);
   margin: 0 auto;
 `;
 
-const CaseTitle = styled(BaseTitle)`
-  margin-bottom: 40px;
+const BusinessApplicationsTitle = styled(BaseTitle)``;
 
-  @media (max-width: 768px) {
-    margin-bottom: 30px;
-  }
+/** 飞碟装饰 */
+const UFODecorate = styled.div`
+  position: relative;
+  background-image: linear-gradient(
+    113deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  border-radius: 16px;
+  padding: 0 20px 20px 20px;
 
-  @media (max-width: 480px) {
-    margin-bottom: 20px;
+  &:after {
+    position: absolute;
+    top: -20px;
+    right: -15px;
+    z-index: 999;
+    width: 86px;
+    height: 63px;
+    content: '';
+    background: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*vAHuSbAD7jQAAAAAAAAAAAAADtmcAQ/original')
+      no-repeat;
+    background-size: 100%;
   }
 `;
 
-const Footer = styled.div`
-  height: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--background-color);
-  background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*Rs5FTKaUgTIAAAAAAAAAAAAADtmcAQ/original');
-  background-repeat: no-repeat;
-  user-select: none;
-`;
-
-const Bottom = styled.div<{ theme: string }>`
-  padding: 40px 120px;
-  background-color: var(--background-color-invert);
+const CooperationPartner = styled.div<{ theme: string }>`
+  position: relative;
+  max-width: min(1200px, 90%);
+  margin: 0 auto;
   background-repeat: no-repeat;
   user-select: none;
 
   ${(props) =>
     props.theme === 'light' &&
     `background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');`}
-
-  @media (max-width: 768px) {
-    padding: 40px 40px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 40px 20px;
-  }
 `;
 
-const BottomContent = styled.div`
+const CooperationPartnerTitle = styled(BaseTitle)``;
+
+const CooperationPartnerContent = styled.div`
   display: flex;
   @media (max-width: 768px) {
     flex-direction: column;
   }
-  .spg-descriptions-title {
+  .${PREFIX}-descriptions-title {
     color: var(--text-color-invert);
     font-size: 14px;
   }
-  .spg-descriptions-item-content {
+  .${PREFIX}-descriptions-item-content {
     color: var(--text-color-invert-light);
   }
+`;
+
+const TopBackground = styled.div`
+  background: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*O-WRT6y0kVQAAAAAAAAAAAAADtmcAQ/original')
+    no-repeat;
+  background-size: cover;
+  background-position: bottom;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const MiddleBackground = styled.div`
+  background: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*5vvRRZY-PoQAAAAAAAAAAAAADtmcAQ/original')
+    no-repeat;
+  background-size: cover;
+  background-position: top;
+  height: 50%;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0.2;
+`;
+
+const BottomBackground = styled.div`
+  background: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*umu0Q6JaXs8AAAAAAAAAAAAADtmcAQ/original')
+    no-repeat;
+  background-size: cover;
+  background-position: center;
 `;
 
 const MainPage = () => {
   const {
     Messages: {
-      COPYRIGHT_INFORMATION_CONFIG,
+      TITLE,
+      COOPERATION_PARTNER,
       PARAGRAPH,
-      SPG_CASE_CONFIG,
-      SPG_POINT_CONFIG,
+      BUSINESS_APPLICATIONS,
+      TECHNICAL_FEATURES,
     },
   } = useIntl();
-  const locale = useLocale();
 
   const [prefersColor] = usePrefersColor();
-
-  const push = (link: string) => {
-    // @ts-ignore
-    const base = locale.base;
-    if (base === '/') history.push(`/${link}`);
-    else history.push(`${base}/${link}`);
-  };
 
   useEffect(() => {
     const main = document.querySelector('body .dumi-default-doc-layout > main');
 
-    main &&
-      main.setAttribute(
-        'style',
-        'margin-top: -76px; padding: 0; max-width: 100%;',
-      );
+    main && main.setAttribute('style', 'padding: 0; max-width: 100%;');
 
     return () => {
       main &&
@@ -321,122 +217,89 @@ const MainPage = () => {
     };
   }, []);
 
-  const handleDownload = () => {
-    push('download');
-  };
-
   return (
-    <div className="home">
+    <Container>
+      <TopBackground />
+      <MiddleBackground />
+      <BottomBackground />
+
+      <GitHub />
+
       <Banner>
-        <Middle>
-          <LeftTitleContainer>
-            <Title>
-              <div>语义增强可编程知识图谱SPG</div>
-              <div>(Semantic-enhanced Programmable Graph)</div>
-            </Title>
-          </LeftTitleContainer>
-          <BtnGroup>
-            <Button size="large" type="primary" onClick={handleDownload}>
-              {PARAGRAPH.WhitepaperDownload}
-            </Button>
-            <Button
-              size="large"
-              onClick={() => {
-                push('quick-start');
-              }}
-            >
-              {PARAGRAPH.QuickStart}
-            </Button>
-          </BtnGroup>
-        </Middle>
+        <Typography.Title level={2}>
+          <Abbr>{TITLE.abbr}</Abbr>
+          <span>·</span>
+          <FullTitle>{TITLE.full}</FullTitle>
+        </Typography.Title>
+        <SubTitle>{TITLE.sub}</SubTitle>
       </Banner>
 
-      <SPG>
-        <SPGContent>
-          <SPGTitle>{PARAGRAPH.whyChooseSPG}</SPGTitle>
-          <SPGList>
-            {SPG_POINT_CONFIG.map((item) => {
+      <ButtonGroup />
+
+      <Announcement />
+
+      <TechnicalFeatures>
+        <TechnicalFeaturesContent>
+          <TechnicalFeaturesTitle>
+            {PARAGRAPH.TechnicalFeatures}
+          </TechnicalFeaturesTitle>
+          <TechnicalFeaturesList>
+            {TECHNICAL_FEATURES.map((item) => {
               return <CustomItem key={item.title} {...item} />;
             })}
-          </SPGList>
-        </SPGContent>
-      </SPG>
-      <Point>
-        <PointContent>
-          <PointTitle>{PARAGRAPH.SPGFeaturesSemanticExamples}</PointTitle>
-          <Info>{PARAGRAPH.DeepSemanticNetworking}</Info>
+          </TechnicalFeaturesList>
+        </TechnicalFeaturesContent>
+      </TechnicalFeatures>
+
+      <BusinessApplications>
+        <BusinessApplicationsTitle>
+          {PARAGRAPH.BusinessApplications}
+        </BusinessApplicationsTitle>
+
+        <UFODecorate>
           <Tabs
             defaultActiveKey="1"
             centered
             size="large"
             animated
-            items={[
-              {
-                key: '1',
-                label: PARAGRAPH.SemanticEnhancedProperties,
-                children: (
-                  <img
-                    style={{ padding: 10 }}
-                    src={PARAGRAPH.SemanticEnhancedPropertiesImg}
-                  />
-                ),
-              },
-              {
-                key: '2',
-                label: PARAGRAPH.DataToKnowledgeProcess,
-                children: <img src={PARAGRAPH.DataToKnowledgeProcessImg} />,
-              },
-            ]}
+            items={BUSINESS_APPLICATIONS.map((item, index) => ({
+              key: `${index}`,
+              label: item.title,
+              children: (
+                <BusinessApplicationItem
+                  key={item.title}
+                  reverse={index % 2 === 0}
+                  {...item}
+                />
+              ),
+            }))}
           />
-        </PointContent>
-      </Point>
-      <Framework>
-        <FrameworkContent>
-          <FrameworkTitle>{PARAGRAPH.SPGSemanticFramework}</FrameworkTitle>
-          <FrameworkInfo>{PARAGRAPH.AccelerateDataIntegration}</FrameworkInfo>
-          <img src={PARAGRAPH.AccelerateDataIntegrationImg} />
-        </FrameworkContent>
-      </Framework>
-      <Case theme={prefersColor}>
-        <CaseContent>
-          <CaseTitle>{PARAGRAPH.SPGCaseStudies}</CaseTitle>
-          {SPG_CASE_CONFIG.map((item, index) => {
-            return (
-              <SpgCaseItem
-                key={item.title}
-                reverse={index % 2 === 0}
-                {...item}
-              />
-            );
-          })}
-        </CaseContent>
-      </Case>
-      <Footer>
-        <Button size="large" type="primary" onClick={handleDownload}>
-          {PARAGRAPH.WhitepaperDownload}
-        </Button>
-      </Footer>
-      <Bottom theme={prefersColor}>
-        <BottomContent>
-          {COPYRIGHT_INFORMATION_CONFIG.map((item) => {
-            return (
-              <Descriptions
-                title={item.title}
-                key={item.title}
-                style={item.style}
-              >
-                {item.unitNames.map((unit) => {
-                  return (
-                    <Descriptions.Item key={unit}>{unit}</Descriptions.Item>
-                  );
-                })}
-              </Descriptions>
-            );
-          })}
-        </BottomContent>
-      </Bottom>
-      <AboutUs />
-    </div>
+        </UFODecorate>
+      </BusinessApplications>
+
+      <BottomBackground>
+        <CooperationPartner theme={prefersColor}>
+          <CooperationPartnerTitle>
+            {PARAGRAPH.CooperationPartner}
+          </CooperationPartnerTitle>
+          <CooperationPartnerContent>
+            {COOPERATION_PARTNER.map((item) => {
+              return (
+                <Descriptions key={item.title} style={item.style}>
+                  {item.unitNames.map((unit) => {
+                    return (
+                      <Descriptions.Item key={unit}>{unit}</Descriptions.Item>
+                    );
+                  })}
+                </Descriptions>
+              );
+            })}
+          </CooperationPartnerContent>
+        </CooperationPartner>
+
+        <Contact />
+      </BottomBackground>
+    </Container>
   );
 };
 

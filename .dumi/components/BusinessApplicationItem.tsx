@@ -3,16 +3,14 @@ import { Space, Typography } from 'antd';
 
 const { Title, Text } = Typography;
 
-const Container = styled.div`
-  margin-bottom: 45px;
-`;
+const Container = styled.div``;
 
 const ContentContainer = styled.div`
   display: grid;
   grid-template: repeat(1, 1fr) / repeat(2, 1fr);
   gap: 15px;
 
-  @media (max-width: 814px) {
+  @media (max-width: 900px) {
     grid-template: repeat(1, 1fr) / repeat(1, 1fr);
   }
 `;
@@ -22,15 +20,9 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: space-around;
   gap: 15px;
-
-  @media (max-width: 1280px) {
-  }
-  @media (max-width: 768px) {
-  }
 `;
 
 const ItemBackground = styled.div`
-  background-color: var(--background-color-pure);
   border-radius: 15px;
 `;
 
@@ -83,7 +75,7 @@ const ImgContainer = styled.div`
   }
 `;
 
-export type CaseItemProps = {
+export type BusinessApplicationItemProps = {
   title: string;
   desc: string;
   details: {
@@ -94,12 +86,11 @@ export type CaseItemProps = {
   reverse?: boolean;
 };
 
-const SpgCaseItem = (props: CaseItemProps) => {
-  const { title, desc, details, imgUrl, reverse } = props;
+const BusinessApplicationItem = (props: BusinessApplicationItemProps) => {
+  const { desc, details, imgUrl, reverse } = props;
   return (
     <Container>
-      <Title>{title}</Title>
-      <Space direction="vertical">
+      <Space direction="vertical" align="center">
         <Text type="secondary">{desc}</Text>
         <ContentContainer>
           <Content>
@@ -121,7 +112,7 @@ const SpgCaseItem = (props: CaseItemProps) => {
               );
             })}
           </Content>
-          <ImgContainer style={{ order: reverse ? -1 : 0 }}>
+          <ImgContainer style={{ order: -1 }}>
             <img src={imgUrl} alt="" />
           </ImgContainer>
         </ContentContainer>
@@ -130,4 +121,4 @@ const SpgCaseItem = (props: CaseItemProps) => {
   );
 };
 
-export default SpgCaseItem;
+export default BusinessApplicationItem;

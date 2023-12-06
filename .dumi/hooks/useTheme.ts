@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const defaultTheme = 'light';
+const defaultTheme = 'dark';
 
 export function useTheme() {
   const [theme, setTheme] = useState(

@@ -14,51 +14,67 @@ export const useIntl = () => {
 
   const Messages = useMemo(() => {
     return {
+      REPO: 'https://github.com/OpenSPG/openspg',
+      TITLE: {
+        abbr: 'SPG',
+        full: intl(
+          '语义增强可编程图谱框架',
+          'Semantic-Enhanced Programmable Graph',
+        ),
+        sub: intl(
+          '新一代企业级知识图谱语义框架',
+          'A new generation of enterprise knowledge graph semantic framework',
+        ),
+      },
+      BUTTON_GROUP: {
+        Github: 'https://github.com/OpenSPG/openspg',
+        Documentation: 'quick-start',
+        WhitePaper: 'download',
+      },
+      ANNOUNCEMENT: [
+        {
+          title: intl(
+            '蚂蚁集团 x OpenKG 联合发布',
+            'Jointly Released by Ant Group and OpenKG',
+          ),
+          description: intl(
+            '新一代《知识语义框架SPG》白皮书',
+            'New Generation of "Knowledge Semantic Framework SPG" Whitepaper',
+          ),
+          link: 'https://mp.weixin.qq.com/s?__biz=MzIyOTkzNDczMw==&amp;mid=2247483709&amp;idx=1&amp;sn=8c778f9d35fdbfeb171f2fdd67168299&amp;chksm=e8ba52dfdfcddbc9d6cdb2cd99367c704601399f7b61f47e80094e226a65031856e3bc3a960c&token=2136960064&lang=zh_CN#rd',
+          cover:
+            'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*i1HwQKSMFo0AAAAAAAAAAAAADtmcAQ/original',
+        },
+        {
+          title: 'OpenSPG',
+          description: intl('OpenSPG 开源发布', 'OpenSPG Open Source Release'),
+          link: 'https://mp.weixin.qq.com/s?__biz=MzIyOTkzNDczMw==&amp;mid=2247483795&amp;idx=1&amp;sn=49e8ed1ee64fa7a2bd010387e11b3fb7&amp;chksm=e8ba5271dfcddb67a3c44fef86de32379b278a821568add62dbaf70dd1470f9c6e59e006f92e&token=2136960064&lang=zh_CN#rd',
+          cover:
+            'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*uSgFTpFvMcEAAAAAAAAAAAAADtmcAQ/original',
+        },
+        {
+          title: intl('“新KG”视点', 'Perspective of "New KG"'),
+          description: intl(
+            '知识图谱与大语言模型协同模式探究',
+            'Exploring the Synergy Between Knowledge Graphs and Large Language Models',
+          ),
+          link: 'https://mp.weixin.qq.com/s?__biz=MzIyOTkzNDczMw==&mid=2247483916&idx=1&sn=62e852520ba45b30daff8bddb44a56c7&chksm=e8ba51eedfcdd8f8c90fa6646adc46ba291ea9e4cdab0562a40bbd371e17a43deab36269d1e2&token=2042662316&lang=zh_CN#rd',
+          cover:
+            'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*9BZfR6NtkjYAAAAAAAAAAAAADtmcAQ/original',
+        },
+      ],
       PARAGRAPH: {
-        whyChooseSPG: intl('为什么选择SPG', 'Why Choose SPG'),
-        SPGFeaturesSemanticExamples: intl(
-          'SPG特性-语义增强示例',
-          'SPG Features - Semantic Enhancement Examples',
-        ),
-        DeepSemanticNetworking: intl(
-          '离散实体要素深度语义网络化，稀疏关系自动补全显性稠密',
-          'Deep Semantic Networking of Discrete Entity Elements, Automatic Completion of Sparse Relationships for Enhanced Density',
-        ),
-        SemanticEnhancedProperties: intl(
-          '属性图语义增强',
-          'Semantic Enhancement of Property Graphs',
-        ),
-        SemanticEnhancedPropertiesImg: intl(
-          'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*TdfeRIfHnisAAAAAAAAAAAAADtmcAQ/original',
-          'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*tzHwTJy7TDIAAAAAAAAAAAAADtmcAQ/original',
-        ),
-        DataToKnowledgeProcess: intl(
-          '数据到知识生产过程',
-          'The Data-to-Knowledge Production Process',
-        ),
-        DataToKnowledgeProcessImg: intl(
-          'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*DcYSS7qaYJkAAAAAAAAAAAAADtmcAQ/original',
-          'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*a3i2T4w41AMAAAAAAAAAAAAADtmcAQ/original',
-        ),
-        SPGSemanticFramework: intl('SPG语义框架', 'SPG Semantic Framework'),
-        AccelerateDataIntegration: intl(
-          '加速企业海量数据知识化集成，无缝衔接AI技术框架应用落地',
-          'Accelerating Enterprise-Scale Data Knowledge Integration, Seamless Integration with AI Technology Frameworks for Real-World Applications',
-        ),
-        AccelerateDataIntegrationImg: intl(
-          'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*9BKUQYrL56IAAAAAAAAAAAAADtmcAQ/original',
-          'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*eK3wTqkCHnAAAAAAAAAAAAAADtmcAQ/original',
-        ),
-        SPGCaseStudies: intl('SPG案例', 'SPG Case Studies'),
+        TechnicalFeatures: intl('技术特性', 'Technical Features'),
+        BusinessApplications: intl('业务应用', 'Business Applications'),
         WhitepaperDownload: intl('白皮书下载', 'Whitepaper Download'),
+        CooperationPartner: intl('合作伙伴', 'Cooperation Partner'),
         QuickStart: intl('快速开始', 'Quick Start'),
         ContactUs: intl('联系我们', 'Contact Us'),
         CopiedToClipboard: intl('已复制到剪贴板', 'Copied to Clipboard'),
         FollowUs: intl('关注我们', 'Follow Us'),
         SPGFramework: intl('语义增强可编程图谱框架', 'SPG Framework'),
       },
-      SPG_FEATURE: {},
-      SPG_POINT_CONFIG: [
+      TECHNICAL_FEATURES: [
         {
           title: intl(
             '跨图谱零拷贝融合，连接数据孤岛',
@@ -100,7 +116,7 @@ export const useIntl = () => {
           ),
         },
       ],
-      SPG_CASE_CONFIG: [
+      BUSINESS_APPLICATIONS: [
         {
           title: intl('支付黑产图谱', 'Anti-Black Market'),
           desc: intl(
@@ -248,13 +264,7 @@ export const useIntl = () => {
           ),
         },
       ],
-      /**页面底部版权信息配置 */
-      COPYRIGHT_INFORMATION_CONFIG: [
-        {
-          title: intl('牵头编写单位', 'Lead Writing Entity'),
-          unitNames: [intl('蚂蚁科技集团股份有限公司', 'Ant Group Co., Ltd.')],
-          style: { flex: 0.5 },
-        },
+      COOPERATION_PARTNER: [
         {
           title: intl('参与编写单位', 'Contributing Entities'),
           unitNames: [
@@ -280,6 +290,30 @@ export const useIntl = () => {
           style: { flex: 1 },
         },
       ],
+      CONTACT: {
+        Github: {
+          title: intl('资源', 'Resources'),
+          name: 'GitHub',
+          url: 'https://github.com/OpenSPG/openspg',
+        },
+        Community: {
+          title: intl('社区', 'Community'),
+          name: '',
+          url: '',
+        },
+        Email: {
+          title: intl('联系我们', 'Contact Us'),
+          name: intl('邮箱', 'Email'),
+          email: 'feidongni.fdn@antgroup.com',
+        },
+        QRCode: {
+          title: intl(
+            '语义增强可编程图谱框架',
+            'Semantic-enhanced Programmable Graph',
+          ),
+          url: 'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*FYxHT5WP0pUAAAAAAAAAAAAADtmcAQ/original',
+        },
+      },
     };
   }, [intl]);
 

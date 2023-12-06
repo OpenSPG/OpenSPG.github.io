@@ -2,6 +2,7 @@ import { ConfigProvider, Result, theme, Modal } from 'antd';
 import { useOutlet, usePrefersColor } from 'dumi';
 import React, { useState, useEffect } from 'react';
 import { useIntl } from '../../hooks/useIntl';
+import { PREFIX } from '../../constants/prefix';
 import { isMobile as isMobileDevice } from 'react-device-detect';
 
 // insert github and openKG in navbar
@@ -92,10 +93,15 @@ const GlobalLayout: React.FC = () => {
 
   return (
     <ConfigProvider
-      prefixCls="spg"
+      prefixCls={PREFIX}
       theme={{
         algorithm:
           color === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        components: {
+          Button: {
+            defaultBg: 'transparent',
+          },
+        },
       }}
     >
       <Modal

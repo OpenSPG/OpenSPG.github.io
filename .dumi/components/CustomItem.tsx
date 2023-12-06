@@ -10,9 +10,7 @@ type Props = {
 };
 
 const Card = styled.div`
-  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: var(--background-color);
 `;
 
 const Cover = styled.div`
@@ -21,7 +19,7 @@ const Cover = styled.div`
   padding: 20px;
   justify-content: center;
   align-items: center;
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
   background-color: var(--image-background-color);
 `;
 
@@ -33,9 +31,7 @@ const Img = styled.img`
 `;
 
 const Content = styled.div`
-  padding: 24px;
   text-align: center;
-  background-color: var(--background-color);
 `;
 
 const CustomItem = (props: Props) => {
@@ -46,7 +42,7 @@ const CustomItem = (props: Props) => {
         <Img src={imgUrl} />
       </Cover>
       <Content>
-        <Title level={3}>{title}</Title>
+        <Title level={4}>{title}</Title>
         <Text type="secondary">{detail}</Text>
       </Content>
     </Card>
