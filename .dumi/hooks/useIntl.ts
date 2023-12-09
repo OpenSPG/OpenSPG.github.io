@@ -281,7 +281,6 @@ export const useIntl = () => {
               'Zhejiang Chuanglin Technology Co., Ltd.',
             ),
             intl('达观数据有限公司', 'Datagrand Inc.'),
-            intl('之江实验室', 'Zhejiang Lab'),
             intl(
               '海乂知信息科技（南京）有限公司',
               'Haiyi Zhi Information Technology (Nanjing) Co., Ltd.',
@@ -290,6 +289,7 @@ export const useIntl = () => {
               '中国科学院计算技术研究所',
               'Institute of Computing Technology, Chinese Academy of Sciences',
             ),
+            intl('之江实验室', 'Zhejiang Lab'),
           ],
           style: { flex: 1 },
         },
