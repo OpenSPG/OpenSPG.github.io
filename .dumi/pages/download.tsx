@@ -10,7 +10,7 @@ import { Alert, Button, Col, Row, Steps, Typography, message } from 'antd';
 import { useSearchParams } from 'dumi';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { instantiate } from '../components/release';
-import { useIntl } from '../hooks/useIntl';
+import { useLocale } from 'dumi';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const { Title } = Typography;
@@ -23,7 +23,8 @@ const expireTime = 1000 * 60 * 60 * 24;
 type ValidateFn = (value: string) => [string, string];
 
 function Download() {
-  const { intl } = useIntl();
+  const { id: locale } = useLocale();
+  const intl = (zh: string, en: string) => (locale === 'zh-CN' ? zh : en);
   const [searchParams] = useSearchParams();
   const [url, setUrl] = useState<[string, string] | []>([]);
   const validateRef = useRef<ValidateFn>();
