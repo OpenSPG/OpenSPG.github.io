@@ -142,7 +142,16 @@ const CooperationPartner = styled.div<{ theme: string }>`
     `background-image: url('https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*pv4jRp2PihQAAAAAAAAAAAAADtmcAQ/original');`}
 `;
 
-const CooperationPartnerTitle = styled(BaseTitle)``;
+const CooperationPartnerTitle = styled(BaseTitle)`
+  margin: 60px 0 0 0;
+`;
+
+const CooperationOrganization = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+`;
 
 const CooperationPartnerContent = styled.div`
   display: flex;
@@ -198,6 +207,7 @@ const MainPage = () => {
       PARAGRAPH,
       BUSINESS_APPLICATIONS,
       TECHNICAL_FEATURES,
+      ORGANIZATION,
     },
   } = useIntl();
 
@@ -282,6 +292,9 @@ const MainPage = () => {
           <CooperationPartnerTitle>
             {PARAGRAPH.CooperationPartner}
           </CooperationPartnerTitle>
+          <CooperationOrganization>
+            <Typography.Text>({ORGANIZATION.join(' × ')})</Typography.Text>
+          </CooperationOrganization>
           <CooperationPartnerContent>
             {COOPERATION_PARTNER.map((item) => {
               return (

@@ -123,7 +123,10 @@ function Download() {
     const a = document.createElement('a');
     a.href = intl(...url);
     a.target = '_blank';
-    a.download = '《语义增强可编程知识图谱SPG》白皮书 v1.0.pdf';
+    a.download = intl(
+      '《语义增强可编程知识图谱SPG》白皮书 v1.0.pdf',
+      'Semantic-enhanced Programmable Knowledge Graph (SPG)  White Paper.pdf',
+    );
     a.click();
   };
 

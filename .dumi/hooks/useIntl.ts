@@ -264,20 +264,24 @@ export const useIntl = () => {
           ),
         },
       ],
+      ORGANIZATION: [
+        intl('蚂蚁集团', 'Ant Group'),
+        intl('OpenKG 知识图谱社区', 'OpenKG'),
+      ],
       COOPERATION_PARTNER: [
         {
           title: intl('参与编写单位', 'Contributing Entities'),
           unitNames: [
             intl('同济大学', 'Tongji University'),
+            intl('恒生电子股份有限公司', 'Hundsun Technologies Inc.'),
+            intl('浙江大学', 'Zhejiang University'),
+            intl('天津大学', 'Tianjin University'),
             intl(
               '浙江创邻科技有限公司',
               'Zhejiang Chuanglin Technology Co., Ltd.',
             ),
-            intl('浙江大学', 'Zhejiang University'),
-            intl('天津大学', 'Tianjin University'),
             intl('达观数据有限公司', 'Datagrand Inc.'),
             intl('之江实验室', 'Zhejiang Lab'),
-            intl('恒生电子股份有限公司', 'Hundsun Technologies Inc.'),
             intl(
               '海乂知信息科技（南京）有限公司',
               'Haiyi Zhi Information Technology (Nanjing) Co., Ltd.',
