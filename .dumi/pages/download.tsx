@@ -66,6 +66,14 @@ function Download() {
       setAllow(true);
       setToken(tokenFromUrl);
       setTimeStamp(new Date().getTime());
+
+      const host = 'openspg.openfinai.org';
+      if (location.host !== host) {
+        window.location.href = window.location.href.replace(
+          window.location.host,
+          host,
+        );
+      }
       window.close();
     }
   }, [moduleLoaded, tokenFromUrl]);
