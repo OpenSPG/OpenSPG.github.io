@@ -33,18 +33,24 @@ docker-compose -f docker-compose.yml up -d
 docker pull --platform linux/x86_64 openspg/openspg-python:latest
 ```
 
-### 案例体验
+下载完镜像后，可以克隆OpenSPG源码：
+```bash
+git clone git@github.com:OpenSPG/openspg.git
+```
 
-拉取完镜像后，如果想体验OpenSPG提供的案例，可以启动容器后，进入案例的目录执行相应knext命令：
+源码克隆完成后，可以体验源码中自带的案例：
 
 ```bash
-# 启动容器
-docker run --rm --net=host \
-  -it openspg/openspg-python-amd64:latest \
+# 启动容器，将其中的${project_dir}替换成源码目录
+docker run --rm --net=host -v ${project_dir}:/code \
+  -it openspg/openspg-python:latest \
   "/bin/bash"
+  
+# 容器启动后，进入/code目录，即openspg项目源码目录
+cd /code
 
-# 容器启动后，可以直接进入openspg提供的案例目录，就可以按照教程体验例案例了
-cd /openspg/python/knext/knext/examples
+# 后续可以安装案例教程，比如进入riskmining目录
+cd python/knext/knext/examples/riskmining
 
 # 参考案例教程，执行相应的knext命令，比如
 knext project create --prj_path .
@@ -54,30 +60,7 @@ knext builder execute ...
 knext reasoner execute ...
 ```
 
-### 项目开发
-
-如果期望基于OpenSPG新建项目，可以使用下面的命令启动容器
-
-```bash
-# 启动容器，并将本地的项目目录挂载到docker的/code目录中
-docker run --rm --net=host -v ${project_dir}:/code \
-    -it openspg/openspg-python-amd64:latest \
-    "/bin/bash"
-
-# 容器启动后，可以直接进入/code目录
-cd /code
-
-# 创建OpenSPG项目
-knext project create --name ${项目名} --namespace ${项目命名空间}
-
-# 上述命令执行成功后，会在/code下创建一个名称为${项目命名空间}的knext工程目录
-# 进入该目录后，可以看到schema、builder、reasoner三个目录
-cd ${项目命名空间}
-```
-
-如果使用PyCharm等IDE来开发该knext工程，也可以将${project_dir}目录下的${项目命名空间}拖到PyCharm中。
-
-同时本地安装openspg-knext进入开发。由于本目录已挂在到docker中，开发完成后在docker中执行knext命令即可
+另外，当本地基于IDE去编写图谱项目时，可以执行以下命令安装knext：
 
 ```bash
 pip install openspg-knext

@@ -129,8 +129,7 @@ class CompanyFuseOp(FuseOp):
     def link(self, subject_record: SPGRecord) -> SPGRecord:
         name = subject_record.get_property("name")
         linked_record = self.search_client.fuzzy_search(subject_record, "name")
-
-        return output
+        return linked_record
 
     def merge(
             self, subject_record: SPGRecord, linked_record: SPGRecord
