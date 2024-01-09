@@ -24,7 +24,7 @@ knext config set --global host_addr=http://127.0.0.1:8887
 执行以下命令，创建一个项目，会在当前目录下生成示例项目文件夹，文件夹名为namespace的小写：
 
 ```bash
-knext project create --prj_path 示例项目 --namespace Prj --desc 这是一个示例项目
+knext project create --name 示例项目 --namespace Demo --desc 这是一个示例项目
 ```
 
 ### 1.3 切换项目
@@ -32,79 +32,87 @@ knext project create --prj_path 示例项目 --namespace Prj --desc 这是一个
 执行以下命令，进入项目目录，所有对于该项目的操作需要在项目目录内进行：
 
 ```bash
-cd prj
+cd demo
 ```
 
 项目内包含：
 
-- 一个示例实体 `Prj.Demo`，声明在 `/schema/prj.schema`，用于创建项目schema：
+- 一个示例实体 `Demo.Company`，声明在 `schema/demo.schema`，用于创建项目schema：
 
 ```
-namespace Prj
+namespace Demo
 
-Demo(示例实体): EntityType
+Company(公司): EntityType
     properties:
-        demoProperty(示例属性): Text
+        address(地址): Text
 ```
 
-- 一个构建任务 `Demo`，定义在`builder/job/demo.py` ，用于导入 `Prj.Demo`实体：
+- 一个加工任务 `Company`，定义在`builder/job/company.py` ，用于导入 `Demo.Company`实体：
 
 ```python
 # -*- coding: utf-8 -*-
-from knext.api.component import (
-    CSVReader,
-    KGWriter,
-)
-from knext.api.component import SPGTypeMapping
 from knext.client.model.builder_job import BuilderJob
-from schema.prj_schema_helper import Prj
+from knext.api.component import CSVReader, UserDefinedExtractor, SPGTypeMapping, KGWriter
+try:
+    from schema.demo_schema_helper import Demo
+except:
+    pass
 
 
-class Demo(BuilderJob):
+class Company(BuilderJob):
 
     def build(self):
         source = CSVReader(
-            local_path="./builder/job/data/Demo.csv",
-            columns=["id", 'prop'],
+            local_path="./builder/job/data/company.csv",
+            columns=["id", "name", "province", "city", "district"],
             start_row=2
         )
 
-        mapping = (
-            SPGTypeMapping(spg_type_name=Prj.Demo)
-            .add_property_mapping("id", Prj.Demo.id)
-            .add_property_mapping("prop", Prj.Demo.demoProperty)
-        )
+        from operator.address_extract_op import AddressExtractOp
+        extract = UserDefinedExtractor(extract_op=AddressExtractOp())
+
+        mapping = SPGTypeMapping(
+            spg_type_name=Demo.Company
+        ).add_mapping_field("id", Demo.Company.id) \
+        .add_mapping_field("name", Demo.Company.name) \
+        .add_mapping_field("address", Demo.Company.address)
 
         sink = KGWriter()
 
-        return source >> mapping >> sink
+        return source >> extract >> mapping >> sink
 ```
 
-- 一个抽取算子 `DemoExtractOp`，定义在 `builder/operator/demo_extract.py` ：
+- 一个抽取算子 `AddressExtractOp`，定义在 `builder/operator/address_extract_op.py` ：
 
 ```python
-# -*- coding: utf-8 -*-
-import requests
 from typing import List, Dict
-from knext.api.operator import ExtractOp
+
 from knext.api.record import SPGRecord
+from knext.api.operator import ExtractOp
+try:
+    from schema.demo2_schema_helper import Demo2
+except:
+    pass
 
 
-class DemoExtractOp(ExtractOp):
-
+class AddressExtractOp(ExtractOp):
     def __init__(self, params: Dict[str, str] = None):
         super().__init__(params)
 
     def invoke(self, record: Dict[str, str]) -> List[SPGRecord]:
-        # 实现user defined抽取逻辑
-        return [SPGRecord()]
+        province = record.get("province", "")
+        city = record.get("city", "")
+        district = record.get("district", "")
+
+        record.update({"address": province + city + district})
+        return [SPGRecord(Demo.Company).upsert_properties(record)]
 ```
 
-- 一个DSL查询语句，声明在 `reasoner/demo.dsl`，用于查询所有 `Prj.Demo`实体：
+- 一个DSL查询语句，声明在 `reasoner/company.dsl`，用于查询所有 `Demo.Company`实体：
 
 ```
-MATCH (s:Prj.Demo)
-RETURN s.id, s.demoProperty
+MATCH (s:Demo2.Company)
+RETURN s.id, s.address
 ```
 
 ### 1.4 创建schema
@@ -113,31 +121,24 @@ RETURN s.id, s.demoProperty
 knext schema commit
 ```
 
-- 执行此命令后，会将`/schema/prj.schema`内的schema声明，提交到服务端。
+- 执行此命令后，会将`schema/demo.schema`内的schema声明，提交到SPG服务端。
 
-### 1.5 发布算子
 
-```bash
-knext operator publish DemoExtractOp
-```
-
-- 执行此命令后，会扫描 `builder/operator`下的所有算子，并将 `DemoExtractOp` 发布到服务端。
-
-### 1.6 知识加工
+### 1.5 知识加工
 
 ```bash
-knext builder execute Demo
+knext builder execute Company
 ```
 
-- 执行此命令后，会扫描 `builder/job`下的所有加工任务（需要继承`BuilderJob`类），并将 `Demo`提交到服务端。
+- 执行此命令后，会扫描 `builder/job`下的所有加工任务（需要继承`BuilderJob`类），并执行 `Company`加工任务。
 
-### 1.7 dsl查询
+### 1.6 dsl查询
 
 ```bash
-knext reasoner execute --file reasoner/demo.dsl
+knext reasoner execute --file reasoner/company.dsl
 ```
 
-- 执行此命令后，会将 `--file` 指定的文件中的dsl查询语句，提交到服务端进行查询，并同步返回查询结果。
+- 执行此命令后，会执行 `--file` 指定的文件中的dsl查询语句。
 
 ## 2 命令行工具
 
@@ -153,7 +154,6 @@ Options:
 Commands:
   builder   Builder client.
   config    Knext config.
-  operator  Operator client
   project   Project client.
   reasoner  Reasoner client.
   schema    Schema client.
@@ -252,29 +252,37 @@ knext project create [--help]
 使用实例：
 
 ```bash
-knext project create --name 示例项目 --namespace Prj --desc 这是一个示例项目
+knext project create --name 示例项目 --namespace Demo --desc 这是一个示例项目
 ```
 
 结果：
-执行成功后会在当前目录下创建出prj目录，执行`cd prj`进入示例项目。
+执行成功后会在当前目录下创建出demo目录，执行`cd demo`进入示例项目。
 
 ```
-.
-└── prj
-    ├── builder
-    │   ├── model
-    │   ├── operator
-    │   │   └── demo_extract_op.py
-    │   └── job
-    │       ├── data
-    │       │   └── Demo.csv
-    │       └── demo.py
-    ├── reasoner
-    │   └── demo.dsl
-    ├── schema
-    │   ├── prj.schema
-    └── README.md
+demo
+├── README.md
+├── builder
+│   ├── job
+│   │   ├── company.py
+│   │   └── data
+│   │       └── company.csv
+│   └── operator
+│       └── address_extract_op.py
+├── reasoner
+│   └── company.dsl
+└── schema
+    └── demo.schema
 ```
+
+使用实例：
+
+```bash
+knext project create --prj_path demo
+```
+
+结果：
+执行成功后会根据`demo/.knext.cfg`配置文件创建项目。
+ 
 
 #### 2.2.2 展示所有项目
 
@@ -375,68 +383,8 @@ Defined belongTo rule for ...
 Concept rule is successfully registered.
 ```
 
-### 2.4 operator
 
-```bash
-Usage: knext operator [OPTIONS] COMMAND [ARGS]...
-
-  Operator client
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  list     List all server-side operators.
-  publish  Publish an operator to server.
-```
-
-#### 2.4.1 发布算子
-
-```bash
-knext operator publish [OP_NAMES]
-```
-
-- 【必填】OP_NAMES 发布的算子名，多个算子间用`,`分隔开。所有算子必须实现在 `builder/operator/`下，且需要继承`BaseOp`
-  的子类，算子名默认为类名。
-
-使用实例：
-builder/operator/demo_extract_op.py
-
-```python
-...
-
-
-class DemoExtractOp(KnowledgeExtractOp):
-
-
-...
-```
-
-执行命令：
-
-```bash
-knext operator publish DemoExtractOp
-```
-
-结果：
-
-```bash
-Operator [DemoExtractOp] has been successfully published. The latest version is 1.
-```
-
-#### 2.4.2 展示所有算子
-
-```bash
-knext operator list [--help]
-```
-
-使用实例：
-
-```bash
-knext operator list
-```
-
-### 2.5 builder
+### 2.4 builder
 
 ```bash
 Usage: knext builder [OPTIONS] COMMAND [ARGS]...
@@ -447,27 +395,26 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  get     Query submitted job status.
   execute  Submit asynchronous builder jobs to server by providing job names.
 ```
 
-#### 2.5.1 提交构建任务
+#### 2.4.1 执行加工任务
 
 ```bash
 knext builder execute [JOB_NAMES]
 ```
 
-- 【必填】JOB_NAMES 提交的构建任务名，多个任务间用`,`分隔开。所有任务必须实现在 `builder/job/`下，且需要继承`BuilderJob`
+- 【必填】JOB_NAMES 提交的加工任务名，多个任务间用`,`分隔开。所有任务必须实现在 `builder/job/`下，且需要继承`BuilderJob`
   ，任务名默认为类名。
 
 使用实例：
-builder/job/demo.py
+builder/job/company.py
 
 ```python
 ...
 
 
-class Demo(BuilderJob):
+class Company(BuilderJob):
 
 
 ...
@@ -476,25 +423,11 @@ class Demo(BuilderJob):
 执行命令：
 
 ```bash
-knext builder execute Demo
+knext builder execute Company
 ```
 
-结果：
 
-```bash
-Operator [DemoExtractOp] has been successfully published. The latest version is 1.
-```
-
-#### 2.5.2 查询构建任务
-
-```bash
-knext builder get [--help]
-                  [--id id]
-```
-
-- 【必填】--id 查询的任务id（成功提交任务后会返回），结果返回单个任务实例。
-
-### 2.6 reasoner
+### 2.5 reasoner
 
 ```bash
 Usage: knext reasoner [OPTIONS] COMMAND [ARGS]...
@@ -505,14 +438,10 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  get     Query submitted reasoner job status.
   execute   Query dsl by providing a string or file.
-  submit  Submit asynchronous reasoner jobs to server by providing DSL file or string.
 ```
 
-#### 2.6.1 DSL查询
-
-提交DSL查询任务，结果同步返回，查询任务耗时超过3分钟会报错。
+#### 2.5.1 执行推理任务
 
 ```bash
 knext reasoner execute [--help]
@@ -527,8 +456,8 @@ knext reasoner execute [--help]
 reasoner/demo.dsl:
 
 ```bash
-MATCH (s:Prj.Demo)
-RETURN s.id, s.demoProperty
+MATCH (s:Demo2.Company)
+RETURN s.id, s.address
 ```
 
 执行命令：
@@ -539,33 +468,10 @@ knext reasoner execute --file reasoner/demo.dsl
 
 结果：
 
-```bash
-|   s_id | s_demoProperty   |
-|--------|------------------|
-|     00 | demo             |
+```csv
+"s.id","s.address"
+"00","浙江省杭州市西湖区"
 ```
-
-#### 2.6.2 提交DSL推理任务
-
-提交查询任务，结果异步生成。
-
-```bash
-knext reasoner execute [--help]
-                      [--file file]
-                      [--dsl file]
-```
-
-- 【二选一】--file 查询的dsl文件。
-- 【二选一】--dsl 查询的dsl语法，用双引号括起来。
-
-#### 2.6.3 查询推理任务
-
-```bash
-knext reasoner get [--help]
-                  [--id id]
-```
-
-【必填】--id 查询的任务id（成功提交任务后会返回），结果返回单个任务实例。
 
 ## 3 默认项目结构
 
@@ -584,17 +490,9 @@ knext reasoner get [--help]
     │       ├── data # 数据目录
     │       │   ├── Demo1.csv
     │       │   ├── Demo2.csv
-    │       │   └── ...
-    │       └── error_record # 错误信息目录
-    │           ├── spgbuilder_Demo1_1_errorRecord.csv
-    │           ├── spgbuilder_Demo1_2_errorRecord.csv
     │           └── ...
     ├── reasoner # 规则推理
-    │   ├── demo.dsl
-    │   └── result
-    │       ├── spgreasoner_job_1_result.csv
-    │       ├── spgreasoner_job_2_result.csv
-    │       └── ...
+    │   └── demo.dsl
     ├── schema # schema定义
     │   ├── riskmining.schema
     │   ├── riskmining_schema_helper.py
@@ -618,11 +516,9 @@ schema_dir = schema
 schema_file = riskmining.schema
 builder_dir = builder
 builder_operator_dir = builder/operator
-builder_record_dir = builder/error_record
 builder_job_dir = builder/job
 builder_model_dir = builder/model
 reasoner_dir = reasoner
-reasoner_result_dir = reasoner/result
 ```
 
 - `project_name` 项目名，新建项目时通过[--name]参数指定，不可修改。
@@ -634,11 +530,9 @@ reasoner_result_dir = reasoner/result
 - `schema_file` schema声明文件名，新建项目时默认为 `${namespace.lower()}.schema`。若文件重命名，需要修改此配置。
 - `builder_dir` 加工任务目录，新建项目时默认为 `builder`。若目录变动，需要修改此配置。
 - `builder_operator_dir` 算子目录，新建项目时默认为 `builder/operator`。若目录变动，需要修改此配置。
-- `builder_record_dir` 加工任务记录目录，新建项目时默认为 `builder/record`。若目录变动，需要修改此配置。
 - `builder_job_dir` 算子目录，新建项目时默认为 `builder/job`。若目录变动，需要修改此配置。
 - `builder_model_dir` 算法模型目录，新建项目时默认为 `builder/model`。若目录变动，需要修改此配置。
 - `reasoner_dir` 规则推理目录，新建项目时默认为 `reasoner`。若目录变动，需要修改此配置。
-- `reasoner_result_dir` 规则推理结果目录，新建项目时默认为 `reasoner/result`。若目录变动，需要修改此配置。
 - `builder` 目录用来保存所有知识加工任务以及依赖的源数据、自定义算子、算法模型、执行错误记录。
 - `reasoner` 目录用来保存规则推理相关的DSL语法文件和执行结果。
   - DSL语法文件以`.dsl`为结尾，用来保存DSL查询语句。
