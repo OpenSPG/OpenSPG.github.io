@@ -1,47 +1,10 @@
 import { useLocale, useOutlet, usePrefersColor } from 'dumi';
 import { Provider } from 'dumi-theme-openfinai';
-import { useEffect, useRef } from 'react';
-
-// insert github and openKG in navbar
-const createLink = (name: string, link: string, index: number) => {
-  const nav = document.getElementsByClassName('dumi-default-navbar')?.[0];
-  if (!nav) return;
-
-  const xpath = `//*[text()='${name}']`;
-  const element = document.evaluate(
-    xpath,
-    nav,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null,
-  ).singleNodeValue;
-  if (element) return;
-
-  const li = document.createElement('li');
-  const a = document.createElement('a');
-  a.innerText = name;
-  a.href = link;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  li.appendChild(a);
-  nav.insertBefore(li, nav.childNodes[index]);
-
-  return true;
-};
 
 export default () => {
   const { id: lang } = useLocale();
-  const createLinkIntervalRef = useRef<number>();
   const outlet = useOutlet();
   const [prefersColor] = usePrefersColor();
-
-  useEffect(() => {
-    createLinkIntervalRef.current = window.setInterval(() => {
-      // createLink('GitHub', 'https://github.com/OpenSPG/openspg', 1);
-      const result = createLink('OpenKG', 'http://openkg.cn/', 5);
-      if (result) clearInterval(createLinkIntervalRef.current);
-    }, 50);
-  }, []);
 
   return (
     <Provider
