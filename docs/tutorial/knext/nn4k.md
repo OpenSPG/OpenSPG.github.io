@@ -1,6 +1,6 @@
 ---
 title: NN4K介绍
-order: 3
+order: 4
 ---
 
 NN4K(Neural Network for Knowledge Graph)是一个神经网络模型的开发、管理、服务框架，为OpenSPG提供简单易用、模式统一的大模型服务。
