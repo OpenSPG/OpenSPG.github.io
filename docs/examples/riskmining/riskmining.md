@@ -13,7 +13,7 @@ title: 黑产挖掘
 ### step1：进入案例目录
 
 ```shell
- cd /openspg/python/knext/knext/examples/riskmining/
+ cd python/knext/knext/examples/riskmining/
 ```
 
 ### step2：项目初始化

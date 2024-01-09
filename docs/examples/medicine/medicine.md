@@ -12,7 +12,7 @@ title: 医疗图谱
 ### Step1：进入案例目录
 
 ```shell
- cd /openspg/python/knext/knext/examples/medicine/
+ cd python/knext/knext/examples/medicine/
 ```
 
 ### Step2：项目初始化
