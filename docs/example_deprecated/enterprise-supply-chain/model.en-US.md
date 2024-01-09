@@ -5,7 +5,7 @@ order: 1
 
 ## 1 Schema details
 
-Schema tutorial of OpenSPG, please refer to [spgschema_tutorial](../../tutorial/spgschema/index.en-US.md). <br>
+Schema tutorial of OpenSPG, please refer to [spgschema_tutorial](../../tutorial_deprecated/spgschema/index.en-US.md). <br>
 For modeling of the Enterprise Supply Chain Knowledge Graph, please refer to the documentation：[schema description](https://github.com/OpenSPG/openspg/blob/master/python/knext/examples/supplychain/schema/supplychain.schema). <br>
 Execute the following script to complete schema creation: <br>
 

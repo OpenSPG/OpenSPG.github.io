@@ -5,7 +5,7 @@ order: 1
 
 ## 1 建模文件
 
-建模描述文档参见[spg schema](../../tutorial/spgschema/index.md)。
+建模描述文档参见[spg schema](../../tutorial_deprecated/spgschema/index.md)。
 
 建模参考文件[企业供应链图谱schema](https://github.com/OpenSPG/openspg/blob/master/python/knext/examples/supplychain/schema/supplychain.schema)。
 
