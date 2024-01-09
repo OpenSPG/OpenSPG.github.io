@@ -1,6 +1,6 @@
 ---
 title: 参与贡献
-order: 3
+order: 2
 ---
 
 ## 提交 Bug
@@ -51,7 +51,8 @@ python 的 code style 总体上要求符合pep8的标准。
 
 ## 开发流程
 
-* 切换到你的开发分支
+- 切换到你的开发分支
+
   ```
   git checkout -b your-branch
   ....
@@ -59,23 +60,24 @@ python 的 code style 总体上要求符合pep8的标准。
   git commit -m "xxx"
   ```
 
-* 开发你的功能
-* 添加单测
-* 提交PR
-* 处理冲突
+- 开发你的功能
+- 添加单测
+- 提交PR
+- 处理冲突
 
   ```
   git checkout your-branch
   git rebase master # 确保本地 master 是最新的
   ```
-* Code review
+
+- Code review
 
   你提交的代码需要通过 code review 才能合入到 master, 请耐心等待。
   我们将分配相关同学进行 code review。
   如果相关同学2个工作日仍然没有回应你的PR，请在你的PR中 @ 相关同学。
   code review的相关评论会直接贴到相关的 PR 或 issue 中。 如果你觉得相关建议是合理的，请更新你的代码。
 
-* 合入到 master
+- 合入到 master
 
   code review 通过后，我们会安排新的同学进一步review, 确保每个 PR 至少有两个同意后才能合入到主线。
   这个过程中可能也会出现一些需要修改的意见，请耐心修改。

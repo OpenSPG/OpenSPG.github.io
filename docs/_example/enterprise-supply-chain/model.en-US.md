@@ -48,7 +48,7 @@ Product(产品): EntityType
         name(产品名): Text
     relations:
         isA(上位产品): Product
-        
+
 Company(企业): EntityType
     relations:
         product(经营产品): Product
@@ -66,8 +66,8 @@ CSF0000000254,北大*药*份限公司,其他化学药品
 
 This approach has two disadvantages: <br>
 
-1) The raw data needs to be cleaned and converted into multiple rows. <br>
-2) It requires adding and maintaining relation data. When the original data changes, the existing relations need to be deleted and new data needs to be added, which can lead to data errors. <br>
+1. The raw data needs to be cleaned and converted into multiple rows. <br>
+2. It requires adding and maintaining relation data. When the original data changes, the existing relations need to be deleted and new data needs to be added, which can lead to data errors. <br>
 
 #### 2.1.3 Modeling based on SPG semantic attributes
 
@@ -77,7 +77,7 @@ The modeling can be done as follows: <br>
 ```yaml
 Product(产品): ConceptType
     hypernymPredicate: isA
-        
+
 Company(企业): EntityType
     properties:
         product(经营产品): Product
@@ -151,7 +151,7 @@ OpenSPG distinguishes between concepts and entities to decouple semantics from d
 ```yaml
 Product(产品): ConceptType
     hypernymPredicate: isA
-        
+
 Company(企业): EntityType
     properties:
         product(经营产品): Product
@@ -167,12 +167,12 @@ The representation of events with multiple elements is indeed a type of lossless
 
 ```yaml
 Event(事件):
-    properties:
-        eventTime(发生时间): Long
-        subject(涉事主体): Text
-        object(客体): Text
-        place(地点): Text
-        industry(涉事行业): Text
+  properties:
+    eventTime(发生时间): Long
+    subject(涉事主体): Text
+    object(客体): Text
+    place(地点): Text
+    industry(涉事行业): Text
 ```
 
 This representation method is unable to capture the multidimensional associations of real events. OpenSPG provides event modeling that enables the association of multiple elements in an event, as shown below.

@@ -1,3 +1,7 @@
+---
+title: 医疗图谱
+---
+
 ## 从文本构建医疗图谱
 
 本示例旨在展示如何基于SPG-Schema的定义，利用大模型实现对图谱实体和关系的抽取和构建到图谱。
@@ -8,7 +12,7 @@
 ### Step1：进入案例目录
 
 ```shell
- cd python/knext/knext/examples/medicine/
+ cd /openspg/python/knext/knext/examples/medicine/
 ```
 
 ### Step2：项目初始化

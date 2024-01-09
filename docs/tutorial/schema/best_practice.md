@@ -1,15 +1,25 @@
+---
+title: 建模最佳实践
+order: 2
+nav:
+  second:
+    order: 2
+    title: 知识建模
+---
+
 为了方便大家更好地理解和应用OpenSPG构建知识图谱，我们从SPGSchema建模的最佳实践中总结出了7个原则，每个原则都搭配了相关示例进行说明。期望通过这些原则能解决大家在建模时的疑惑，能充分发挥OpenSPG高效且强大的知识表达能力。
 
 # 1、类型选择原则
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2023/jpeg/53323/1702390743483-84067bfe-54f7-4713-9c7b-14bec299a74a.jpeg)
+![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*l1nISolnG3AAAAAAAAAAAAAADtmcAQ/original)
 
 ### 原则1：复杂多元结构用实体类型或事件类型
 
 :::info
 **解释：**当一个事物需要丰富的属性来进行描述，比如某个“公司”，不光是只用一个名称，还要借助经营范围、企业证件号码、注册地址等信息来描述，就适合使用实体类型进行建模。
 :::
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/53323/1702302032427-6ede7c04-9299-471e-a4b8-4c092063e8d9.png#clientId=ud735c3ce-f3b8-4&from=paste&height=467&id=u306c1f2d&originHeight=467&originWidth=401&originalType=binary&ratio=1&rotation=0&showTitle=false&size=50196&status=done&style=none&taskId=ubee9702d-b87a-41a5-8a1a-a4a677076cb&title=&width=401)
+
+![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*3GntTLnB4f4AAAAAAAAAAAAADtmcAQ/original)
 
 ### 原则2：扁平化的分类标签用概念类型
 
@@ -98,7 +108,8 @@ id,name,locateArea,address,contactPhone,belongTo
 ```
 
 通过belongTo属性的值会自动产生从实例到概念的边，实现对实体的分类。
-![](https://intranetproxy.alipay.com/skylark/lark/0/2023/jpeg/53323/1702385489243-65f6d66d-a303-437f-bc2b-82966f3b86a6.jpeg)
+
+![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*grXfT7FsX-0AAAAAAAAAAAAADtmcAQ/original)
 
 在查询时，我们可以直接用概念类型“TaxonomyOfShop”指代类型“Shop”，实现按概念召回对应的实体。实现跟使用类型分别建模的效果，但是大幅简化数据的查询和维护。
 
@@ -149,7 +160,7 @@ id,name,city,address,contactPhone
 MATCH (s:Shop WHERE id="1")-[p:belongTo]-(o) RETURN s,p,o
 ```
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2023/jpeg/53323/1702384756498-1f1bf6bf-408b-4c9c-922c-c3ccb557a342.jpeg)
+![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*w9dWT7gk7FMAAAAAAAAAAAAADtmcAQ/original)
 
 :::warning
 **注意：**
@@ -173,7 +184,8 @@ MATCH (s:Shop WHERE id="1")-[p:belongTo]-(o) RETURN s,p,o
 2. **实体禁止指向事件类型：**实体都是多元要素的复杂对象，它可以和其他实体主动产生关联，但概念类型、标准类型只能做为实体的属性类型。因为实体本身不自动产生事件，所以实体禁止直接建立和事件的关系。
 3. **概念禁止指向多元类型：**概念是扁平化的分类标签，它抽象描述一类共同特征的实体集合，所以它只能被事件或实体用作属性类型的定义，反之禁止。
    :::
-   ![](https://intranetproxy.alipay.com/skylark/lark/0/2023/jpeg/53323/1702390718977-82d8a4be-fd9c-4823-ad9d-867f2b750803.jpeg)
+
+![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*OyptTbv1_FMAAAAAAAAAAAAADtmcAQ/original)
 
 ### 原则6：概念类型之间只允许系统指定的7大类语义关系
 
@@ -193,4 +205,4 @@ MATCH (s:Shop WHERE id="1")-[p:belongTo]-(o) RETURN s,p,o
 **解释：**
 尽可能的使用概念类型、标准类型和实体类型对属性进行标准化。因为SPGSchema会自动根据属性生成等价的关系，简化关系的创建和数据维护。尤其在变更实体的属性值后，关系实例会自动根据属性值同步，让属性等价的关系始终保持跟属性值的描述一致。SPGSchema建议尽量使用属性来替代关系的创建，只有确实需要在关系上配置属性，或者定义逻辑关系的时候再使用关系的创建。
 :::
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/53323/1701855953213-9184cec3-7ad9-4fd3-8638-fa4c2236b96f.png#clientId=u4f7e7723-3bb4-4&from=paste&height=441&id=u187c0c45&originHeight=441&originWidth=592&originalType=binary&ratio=1&rotation=0&showTitle=false&size=80716&status=done&style=none&taskId=ubc6fe53c-14b2-48cf-b760-87a13bfb7a4&title=&width=592)
+![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*A3GfQJSXCv8AAAAAAAAAAAAADtmcAQ/original)

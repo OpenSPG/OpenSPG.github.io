@@ -1,5 +1,11 @@
+---
+title: 概念语义分类
+order: 3
+---
+
 概念之间只允许定义以下7大类的语义谓词（属性和关系），具体定义形式为：分类简写#谓词，比如HYP#isA
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/53323/1701768835821-80286d65-550f-471f-b38e-374a873a40c0.png#clientId=uf9772733-386c-4&from=paste&height=515&id=u8a68b2c0&originHeight=515&originWidth=1200&originalType=binary&ratio=1&rotation=0&showTitle=false&size=288772&status=done&style=none&taskId=ub768ab04-6810-4e9a-b4b8-a2b139149d9&title=&width=1200)
+
+![image.png](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*Gm4WTbt1xVcAAAAAAAAAAAAADtmcAQ/original)
 
 ### HYP: 上位关系(Hypernym)
 

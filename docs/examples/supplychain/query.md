@@ -12,7 +12,7 @@ order: 4
 4）企业资金近1月、3月、6月流水差 <br>
 5）实控人相关公司信息 <br>
 但在原有图谱中，只有资金转账、法人代表信息，无法直接获取上述特征，本例演示如果通过SPG完成如上5个特征获取。 <br>
-特征定义在schema文件中，可点击查看[企业供应链图谱schema](https://github.com/OpenSPG/openspg/blob/master/python/knext/examples/supplychain/schema/supplychain.schema)。 <br>
+特征定义在schema文件中，可点击查看[企业供应链图谱schema](https://github.com/OpenSPG/openspg/blob/master/python/knext/knext/examples/supplychain/schema/supplychain.schema)。 <br>
 
 **特征1：先定义企业和企业间的主供应链关系，规则定义如下**
 
@@ -183,8 +183,8 @@ Define (s:Compnay)-[p:sameLegalReprensentative]->(o:Company) {
 MATCH
     (s:SupplyChain.Company)
 RETURN
-    s.id, s.fundTrans1Month, s.fundTrans3Month, 
-    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn, 
+    s.id, s.fundTrans1Month, s.fundTrans3Month,
+    s.fundTrans6Month, s.fundTrans1MonthIn, s.fundTrans3MonthIn,
     s.fundTrans6MonthIn, s.cashflowDiff1Month, s.cashflowDiff3Month, s.cashflowDiff6Month
 ```
 
@@ -212,6 +212,7 @@ RETURN
 ## 场景2：企业供应链发生变化
 
 假设供应链发生如下变化： <br>
+
 ```
 "钱****份限公司"发布公告，生产产品“三轮摩托车，二轮摩托车”变更为“两轮摩托车”，则"三角**轮胎股份"和钱"****份限公司"的主供应链关系自动断裂，"三角**轮胎股份"和"钱****份限公司"不再具有主供应链关系
 ```
@@ -226,7 +227,7 @@ CSF0000001662,浙江**摩托**限公司,"汽车-摩托车制造-二轮摩托车"
 重新提交任务:
 
 ```cypher
-knext builder submit CompanyUpdate
+knext builder execute CompanyUpdate
 ```
 
 执行完成后再次查询,只会返回二轮摩托车，而三轮摩托车不再被关联:
@@ -252,7 +253,7 @@ id,name,subject,index,trend
 提交事件数据:
 
 ```
-knext builder submit ProductChainEvent
+knext builder execute ProductChainEvent
 ```
 
 传导链路如下: <br>

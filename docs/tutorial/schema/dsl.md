@@ -1,4 +1,9 @@
-在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](../knext/index.md)）。
+---
+title: 声明式Schema
+order: 1
+---
+
+在声明式Schema里不定义算子，算子由KNext的发布来绑定（算子开发参考[KNext教程](../knext/operator.md)）。
 
 ### 关键字
 
@@ -13,24 +18,24 @@ NotNull, MultiValue, Enum, Regular
 ```
 
 > -> 用于表达类型的继承关系，A -> B
-> STD.*表示以STD.开头的都是预留关键字，作标准类型名称
+> STD.\*表示以STD.开头的都是预留关键字，作标准类型名称
 
 ### 基础句法
 
 类似YAML，以缩进作为作用域的表示。缩进建议使用4个空格（Tab符会被当做两个空格）
 
 - **A(B): C**
-    - A为类型/属性的英文名
-    - B为类型/属性的中文名称
-    - C为取值
+  - A为类型/属性的英文名
+  - B为类型/属性的中文名称
+  - C为取值
 - **A(B)->P**
-    - A为类型的英文名
-    - B为类型的中文名称
-    - P为要继承自的父类型
+  - A为类型的英文名
+  - B为类型的中文名称
+  - P为要继承自的父类型
 - **namespace A**
-    - A表示项目前缀，在Schema文件的第一行必须出现。项目前缀会在Schema提交的时候自动拼接到实体类型名称的前面
+  - A表示项目前缀，在Schema文件的第一行必须出现。项目前缀会在Schema提交的时候自动拼接到实体类型名称的前面
 - **[[...]]**
-    - 规则脚本的定界符，仅用于rule的定义，类似于Python的"""用法
+  - 规则脚本的定界符，仅用于rule的定义，类似于Python的"""用法
 
 声明式Schema脚本采用逐行解析的方式，定义上要遵循顺序原则，即父类型要在子类型之前定义、属性上使用的类型也需要在其所属类型定义之前先定义好。
 
@@ -204,10 +209,11 @@ Disease(疾病): EntityType
         shape(性状): Text
 ```
 
-## SchemaHelper类
+### SchemaHelper类
 
 每次Schema变更发布后，根据项目前缀生成一个python类，比如medical例子：
 knext/examples/medical/schema/medical_schema_helper.py
+
 > 类名为项目前缀名称
 > 类的成员变量为该项目下的类型名称
 
@@ -272,6 +278,7 @@ class Medical:
 ```
 
 用户使用的时候，代码如此写：
+
 > 需要先import项目schema类
 
 ```python

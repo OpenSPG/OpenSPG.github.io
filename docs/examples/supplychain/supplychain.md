@@ -1,9 +1,8 @@
 ---
 title: 企业供应链
 nav:
-  second:
-    title: 企业供应链
-    order: 2
+  order: 3
+  title: 案例
 ---
 
 ## 1 背景
@@ -14,7 +13,7 @@ nav:
 
 ## 2 总览
 
-建模参考文件[企业供应链图谱schema](https://github.com/OpenSPG/openspg/blob/master/python/knext/examples/supplychain/schema/supplychain.schema)，如下图实例
+建模参考文件[企业供应链图谱schema](https://github.com/OpenSPG/openspg/blob/master/python/knext/knext/examples/supplychain/schema/supplychain.schema)，如下图实例
 
 ![产业链企业图谱深度语义关联](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*J_NpRoNbO-YAAAAAAAAAAAAADtmcAQ/original)
 
@@ -34,7 +33,7 @@ nav:
 ### Step1：进入案例目录
 
 ```shell
- cd python/knext/examples/supplychain/
+ cd /openspg/python/knext/examples/supplychain/
 ```
 
 ### Step2：项目初始化
@@ -50,23 +49,9 @@ knext project create --prj_path .
 schema文件已创建好，可执行如下命令提交
 
 ```shell
+# 提交schema
 knext schema commit
 ```
-
-```shell
-# 提交公司事件分类数据
-knext builder submit TaxOfCompanyEvent
-# 提交产品事件分类数据
-knext builder submit TaxOfProdEvent
-```
-
-执行查询任务命令，等待任务完成
-
-```shell
-knext builder get --id ${jobId}
-```
-
-其中jobId为提交后返回的id
 
 ```shell
 # 提交导致关系逻辑规则
@@ -81,18 +66,20 @@ schema建模详细内容可参见 [基于SPG建模的产业链企业图谱](./mo
 
 本例主要为结构化数据，故演示结构化数据转换和实体链指，具体细节可参见文档[产业链案例知识构建](./builder.md)。
 
-**第一步：提交自定义实体链指算子**
+**提交知识导入任务**
 
 ```shell
-knext operator publish CompanyLinkerOperator
+# 提交公司事件分类数据
+knext builder execute TaxOfCompanyEvent
+# 提交产品事件分类数据
+knext builder execute TaxOfProdEvent
 ```
 
-**第二步：提交知识导入任务**
-
 ```shell
-knext builder submit Index,Trend
-knext builder submit Industry,Product,ProductHasSupplyChain
-knext builder submit Company,CompanyFundTrans,Person
+# 提交剩余的数据
+knext builder execute Index,Trend
+knext builder execute Industry,Product,ProductHasSupplyChain
+knext builder execute Company,CompanyFundTrans,Person
 ```
 
 最后提交事件
@@ -106,7 +93,7 @@ knext builder submit ProductChainEvent
 SPG支持ISO GQL写法，可用如下命令行执行查询任务
 
 ```cypher
-knext reasoner query --dsl "${ql}"
+knext reasoner execute --dsl "${ql}"
 ```
 
 具体任务详情可参见文档[产业链企业信用图谱查询任务](./query.md)。
@@ -114,7 +101,7 @@ knext reasoner query --dsl "${ql}"
 信用评级因子获取：
 
 ```cypher
-knext reasoner query --dsl "
+knext reasoner execute --dsl "
 MATCH
     (s:SupplyChain.Company)
 RETURN
@@ -126,7 +113,7 @@ RETURN
 ```
 
 ```cypher
-knext reasoner query --dsl "
+knext reasoner execute --dsl "
 MATCH
     (s:SupplyChain.Company)-[:mainSupply]->(o:SupplyChain.Company)
 RETURN
@@ -135,7 +122,7 @@ RETURN
 ```
 
 ```cypher
-knext reasoner query --dsl "
+knext reasoner execute --dsl "
 MATCH
     (s:SupplyChain.Company)-[:belongToIndustry]->(o:SupplyChain.Industry)
 RETURN
@@ -144,7 +131,7 @@ RETURN
 ```
 
 ```cypher
-knext reasoner query --dsl "
+knext reasoner execute --dsl "
 MATCH
     (s:SupplyChain.Company)-[:sameLegalRepresentative]->(o:SupplyChain.Company)
 RETURN
@@ -155,7 +142,7 @@ RETURN
 事件影响分析：
 
 ```cypher
-knext reasoner query --dsl "
+knext reasoner execute --dsl "
 MATCH
     (s:SupplyChain.ProductChainEvent)-[:leadTo]->(o:SupplyChain.CompanyEvent)
 RETURN

@@ -1,173 +1,143 @@
+---
+title: KGDSL语法
+order: 1
+nav:
+  second:
+    order: 3
+    title: 分析推理
+---
+
 注：KGDSL不区分大小写
 
 ## 1 保留关键词
 
 ### 1.1 常用关键词
 
-| 关键词                        | 描述      | 作用范围              |
-|----------------------------|---------|-------------------|
-| Define                     | 定义关键词   | 全局                |
-| Structure                  | 子图描述关键词 | 全局                |
-| Constraint                 | 规则描述关键词 | 全局                |
-| Action                     | 后置动作关键词 | 全局                |
-| /                          | 概念引用分隔符 | 全局                |
-| group                      | 图分组关键词  | Constraint        |
-| sum/filter/find/sort/slice 
- /count/max/min/avg/concat  | 图聚合操作算子 | Constraint的group后 |
-| and/or/not/xor/optional    | 逻辑计算算子  | 全局                |
+| 关键词     | 描述           | 作用范围   |
+| ---------- | -------------- | ---------- |
+| Define     | 定义关键词     | 全局       |
+| Structure  | 子图描述关键词 | 全局       |
+| Constraint | 规则描述关键词 | 全局       |
+| Action     | 后置动作关键词 | 全局       |
+| /          | 概念引用分隔符 | 全局       |
+| group      | 图分组关键词   | Constraint |
+
+| sum/filter/find/sort/slice
+/count/max/min/avg/concat | 图聚合操作算子 | Constraint的group后 |
+| and/or/not/xor/optional | 逻辑计算算子 | 全局 |
 
 ### 1.2 特殊关键词
 
-| 关键词                | 描述                | 作用范围              |
-|--------------------|-------------------|-------------------|
-| **start**          | 起点标志              | Structure         |
-| **per_node_limit** | 边限制标志             | Structure         |
-| **label**          | 得到点边的类型           | Constraint/Action |
+| 关键词             | 描述                            | 作用范围          |
+| ------------------ | ------------------------------- | ----------------- |
+| **start**          | 起点标志                        | Structure         |
+| **per_node_limit** | 边限制标志                      | Structure         |
+| **label**          | 得到点边的类型                  | Constraint/Action |
 | **property_map**   | 将图节点或者边的属性生成map对象 | Constraint/Action |
-| **path**           | 得到满足的路径           | Constraint/Action |
-| **id**             | 图谱点内部id（全局唯一）     | Constraint/Action |
-| **from**           | 图谱边的起点内部id        | Constraint/Action |
-| **to**             | 图谱边的终点内部id        | Constraint/Action |
+| **path**           | 得到满足的路径                  | Constraint/Action |
+| **id**             | 图谱点内部id（全局唯一）        | Constraint/Action |
+| **from**           | 图谱边的起点内部id              | Constraint/Action |
+| **to**             | 图谱边的终点内部id              | Constraint/Action |
 
 ## 2 数据类型
 
 ### 2.1 基本数据类型
 
-| 数据类型   | 描述   | 示例         |
-|--------|------|------------|
-| int    | 整型   | 1，2，3      |
-| float  | 浮点型  | 23.11      |
-| string | 字符串  | "abcdef"   |
-| bool   | 布尔类型 | true/false |
-| null   | 空    | null       |
+| 数据类型 | 描述     | 示例       |
+| -------- | -------- | ---------- |
+| int      | 整型     | 1，2，3    |
+| float    | 浮点型   | 23.11      |
+| string   | 字符串   | "abcdef"   |
+| bool     | 布尔类型 | true/false |
+| null     | 空       | null       |
 
 ### 2.2 复杂数据类型
 
-| 数据类型          | 描述    | 示例      |
-|---------------|-------|---------|
-| list          | 数组类型  | [1,2,3] |
-| multi_version | 多版本属性 | {       
-
-"20220111":value,"20220112":value,
-} |
-| date | 日期类型 | / |
-| node | 点类型 | {"id":123456,"label":"Film","property":{"name":"Titanic"}
-} |
-| edge | 边类型 | {"from":1234,"to":4321,"label":"starOfFilm","property":{"year":1989}
-} |
+| 数据类型      | 描述       | 示例                                                                                                                                      |
+| ------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| list          | 数组类型   | [1,2,3]                                                                                                                                   |
+| multi_version | 多版本属性 | {<br>&nbsp;&nbsp;"20220111":value,<br>&nbsp;&nbsp;"20220112":value,<br>}                                                                  |
+| date          | 日期类型   | /                                                                                                                                         |
+| node          | 点类型     | {<br>&nbsp;&nbsp;"id":123456,<br>&nbsp;&nbsp;"label":"Film",<br>&nbsp;&nbsp;"property":{"name":"Titanic"}<br>}                            |
+| edge          | 边类型     | {<br>&nbsp;&nbsp;"from":1234,<br>&nbsp;&nbsp;"to":4321,<br>&nbsp;&nbsp;"label":"starOfFilm",<br>&nbsp;&nbsp;"property":{"year":1989}<br>} |
 
 ## 3 表达式算子
 
 ### 3.1 表达式风格
 
 我们表达式采用过程式+链式两种方式混合表达
+
 > 链式思想：是将多个操作（多行代码）通过点号(.)链接在一起成为一句代码,使代码可读性好。
 > 过程式思想：通过多行的方式，描述一段计算内容
 
-链式风格非常适用于数据计算，如下例，我们需要计算一个表达式(1 + 2) * 3 - 4，约束为一次只能计算一次，则过程式如下
+链式风格非常适用于数据计算，如下例，我们需要计算一个表达式(1 + 2) \* 3 - 4，约束为一次只能计算一次，则过程式如下
+
 > a = 1+2
-> b = a *3
+> b = a \*3
 > d = b -4
 
 使用链式风格
+
 > add(1,2).multiply(3).subtract(4)
 
 一行可以表达一个完整的计算流，我们可以在做数据计算时使用该风格
 
 ### 3.2 计算运算符
 
-| 符号 | 示例  | 含义   | 备注    |
-|----|-----|------|-------|
-| +  | a+b | 加法   |       |
-| -  | a-b | 减法   |       |
-| *  | a*b | 乘法   |       |
-| /  | a/b | 除法   | 不可除0  |
-| %  | a%b | 取模   | b不可为0 |
-| =  | a=b | 赋值操作 |       |
+| 符号 | 示例 | 含义     | 备注     |
+| ---- | ---- | -------- | -------- |
+| +    | a+b  | 加法     |          |
+| -    | a-b  | 减法     |          |
+| \*   | a\*b | 乘法     |          |
+| /    | a/b  | 除法     | 不可除0  |
+| %    | a%b  | 取模     | b不可为0 |
+| =    | a=b  | 赋值操作 |          |
 
 ### 3.3 逻辑运算符
 
-| 符号       | 示例                    | 含义      | 备注                          |
-|----------|-----------------------|---------|-----------------------------|
-| and      | a and b               | 且       |                             |
-| or       | a or b                | 或       |                             |
-| not，!    | not a, !a             | 非       | not可作用于全局，但!只能作用于Constraint |
-| xor      | a xor b               | 异或      |                             |
-| optional | optional (a)-[e]->(b) | 对路径表示可选 | 只在Structure中对路径生效           |
+| 符号     | 示例                  | 含义           | 备注                                     |
+| -------- | --------------------- | -------------- | ---------------------------------------- |
+| and      | a and b               | 且             |                                          |
+| or       | a or b                | 或             |                                          |
+| not，!   | not a, !a             | 非             | not可作用于全局，但!只能作用于Constraint |
+| xor      | a xor b               | 异或           |                                          |
+| optional | optional (a)-[e]->(b) | 对路径表示可选 | 只在Structure中对路径生效                |
 
 ### 3.4 比较运算符
 
-| 符号                  | 示例                    | 含义   | 备注                              |
-|---------------------|-----------------------|------|---------------------------------|
-| ==                  | a == b                | 判等   | 只可比较int、float、string、node、edge， 
- 其中，node、edge以id判断为准 |
-| >                   | a > b                 | 大于   |                                 |
-| >=                  | a>=b                  | 大于等于 |                                 |
-| <                   | a < b                 | 小于   |                                 |
-| <=                  | a<=b                  | 小于等于 |                                 |
-| !=                  | a != b                | 不等   |                                 |
-| in                  | a in [1,2,3]          | 包含   |                                 |
-| BT                  | a bt [1,5]            
- a bt (1,5)          | between运算符，表示a在1，5之间， 
-
-方括号表示闭区间，
-圆括号表示开区间 | 只可比较int、float、string |
+| 符号 | 示例                       | 含义                                                                       | 备注                                                                     |
+| ---- | -------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ==   | a == b                     | 判等                                                                       | 只可比较int、float、string、node、edge，<br>其中，node、edge以id判断为准 |
+| >    | a > b                      | 大于                                                                       |                                                                          |
+| >=   | a>=b                       | 大于等于                                                                   |                                                                          |
+| <    | a < b                      | 小于                                                                       |                                                                          |
+| <=   | a<=b                       | 小于等于                                                                   |                                                                          |
+| !=   | a != b                     | 不等                                                                       |                                                                          |
+| in   | a in [1,2,3]               | 包含                                                                       |                                                                          |
+| BT   | a bt [1,5]                 |
+| BT   | a bt [1,5] <br> a bt (1,5) | between运算符，表示a在1，5之间，<br>方括号表示闭区间，<br>圆括号表示开区间 | 只可比较int、float、string                                               |
 
 ### 3.5 字符串运算符
 
-| 符号            | 示例                    | 含义             | 返回值  | 备注                    |
-|---------------|-----------------------|----------------|------|-----------------------|
-| contains      | contains(a,b)         | 判断a字符串是否包含b字符串 | bool |                       |
-| like，not like | a like b，a not like b | 字符串匹配判断，%为通配符  | bool | "abc" like "a%" 为true |
-| concat，+      | concat(a,b)，a+b，      
-
-concat(a,b,c)，a+b+c
-concat(a,...,f), a+...+f | 字符串拼接，concat支持n个入参，
-也可用+处理 | string | 暂未实现 |
-| length | length(a) | 返回字符串长度 | int | |
-| strstr | strstr(str,start)
-strstr(str,start,end) | 得到字符串子串，从1开始 | string | 暂未实现 |
-| lower | lower(a) | 全部转换成小写 | string | 暂未实现 |
-| upper | upper(a) | 全部转换成大写 | string | 暂未实现 |
-| is_not_blank | is_not_blank(a) | 字符串不为空："" | bool | 暂未实现 |
+| 符号           | 示例                                                                      | 含义                                            | 返回值 | 备注                   |
+| -------------- | ------------------------------------------------------------------------- | ----------------------------------------------- | ------ | ---------------------- |
+| contains       | contains(a,b)                                                             | 判断a字符串是否包含b字符串                      | bool   |                        |
+| like，not like | a like b，a not like b                                                    | 字符串匹配判断，%为通配符                       | bool   | "abc" like "a%" 为true |
+| concat，+      | concat(a,b)，a+b，<br> concat(a,b,c)，a+b+c <br> concat(a,...,f), a+...+f | 字符串拼接，concat支持n个入参，<br> 也可用+处理 | string | 暂未实现               |
+| length         | length(a)                                                                 | 返回字符串长度                                  | int    |                        |
+| strstr         | strstr(str,start) <br> strstr(str,start,end)                              | 得到字符串子串，从1开始                         | string | 暂未实现               |
+| lower          | lower(a)                                                                  | 全部转换成小写                                  | string | 暂未实现               |
+| upper          | upper(a)                                                                  | 全部转换成大写                                  | string | 暂未实现               |
+| is_not_blank   | is_not_blank(a)                                                           | 字符串不为空：""                                | bool   | 暂未实现               |
 
 ### 3.6 类型转换运算符
 
-| 符号                              | 示例                                     | 含义           | 支持情况 |
-|---------------------------------|----------------------------------------|--------------|------|
-| cast(a, 'int'/'float'/'string') | cast(1,'string') //转化成为str             
- cast('1', 'int') //转换成int       | 将基本类型转换成为其他基本类型                        |              |
-| to_date(time_str,format)        | to_date('20220101', 'yyMMdd') //转换成为日期 | 将字符串转换成为日志类型 
-
-format可以为如下组合
-时间类型
-
-- s，秒//unix时间戳起
-- m，分
-- h，小时
-- d，天
-- M，月
-- y，年
-  可组合，各种合理格式
-- yyMMdd 年月日类型
-- yyMMdd hh:mm:ss 为简化使用，支持
-  数字@日期方式初始化时间 | 暂未实现 |
-  | window(version_express, unit) | A.cost_every_day //A为用户，cost_every_day为一个多版本属性，表示每日的花销
-  A.cost_every_day.window(cur in [1@M,2@M,3@M], M) //获取1月、2月、3月的数据，按月取数据
-  A.cost_every_day.window(start > -30@d, d) //取近30天的数据，按天取数据
-  A.cost_every_day.window(end <-15@d, d) //取15天天前的所有数据,，按天取数据
-  A.cost_every_day.window(start > -30@d and end <-15@d, d) //取30天前，到15天前的数据，按天取数据，可进行组合
-  A.cost_every_day.window( (start > -30@d and end <-15@d) and (start > -7@d), d)
-  //取30天前，到15天前的数据，以及近7天的数据，按天取数据，可进行组合 | 将多版本类型（multi_version）转换成list，方便参与计算。*
-  *version_express**包含三个关键词
-- start，起始版本号
-- end，终点版本号
-- cur，当前版本号表达式为逻辑表达式，可通过and/or进行组合
-  **unit** 为属性单位，有如下类型
-- M，按月获取数据
-- d，按天获取数据
-- seq，默认值，按照序列取数据，当没有unit时，按照seq来处理
-  注意：若是按月或者按天获取数据，则需要存在按天和按月聚合的数据 | 暂未实现 |
+| 符号                            | 示例                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 含义                                                                                                                                                                                                                                                                                                                                                                                                           | 支持情况 |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| cast(a, 'int'/'float'/'string') | cast(1,'string') //转化成为str                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| cast('1', 'int') //转换成int    | 将基本类型转换成为其他基本类型                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                                |
+| to_date(time_str,format)        | to_date('20220101', 'yyMMdd') //转换成为日期                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | 将字符串转换成为日志类型<br>format可以为如下组合 <br> 时间类型 <br> - s，秒//unix时间戳起<br> - m，分 <br> - h，小时 <br> - d，天 <br> - M，月 <br> - y，年 <br> 可组合，各种合理格式 <br> - yyMMdd 年月日类型 <br> - yyMMdd hh:mm:ss 为简化使用，支持 <br> 数字@日期方式初始化时间                                                                                                                            | 暂未实现 |
+| window(version_express, unit)   | A.cost_every_day //A为用户，cost_every_day为一个多版本属性，表示每日的花销<br> A.cost_every_day.window(cur in [1@M,2@M,3@M], M) //获取1月、2月、3月的数据，按月取数据<br> A.cost_every_day.window(start > -30@d, d) //取近30天的数据，按天取数据<br> A.cost_every_day.window(end <-15@d, d) //取15天天前的所有数据,，按天取数据<br> A.cost_every_day.window(start > -30@d and end <-15@d, d) //取30天前，到15天前的数据，按天取数据，可进行组合<br> A.cost_every_day.window( (start > -30@d and end <-15@d) and (start > -7@d), d) //取30天前，到15天前的数据，以及近7天的数据，按天取数据，可进行组合 | 将多版本类型（multi_version）转换成list，方便参与计算。**version_express**包含三个关键词<br>- start，起始版本号<br>- end，终点版本号<br>- cur，当前版本号表达式为逻辑表达式，可通过and/or进行组合<br>**unit** 为属性单位，有如下类型<br>- M，按月获取数据<br>- d，按天获取数据<br>- seq，默认值，按照序列取数据，当没有unit时，按照seq来处理<br>注意：若是按月或者按天获取数据，则需要存在按天和按月聚合的数据 | 暂未实现 |
 
 ### 3.7 list运算符（未实现）
 
@@ -181,57 +151,42 @@ array = [{age:10},{age:20},{age:30}]
 
 对该数组的操作预算符用法如下：
 
-| 符号表示                                  | 示例                                      | 含义   | 输入类型             | 输出类型                                         | 元素类型 |
-|---------------------------------------|-----------------------------------------|------|------------------|----------------------------------------------|------|
-| max(alias_name)                       | array.mark_alias(a).max(a.age)          
- //输出为30                               | 取最大值                                    | list | int/float/string | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
-| min(alias_name)                       | array.mark_alias(a).min(a.age)          
- //输出为10                               | 取最小值                                    | list | int/float/string | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
-| sum(alias_name)                       | array.mark_alias(a).sum(a.age)          
- // 输出为60                              | 对数组进行累加                                 | list | int/float        | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
-| avg(alias_name)                       | array.mark_alias(a).avg(a.age)          
- // 输出为20                              | 取均值                                     | list | int/float        | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
-| count()                               | array.count()                           
- //输出为3                                | 取数组大小                                   | list | int              | 支持所有类型                                       |
-| filter(operator_express)              | array.mark_alias(a).filter(a.age <18)   
- //输出为[{age:10}]                       | 对数组进行过滤，返回新的数组                          | list | list             | 支持所有类型                                       |
-| sort(alias_name, 'desc'/'asc')        | array.mark_alias(a).sort(a.age, 'desc') 
- //输出为[{age:30},{age:20},{age:10}]     | 排序                                      | list | list             | 支持所有类型                                       |
-| slice(start_index,end_index)          | array.mark_alias(a).slice(1,2)          
- //获取第一个到第二个的内容，输出为[{age:10},{age:20}] | 切片，从指定起点index到终点index，起点为1，取闭区间         
-
-- start_index，起点的index
-- end_index，终止的index | | | 支持所有类型 |
-  | get(index) | array.mark_alias(a).get(1)
-  //获取第一个到第二个的内容，输出为{age:10} | 获取第index个元素，从1开始
-  若超过大小，则返回null | | | |
-  | str_join(alias_name, tok) | array.mark_alias(a).str_join(cast(a.age, 'string'), ',')
-  //将年龄转换成字符串，并且通过逗号生成字符串，输出为"10,20,30" | 字符串连接
-- alias_name，数组中元素别名
-- tok，连接符 | | | 只支持string |
-  | accumlate(operator, alias_name) | array.mark_alias(a).accumlate('*', a.age) //累乘，结果为6000
-  array.mark_alias(a).accumlate('+', a.age) //累加等同于sun，输出为60 | 累计计算算子
-- operator，为*/
-- alias_name，数组中元素别名 | | | 支持*，+ |
+| 符号表示                        | 示例                                                                                                                                  | 含义                                                                                                          | 输入类型 | 输出类型         | 元素类型                                                           |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | ---------------- | ------------------------------------------------------------------ |
+| max(alias_name)                 | array.mark_alias(a).max(a.age) <br>//输出为30                                                                                         | 取最大值                                                                                                      | list     | int/float/string | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
+| min(alias_name)                 | array.mark_alias(a).min(a.age) <br>//输出为10                                                                                         | 取最小值                                                                                                      | list     | int/float/string | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
+| sum(alias_name)                 | array.mark_alias(a).sum(a.age)<br>// 输出为60                                                                                         | 对数组进行累加                                                                                                | list     | int/float        | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
+| avg(alias_name)                 | array.mark_alias(a).avg(a.age)<br>// 输出为20                                                                                         | 取均值                                                                                                        | list     | int/float        | 支持int、float、string，但node和edge对象的属性为基础类型的可以支持 |
+| count()                         | array.count() <br>//输出为3                                                                                                           | 取数组大小                                                                                                    | list     | int              | 支持所有类型                                                       |
+| filter(operator_express)        | array.mark_alias(a).filter(a.age <18) <br>//输出为[{age:10}]                                                                          | 对数组进行过滤，返回新的数组                                                                                  | list     | list             | 支持所有类型                                                       |
+| sort(alias_name, 'desc'/'asc')  | array.mark_alias(a).sort(a.age, 'desc')<br>//输出为[{age:30},{age:20},{age:10}]                                                       | 排序                                                                                                          | list     | list             | 支持所有类型                                                       |
+| slice(start_index,end_index)    | array.mark_alias(a).slice(1,2)<br>//获取第一个到第二个的内容，输出为[{age:10},{age:20}]                                               | 切片，从指定起点index到终点index，起点为1，取闭区间<br>- start_index，起点的index<br>- end_index，终止的index |          |                  | 支持所有类型                                                       |
+| get(index)                      | array.mark_alias(a).get(1)<br>//获取第一个到第二个的内容，输出为{age:10}                                                              | 获取第index个元素，从1开始<br>若超过大小，则返回null                                                          |          |                  |                                                                    |
+| str_join(alias_name, tok)       | array.mark_alias(a).str_join(cast(a.age, 'string'), ',') <br>//将年龄转换成字符串，并且通过逗号生成字符串，输出为"10,20,30"           | 字符串连接<br>- alias_name，数组中元素别名<br>- tok，连接符                                                   |          |                  | 只支持string                                                       |
+| accumlate(operator, alias_name) | array.mark_alias(a).accumlate('\*', a.age) //累乘，结果为6000<br> array.mark_alias(a).accumlate('+', a.age) //累加等同于sun，输出为60 | 累计计算算子<br>- operator，为\*/<br>- alias_name，数组中元素别名                                             |          |                  | 支持\*，+                                                          |
 
 ### 3.8 图聚合运算符
 
 由于常常存在对图的聚合计算，此处定义一个图聚合算子，可以将一个子图按照指定模式聚合，并且根据别名进行数组计算,注意
 
-| 符号      | 示例                  | 含义             | 输入类型 | 输出类型           | 备注                    |
-|---------|---------------------|----------------|------|----------------|-----------------------|
-| group() | group(a)，group(a,b) | 将点或者边进行聚合，返回数组 | 图类型  | 后面需待具体算子，输出为数组 | 输入只能是点类型或者边类型，且必须带上起点 |
+| 符号    | 示例                 | 含义                         | 输入类型 | 输出类型                     | 备注                                       |
+| ------- | -------------------- | ---------------------------- | -------- | ---------------------------- | ------------------------------------------ |
+| group() | group(a)，group(a,b) | 将点或者边进行聚合，返回数组 | 图类型   | 后面需待具体算子，输出为数组 | 输入只能是点类型或者边类型，且必须带上起点 |
 
 图分组解释，假设我们存在如下数据：
+
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*72A8QLOzeEcAAAAAAAAAAAAADtmcAQ/original#id=SoPfM&originHeight=682&originWidth=908&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 查询的子图模式为：
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*oomuTKurb6UAAAAAAAAAAAAADtmcAQ/original#id=wTEWB&originHeight=474&originWidth=922&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 不同的group表达的结果如下：
 
 #### 3.8.1 示例1：group(A)
 
 此时对A进行分组，则如下操作返回的值为
+
 > 返回类型为列表，由于整个子图分组成为了1个，所以返回的列表长度为1，后续结果只能输出1行数据
 
 group(A).count(e1) // 对e1边进行计数，应当返回[2]
@@ -247,6 +202,7 @@ group(A).count(e2) //对e2的边进行计数，应当返回[5], 因为有5条边
 被分组的图数据变成
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*oomuTKurb6UAAAAAAAAAAAAADtmcAQ/original#id=KyFfB&originHeight=474&originWidth=922&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 > 返回类型为列表，由于整个子图分组成为了2个，所以返回的列表长度为2，后续结果只能输出2行数据
 
 group(A,B).count(A) // 返回[1,1]
@@ -264,6 +220,7 @@ group(A,B).count(e2) //返回[3,2]
 被分组的图数据变成如下
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*P7rpSZfyFdoAAAAAAAAAAAAADtmcAQ/original#id=SdUqY&originHeight=584&originWidth=840&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 > 返回类型为列表，由于整个子图被分为了4个子图，所以返回的列表长度为4，后续结果只能输出4行数据
 
 group(A,B,C).count(C) // 返回[1,1,1,1]
@@ -302,13 +259,13 @@ bNum = group(A).count(B)
 
 为方便对图进行取数据，设定算子如下
 
-| 符号            | 示例              | 含义     | 备注 |
-|---------------|-----------------|--------|----|
-| .             | A.id            | 取属性    |    |
-| **label**     | A.**label**     | 返回类型   |    |
-| **from**      | e.**from**      | 返回起点id |    |
-| **to**        | e.**to**        | 返回终点id |    |
-| **direction** | e.**direction** | 取边的方向  |    |
+| 符号          | 示例            | 含义       | 备注 |
+| ------------- | --------------- | ---------- | ---- |
+| .             | A.id            | 取属性     |      |
+| **label**     | A.**label**     | 返回类型   |      |
+| **from**      | e.**from**      | 返回起点id |      |
+| **to**        | e.**to**        | 返回终点id |      |
+| **direction** | e.**direction** | 取边的方向 |      |
 
 由于KGDSL中不支持if语法，所以需要针对逻辑判断部分，使用类条件运算符算子代替
 
@@ -340,19 +297,15 @@ Price("定价")= get_first_notnull(rule_value("Share100", 0.5, null), rule_value
 
 日期类型支持如下计算操作
 
-| 符号表示 | 示例                                                | 含义 | 输入类型 | 输出类型 |
-|------|---------------------------------------------------|----|------|------|
-| +    | date1 = to_date('20220212', 'yyMMdd') //将字符串转换成日期 
-
-date2 = to_date('5','d') //将字符串转换成日期
-date3 = date1 + date2 //相加，等于20220217 | 增加日期 | date | date |
-| - | date1 = to_date('20220212', 'yyMMdd')
-date2 = to_date('5','d')
-date3 = date1 - date2 //相加，等于20220207 | 减去日志 | date | date |
+| 符号表示 | 示例                                                                                                                                                        | 含义     | 输入类型 | 输出类型 |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | -------- |
+| +        | date1 = to_date('20220212', 'yyMMdd') //将字符串转换成日期<br> date2 = to_date('5','d') //将字符串转换成日期<br> date3 = date1 + date2 //相加，等于20220217 | 增加日期 | date     | date     |
+| -        | date1 = to_date('20220212', 'yyMMdd')<br> date2 = to_date('5','d')<br> date3 = date1 - date2 //相加，等于20220207                                           | 减去日志 | date     | date     |
 
 #### 3.10.1 日期简化形式
 
 由于返回date类型均需要to_date进行转换，为了简化描述，可按照如下格式简化日期初始化
+
 > 日期/单位
 
 示例1：初始化日期简化模式
@@ -403,58 +356,61 @@ date_format(date1, 'yyMMdd hh:mm:ss') //转换成为指定格式，应当为 202
 假定schema如下
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*hlQmQIuBBvwAAAAAAAAAAAAADtmcAQ/original#id=Ajy1t&originHeight=412&originWidth=930&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 **User属性**
 
-| 属性名    | 类型     | 说明   |
-|--------|--------|------|
-| id     | string | 主键id |
-| name   | string | 姓名   |
-| age    | int    | 年龄   |
-| gender | 性别概念   | 性别属性 |
+| 属性名 | 类型     | 说明     |
+| ------ | -------- | -------- |
+| id     | string   | 主键id   |
+| name   | string   | 姓名     |
+| age    | int      | 年龄     |
+| gender | 性别概念 | 性别属性 |
 
 **Shop属性**
 
-| 属性名      | 类型     | 说明     |
-|----------|--------|--------|
-| id       | string | 主键id   |
-| name     | string | 店铺名    |
-| category | 分类概念   | 店铺经验分类 |
+| 属性名   | 类型     | 说明         |
+| -------- | -------- | ------------ |
+| id       | string   | 主键id       |
+| name     | string   | 店铺名       |
+| category | 分类概念 | 店铺经验分类 |
 
 **(User)-[pay]->(User) 用户向用户转账**
 
-| 属性名    | 类型    | 说明   |
-|--------|-------|------|
+| 属性名 | 类型  | 说明     |
+| ------ | ----- | -------- |
 | amount | float | 转账数目 |
 
 **(User)-[visit]->(Shop) 用户浏览过某个商店**
 
-| 属性名       | 类型  | 说明       |
-|-----------|-----|----------|
-| timestamp | int | 浏览商店的时间戳 |
+| 属性名    | 类型 | 说明             |
+| --------- | ---- | ---------------- |
+| timestamp | int  | 浏览商店的时间戳 |
 
 **(User)-[own]->(Shop) 用户拥有某个商店**
+
 无属性
+
 **(User)-[consume]->(Shop) 用户消费过某个商店**
 
-| 属性名       | 类型    | 说明     |
-|-----------|-------|--------|
-| amount    | float | 消费金额   |
+| 属性名    | 类型  | 说明         |
+| --------- | ----- | ------------ |
+| amount    | float | 消费金额     |
 | timestamp | int   | 消费的时间戳 |
 
 #### 4.1.2 需求列表
 
-| 需求编号 | 需求描述                             |
-|------|----------------------------------|
-| 1    | 判断一个User是否是店主                    |
-| 3    | 统计一个Shop近7天、30天被浏览的次数            |
-| 4    | 根据Shop近7天的次数，分层高关注量Shop和低关注量Shop |
-| 5    | 根据Shop的近7天销量，得到消费最高的top3用户       |
-| 6    | 判断一个用户转账是否收大于支                   |
-| 7    | 判断一个用户是否自己给自己转账                  |
-| 8    | 得到一个用户最近7天转过账的其他用户               |
-| 9    | 用户拥有自己的商店，且在自己商店消费               |
-| 10   | 统计User近7天有消费或者浏览过的店铺数目           |
-| 11   | 统计每个User在某一Shop的消费总额             |
+| 需求编号 | 需求描述                                            |
+| -------- | --------------------------------------------------- |
+| 1        | 判断一个User是否是店主                              |
+| 3        | 统计一个Shop近7天、30天被浏览的次数                 |
+| 4        | 根据Shop近7天的次数，分层高关注量Shop和低关注量Shop |
+| 5        | 根据Shop的近7天销量，得到消费最高的top3用户         |
+| 6        | 判断一个用户转账是否收大于支                        |
+| 7        | 判断一个用户是否自己给自己转账                      |
+| 8        | 得到一个用户最近7天转过账的其他用户                 |
+| 9        | 用户拥有自己的商店，且在自己商店消费                |
+| 10       | 统计User近7天有消费或者浏览过的店铺数目             |
+| 11       | 统计每个User在某一Shop的消费总额                    |
 
 ### 4.2 整体语法描述
 
@@ -498,6 +454,7 @@ Define (s:sType)-[p:pType]->(o:oType) {
 #### 4.3.1 路径定义
 
 路径的基本单元是边，多种边组合起来的连通图成为路径，Structure中可以描述多个路径，方便在不同场景下使用
+
 > 在线业务存在多种非连通图需求，离线批量计算场景较少
 
 路径描述按照ISO GQL方式进行描述，即如下三种示例
@@ -630,14 +587,15 @@ Structure {
 }
 ```
 
-参考ISO GQL语法，使用花括号的两种参数表达重复的范围，在ISO GQL之上，根据实际应用中的需求，配套总结了几类使用函数
+参考ISO GQL语法，使用花括号的两种参数表达重复的范围，在ISO GQL之上，根据实际应用中的需求，配套总结了几类使用函数：
 
-| 分类  | 使用场景           | 示例  | 实现状态 |
-|-----|----------------|-----|------|
-| 计算类 | 获取重复路径中的最后某个元素 | ``` 
+- 计算类
 
+（1）获取重复路径中的最后某个元素 （未实现）
+
+```
 Structure {
-(s:Company)-[p:hasShare]->{0,*}(o:Company)
+(s:Company)-[p:hasShare]->{0,\*}(o:Company)
 }
 Constraint {
 // 获取最后一个公司
@@ -649,10 +607,11 @@ firstCompany = p.nodes().get(0)
     lastShareRate = p.edges().get(-1).rate
 
 }
+```
+
+（2）数值计算(均值、极值、累加、str join等) （未实现）
 
 ```
- | 未实现 |
-|  | 数值计算(均值、极值、累加、str join等) | ```
 Structure {
     (s:Company)-[p:hasShare]->{0,*}(o:Company)
 }
@@ -664,21 +623,26 @@ Constraint {
 }
 ```
 
-| 未实现 |
-| | reduce操作 | ```
+（3）reduce操作
+
+```
 Structure {
-(s:Company)-[p:hasShare]->{0,*}(o:Company)
+(s:Company)-[p:hasShare]->{0,_}(o:Company)
 }
 Constraint {
 // 极值
 maxRate = p.edges().reduce((res, cur) => rule_value(res > cur.rate, res, cur.rate), 0)
 // 连乘
-realRate = e.edges().reduce((res, cur) => cur.rate * res, 1)
+realRate = e.edges().reduce((res, cur) => cur.rate _ res, 1)
 }
 
 ```
- | 已实现 |
-| 约束类 | 重复路径节点/边间约束 | ```
+
+- 约束类
+
+（1）重复路径节点/边间约束
+
+```
 Structure {
     (s:Company)-[p:hasShare]->{0,*}(o:Company)
 }
@@ -687,18 +651,21 @@ Constraint {
 }
 ```
 
-| 已实现 |
-| | 重复路径节点的常量约束 | ```
+（2）重复路径节点的常量约束
+
+```
 Structure {
-(s:Company)-[p:hasShare]->{0,*}(o:Company)
+(s:Company)-[p:hasShare]->{0,\*}(o:Company)
 }
 Constraint {
 R1("必须是上市公司"): p.nodes().constraint((pre,cur) => cur.type == "上市公司")
 }
 
 ```
- | 已实现 |
-|  | 重复路径节点和外部常量约束 | ```
+
+（3）重复路径节点和外部常量约束
+
+```
 Structure {
   	(u:Person)-[:hasShare]->(s:Company),
     (s)-[p:hasShare]->{0,*}(o:Company)
@@ -708,19 +675,23 @@ Constraint {
 }
 ```
 
-| 已实现 |
-| 结果处理 | 只保留最长/最短的路径 | ```
+- 结果处理
+
+（1）只保留最长/最短的路径
+
+```
 Structure {
 (u:Person)-[:hasShare]->(s:Company),
-(s)-[p:hasShare]->{0,*}(o:Company)
+(s)-[p:hasShare]->{0,\*}(o:Company)
 }
 Constraint {
 R1("保留最长路径"): group(s,o).keep_longest_path(p)
 }
+```
+
+（2）只保留最短的路径
 
 ```
- | 已实现 |
-|  | 只保留最短的路径 | ```
 Structure {
   	(u:Person)-[:hasShare]->(s:Company),
     (s)-[p:hasShare]->{0,*}(o:Company)
@@ -729,8 +700,6 @@ Constraint {
   	R1("保留最短路径"): group(s,o).keep_shortest_path(p)
 }
 ```
-
-| 已实现 |
 
 ###### 6）函数边
 
@@ -750,7 +719,7 @@ Constraint中每一行作为一个规则，规则分为如下几类
 
 - **逻辑规则**
 
-以 **规则英文名("规则说明"): 表达式** 这种格式进行表达，输出为布尔值。常用运算符有>、<、==、>=、<=、!=、+、-、*、/、%等，运算符可以进行扩展。
+以 **规则英文名("规则说明"): 表达式** 这种格式进行表达，输出为布尔值。常用运算符有>、<、==、>=、<=、!=、+、-、\*、/、%等，运算符可以进行扩展。
 
 - **计算规则**
 
@@ -822,18 +791,19 @@ Constraint {
 
 由于需求中存在多种聚合类需求，4.1.2中存在统计需求列表如下
 
-| 需求编号 | 需求描述                             |
-|------|----------------------------------|
-| 3    | 统计一个Shop近7天、30天被浏览的次数            |
-| 4    | 根据Shop近7天的次数，分层高关注量Shop和低关注量Shop |
-| 5    | 根据Shop的近7天销量，得到消费最高的top3用户       |
-| 6    | 判断一个用户转账是否收大于支                   |
-| 10   | 统计User近7天有消费或者浏览过的店铺数目           |
-| 11   | 统计每个User在某一Shop的消费总额             |
+| 需求编号 | 需求描述                                            |
+| -------- | --------------------------------------------------- |
+| 3        | 统计一个Shop近7天、30天被浏览的次数                 |
+| 4        | 根据Shop近7天的次数，分层高关注量Shop和低关注量Shop |
+| 5        | 根据Shop的近7天销量，得到消费最高的top3用户         |
+| 6        | 判断一个用户转账是否收大于支                        |
+| 10       | 统计User近7天有消费或者浏览过的店铺数目             |
+| 11       | 统计每个User在某一Shop的消费总额                    |
 
 **示例1：需求10、需求3、需求4**
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*FROwTLCV4HcAAAAAAAAAAAAADtmcAQ/original#id=yzghA&originHeight=506&originWidth=926&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 假设当前时间为2023.1.10日，那么Alice近7天有消费或者浏览过的店铺数目应当为2，语法表达如下
 
 ```
@@ -853,6 +823,7 @@ Constraint {
 **示例2：判断用户是否收大于支**
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*kJMiRbdw0BYAAAAAAAAAAAAADtmcAQ/original#id=DDwGS&originHeight=322&originWidth=852&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 上图中，Jobs、Alice、Mike属于收大于支，Bob属于支大于收，那么规则如下表示
 
 ```
@@ -873,6 +844,7 @@ Constraint {
 **示例3：根据Shop的近7天销量，得到消费最高的top3用户（未实现）**
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*e6ijSZWfOUEAAAAAAAAAAAAADtmcAQ/original#id=GHpMU&originHeight=518&originWidth=602&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 上面数据实例中，top3为:Jobs、Mike、Alice
 
 ```
@@ -934,17 +906,18 @@ Define (s:TypeA)-[p:TypeP]->(o:TaxonomyOfTypeA/ConceptA) {
 ConceptA是属于TaxonomyOfTypeA类型，上述规则表达含义为，TypeA类型的s在满足上述规则表达的前提下，可以通过TypeP谓词链接到ConceptA概念上。下面以示例举例:
 根据4.1.2的需求，我们可以将如下需求转化成为概念进行定义
 
-| 需求编号 | 需求描述                             |
-|------|----------------------------------|
-| 1    | 判断一个User是否是店主                    |
-| 4    | 根据Shop近7天的次数，分层高关注量Shop和低关注量Shop |
-| 7    | 判断一个用户是否自己给自己转账                  |
+| 需求编号 | 需求描述                                            |
+| -------- | --------------------------------------------------- |
+| 1        | 判断一个User是否是店主                              |
+| 4        | 根据Shop近7天的次数，分层高关注量Shop和低关注量Shop |
+| 7        | 判断一个用户是否自己给自己转账                      |
 
 示例1：判断一个User是否是店主
 判断是否是店主主要看名下是否有店铺
 假定已经按照概念建模创建了ShopKeeper概念，如下
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*LY8cSqBhYF8AAAAAAAAAAAAADtmcAQ/original#id=ej8hQ&originHeight=566&originWidth=1062&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 从实例图上可以看出，bob没有店不属于ShopKeeper，Alice有一个Hotel，所以应该属于ShopKeeper，我们可以通过语法将Alice归纳为ShopKeeper用户类别
 
 ```
@@ -960,7 +933,9 @@ Define (s:User)-[p:belongTo]->(o:TaxonomyOfUser/ShopKeeper) {
 
 通过如上规则，则可以将概念和实体实例建立挂载关系
 示例2：根据Shop近7天的次数，分层高关注量Shop和低关注量Shop
+
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*RvHESr9YexsAAAAAAAAAAAAADtmcAQ/original#id=x8GOd&originHeight=578&originWidth=1040&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 上图中Hotel被访问的较多，Drug Store访问很少，我们需要按照业务要求将他们和PopularShop和NamelessShop分别挂载上
 
 ```
@@ -999,16 +974,17 @@ Define (s:Shop)-[p:belongTo]->(o:TaxonomyOfShop/NamelessShop) {
 
 可使用类型之间定义需求如下
 
-| 需求编号 | 需求描述                |
-|------|---------------------|
-| 7    | 判断一个用户是否自己给自己转账     |
-| 8    | 得到一个用户最近7天转过账的其他用户  |
-| 11   | 统计每个User在某一Shop的销售量 |
+| 需求编号 | 需求描述                            |
+| -------- | ----------------------------------- |
+| 7        | 判断一个用户是否自己给自己转账      |
+| 8        | 得到一个用户最近7天转过账的其他用户 |
+| 11       | 统计每个User在某一Shop的销售量      |
 
 基本定义和4.5.1中基本一致，按照需求新增schema
 
 ![](https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*3c--RL7N-9gAAAAAAAAAAAAADtmcAQ/original#id=WOoBU&originHeight=522&originWidth=788&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-主要三种
+
+要三种
 
 - (s:User)-[p:transSelf]->(s) 自己向自己转账
 - (s:User)-[p:trans7Days]->(o:User) 7天内有转账的用户
@@ -1059,29 +1035,29 @@ Define (s:Shop)-[p:consumeAmount]->(o:User) {
 
 前两章节主要是和实体类型和概念之间语义链接，实际上存在部分需求，和任何其他类型没有交互，例如如下需求
 
-| 需求编号 | 需求描述                   |
-|------|------------------------|
-| 1    | 判断一个User是否是店主          |
-| 3    | 统计一个Shop近7天、30天被浏览的次数  |
-| 6    | 判断一个用户转账是否收大于支         |
-| 7    | 判断一个用户是否自己给自己转账        |
-| 9    | 用户拥有自己的商店，且在自己商店消费     |
-| 10   | 统计User近7天有消费或者浏览过的店铺数目 |
+| 需求编号 | 需求描述                                |
+| -------- | --------------------------------------- |
+| 1        | 判断一个User是否是店主                  |
+| 3        | 统计一个Shop近7天、30天被浏览的次数     |
+| 6        | 判断一个用户转账是否收大于支            |
+| 7        | 判断一个用户是否自己给自己转账          |
+| 9        | 用户拥有自己的商店，且在自己商店消费    |
+| 10       | 统计User近7天有消费或者浏览过的店铺数目 |
 
 如上需求，我们可以增加User属性
 
-| 属性名                        | 类型      | 说明               |
-|----------------------------|---------|------------------|
-| isShopOwner                | boolean | 是否是店主            |
-| isIncomeLargeOutcome       | boolean | 是否收大于支           |
+| 属性名                     | 类型    | 说明                            |
+| -------------------------- | ------- | ------------------------------- |
+| isShopOwner                | boolean | 是否是店主                      |
+| isIncomeLargeOutcome       | boolean | 是否收大于支                    |
 | 7daysVisitOrConsumeShopNum | int     | 近7天有消费或者浏览过的店铺数目 |
 
 Shop可以增加属性
 
-| 属性名            | 类型  | 说明       |
-|----------------|-----|----------|
-| 7daysVisitNum  | int | 近7天浏览人数  |
-| 30daysVisitNum | int | 近30天浏览人数 |
+| 属性名         | 类型 | 说明           |
+| -------------- | ---- | -------------- |
+| 7daysVisitNum  | int  | 近7天浏览人数  |
+| 30daysVisitNum | int  | 近30天浏览人数 |
 
 这些新增属性，可通过规则进行定义，避免出现实际的数据新导入
 示例1：近7天有消费或者浏览过的店铺数目

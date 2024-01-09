@@ -27,7 +27,6 @@ Python code style generally requires adherence to the PEP 8 standard.
 
 If you are using PyCharm for development, you can use the [BlackConnect](https://black.readthedocs.io/en/stable/integrations/editors.html) plugin to format your code.
 
-
 #### Docstring
 
 Use the Google style format for docstrings.
@@ -52,7 +51,8 @@ For issues related to functionality optimization, feature expansion, bug fixes, 
 
 ## Development Process
 
-* Switch to your development branch
+- Switch to your development branch
+
   ```bash
   git checkout -b your-branch
   ....
@@ -60,27 +60,27 @@ For issues related to functionality optimization, feature expansion, bug fixes, 
   git commit -m "xxx"
   ```
 
-* Develop your feature
+- Develop your feature
 
-* Add unit tests
+- Add unit tests
 
-* Submit a Pull Request (PR)
+- Submit a Pull Request (PR)
 
-* Handle conflicts
+- Handle conflicts
 
   ```bash
   git checkout your-branch
   git rebase master # Make sure your local master branch is up to date
   ```
 
-* Code review
+- Code review
 
   The code you submitted requires a code review to be mergeed into the master branch. Please be patient and wait.
   We will assign relevant colleagues for code review.
   If there is no response to your PR within two working days, please mention the relevant colleagues in your PR.
   The comments related to the code review will be directly posted on the relevant PR or issue. If you find the suggestions reasonable, please update your code accordingly.
 
-* Merge into the master branch
+- Merge into the master branch
 
   After the code review, we will arrange for further review by another colleague to ensure that each PR has at least two approvals before merging into the master.
   During this process, there may be some suggestions for modifications. Please be patient and make the necessary changes.

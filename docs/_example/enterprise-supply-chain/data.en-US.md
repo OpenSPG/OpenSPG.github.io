@@ -35,7 +35,6 @@ CSF0000002238,三角*胎股*限公司,"轮胎,全钢子午线轮胎"
 - name: The name of the company.
 - products: The products produced by the company, separated by ','.
 
-
 ## 3 Transfer relation between companys (Company_fundTrans_Company.csv)
 
 ```

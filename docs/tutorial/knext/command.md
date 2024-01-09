@@ -1,3 +1,12 @@
+---
+title: KNext
+order: 1
+nav:
+  second:
+    order: 4
+    title: KNext
+---
+
 ## 1 快速开始
 
 该示例可以帮助快速开始一个简单的图谱数据导入和分析推理。
@@ -632,7 +641,7 @@ reasoner_result_dir = reasoner/result
 - `reasoner_result_dir` 规则推理结果目录，新建项目时默认为 `reasoner/result`。若目录变动，需要修改此配置。
 - `builder` 目录用来保存所有知识加工任务以及依赖的源数据、自定义算子、算法模型、执行错误记录。
 - `reasoner` 目录用来保存规则推理相关的DSL语法文件和执行结果。
-    - DSL语法文件以`.dsl`为结尾，用来保存DSL查询语句。
+  - DSL语法文件以`.dsl`为结尾，用来保存DSL查询语句。
 - `schema` 目录用来保存项目schema声明和概念规则。
-    - 项目schema声明文件以`.schema`为结尾，通过`knext schema commit`解析schema文件，并提交到服务端。每个项目只允许唯一的schema声明文件。
-    - 概念规则以`.rule` 为结尾，通过`knext schema reg_concept_rule [--file]`，将文件中定义的规则注册到对应概念上。
+  - 项目schema声明文件以`.schema`为结尾，通过`knext schema commit`解析schema文件，并提交到服务端。每个项目只允许唯一的schema声明文件。
+  - 概念规则以`.rule` 为结尾，通过`knext schema reg_concept_rule [--file]`，将文件中定义的规则注册到对应概念上。

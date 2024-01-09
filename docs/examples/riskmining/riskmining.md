@@ -1,3 +1,7 @@
+---
+title: 黑产挖掘
+---
+
 ## 黑产挖掘图谱
 
 关键词：语义属性，实体动态多分类，面向业务知识和事实数据分层下的知识应用
@@ -9,7 +13,7 @@
 ### step1：进入案例目录
 
 ```shell
- cd python/knext/knext/examples/riskmining/
+ cd /openspg/python/knext/knext/examples/riskmining/
 ```
 
 ### step2：项目初始化
@@ -70,7 +74,7 @@ RETURN
 执行脚本：
 
 ```
-knext reasoner execute --file ./reasoner/dsl_task.dsl
+knext reasoner execute --file ./reasoner/dsl_task.txt
 ```
 
 #### 场景2：实体动态多类型
@@ -165,7 +169,7 @@ MATCH (s:`RiskMining.TaxOfRiskApp`/`赌博应用`) RETURN s.id
 执行脚本：
 
 ```
-knext reasoner execute --file ./reasoner/dsl_task1.dsl
+knext reasoner execute --file ./reasoner/dsl_task1.txt
 ```
 
 **获取赌博APP背后的开发者和老板**
@@ -183,5 +187,5 @@ RETURN
 执行脚本：
 
 ```
-knext reasoner execute --file ./reasoner/dsl_task2.dsl
+knext reasoner execute --file ./reasoner/dsl_task2.txt
 ```

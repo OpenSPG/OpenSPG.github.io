@@ -49,7 +49,7 @@ Product(产品): EntityType
         name(产品名): Text
     relations:
         isA(上位产品): Product
-        
+
 Company(企业): EntityType
     relations:
         product(经营产品): Product
@@ -71,7 +71,6 @@ CSF0000000254,北大*药*份限公司,其他化学药品
 
 2）需要新增维护关系数据，当原始数据发生变更时，需要删除原有关系，再新增数据，容易导致数据错误。
 
-
 #### 2.1.3 基于SPG语义属性建模
 
 SPG支持语义属性，可简化知识构建，如下：
@@ -79,7 +78,7 @@ SPG支持语义属性，可简化知识构建，如下：
 ```yaml
 Product(产品): ConceptType
     hypernymPredicate: isA
-        
+
 Company(企业): EntityType
     properties:
         product(经营产品): Product
@@ -153,7 +152,7 @@ SPG区分了概念和实体，用于解耦语义和数据，如下：
 ```yaml
 Product(产品): ConceptType
     hypernymPredicate: isA
-        
+
 Company(企业): EntityType
     properties:
         product(经营产品): Product
@@ -170,12 +169,12 @@ Company(企业): EntityType
 
 ```yaml
 Event(事件):
-    properties:
-        eventTime(发生时间): Long
-        subject(涉事主体): Text
-        object(客体): Text
-        place(地点): Text
-        industry(涉事行业): Text
+  properties:
+    eventTime(发生时间): Long
+    subject(涉事主体): Text
+    object(客体): Text
+    place(地点): Text
+    industry(涉事行业): Text
 ```
 
 这种表达方式，是无法体现真实事件的多元关联性，SPG提供了事件建模，可实现事件多元要素的关联，如下：
