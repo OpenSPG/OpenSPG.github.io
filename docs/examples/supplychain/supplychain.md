@@ -33,7 +33,7 @@ nav:
 ### Step1：进入案例目录
 
 ```shell
- cd /openspg/python/knext/examples/supplychain/
+ cd python/knext/knext/examples/supplychain/
 ```
 
 ### Step2：项目初始化
@@ -85,7 +85,7 @@ knext builder execute Company,CompanyFundTrans,Person
 最后提交事件
 
 ```shell
-knext builder submit ProductChainEvent
+knext builder execute ProductChainEvent
 ```
 
 ### Step5：执行图谱任务
