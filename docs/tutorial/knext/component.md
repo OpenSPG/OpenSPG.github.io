@@ -58,50 +58,40 @@ order: 2
 **add_property_mapping**
 > 添加从非标准数据字段到SPG属性之间的映射关系，并执行绑定到属性所属于的类型schema上的链指策略。
 
-| 参数 | 类型 | 是否必填 | 示例值 | 描述 |
-| --- | --- | --- | --- | --- |
-| **source_name** | str | 是 | "useCert" | 源字段 |
-| **target_name** | PropertyName | 是 | DEFAULT.App.useCert | SPG属性名 |
-| **target_type** | SPGTypeName | 否 | DEFAULT.Cert | SPG属性类型。当前未支持属性多类型，暂不需要填。 |
-| **link_strategy** | LinkingStrategy | 否 | CertLinkOp() | 链指策略。当前支持的链指策略：
-1、`LinkingStrateEnum.IDEquals`
-2、`LinkOp`类型算子
-若设置，会在当前任务覆盖schema上绑定的链指策略。 |
+| 参数 | 类型 | 是否必填 | 示例值 | 描述                                                            |
+| --- | --- | --- | --- |---------------------------------------------------------------|
+| **source_name** | str | 是 | "useCert" | 源字段                                                           |
+| **target_name** | PropertyName | 是 | DEFAULT.App.useCert | SPG属性名                                                        |
+| **target_type** | SPGTypeName | 否 | DEFAULT.Cert | SPG属性类型。当前未支持属性多类型，暂不需要填。                                     |
+| **link_strategy** | LinkingStrategy | 否 | CertLinkOp() | 链指策略，若设置，会在当前任务覆盖schema上绑定的链指策略。当前支持的链指策略：1、`LinkingStrateEnum.IDEquals` 2、`LinkOp`类型算子 |
 
 **add_relation_mapping**
 > 添加从非标准数据字段到SPG关系之间的映射关系，并执行绑定到关系所属于的类型schema上的链指策略。
 
-| 参数 | 类型 | 是否必填 | 示例值 | 描述 |
-| --- | --- | --- | --- | --- |
-| **source_name** | str | 是 | "belongTo" | 源字段 |
-| **target_name** | RelationName | 是 | DEFAULT.App.belongTo | SPG关系名 |
-| **target_type** | SPGTypeName | 是 | DEFAULT.Company | SPG关系类型。关系映射上必填。 |
-| **link_strategy** | LinkingStrategy | 否 | CertLinkOp() | 链指策略。当前支持的链指策略：
-1、`LinkingStrateEnum.IDEquals`
-2、`LinkOp`类型算子
-若设置，会在当前任务覆盖schema上绑定的链指策略。 |
+| 参数 | 类型 | 是否必填 | 示例值 | 描述                                                            |
+| --- | --- | --- | --- |---------------------------------------------------------------|
+| **source_name** | str | 是 | "belongTo" | 源字段                                                           |
+| **target_name** | RelationName | 是 | DEFAULT.App.belongTo | SPG关系名                                                        |
+| **target_type** | SPGTypeName | 是 | DEFAULT.Company | SPG关系类型。关系映射上必填。                                              |
+| **link_strategy** | LinkingStrategy | 否 | CertLinkOp() | 链指策略，若设置，会在当前任务覆盖schema上绑定的链指策略。当前支持的链指策略：1、`LinkingStrateEnum.IDEquals` 2、`LinkOp`类型算子 |
 
 **add_predicting_property**
 > 添加需要预测的SPG属性字段，并执行绑定到spo三元组上的预测策略。
 
-| 参数 | 类型 | 是否必填 | 示例值 | 描述 |
-| --- | --- | --- | --- | --- |
-| **target_name** | PropertyName | 是 | DEFAULT.App.useCert | SPG属性名 |
-| **target_type** | SPGTypeName | 否 | DEFAULT.Cert | SPG属性类型。当前未支持属性多类型，暂不需要填。 |
-| **predicting_strategy** | PredictingStrategy | 否 | CertPredictOp() | 预测策略。当前支持的预测策略：
-1、`PredictOp`类型算子
-若设置，会在当前任务覆盖schema上绑定的预测策略。 |
+| 参数 | 类型 | 是否必填 | 示例值 | 描述                                |
+| --- | --- | --- | --- |-----------------------------------|
+| **target_name** | PropertyName | 是 | DEFAULT.App.useCert | SPG属性名                            |
+| **target_type** | SPGTypeName | 否 | DEFAULT.Cert | SPG属性类型。当前未支持属性多类型，暂不需要填。         |
+| **predicting_strategy** | PredictingStrategy | 否 | CertPredictOp() | 预测策略，若设置，会在当前任务覆盖schema上绑定的预测策略。当前支持的预测策略：1、`PredictOp`类型算子 |
 
 **add_predicting_relation**
 > 添加需要预测的SPG关系字段，并执行绑定到spo三元组上的预测策略。
 
-| 参数 | 类型 | 是否必填 | 示例值 | 描述 |
-| --- | --- | --- | --- | --- |
-| **target_name** | RelationName | 是 | DEFAULT.App.belongTo | SPG属性名 |
-| **target_type** | SPGTypeName | 是 | DEFAULT.Company | SPG关系类型。关系映射上必填。 |
-| **predicting_strategy** | PredictingStrategy | 否 | CertPredictOp() | 预测策略。当前支持的预测策略：
-1、`PredictOp`类型算子
-若设置，会在当前任务覆盖schema上绑定的预测策略。 |
+| 参数 | 类型 | 是否必填 | 示例值 | 描述                                 |
+| --- | --- | --- | --- |------------------------------------|
+| **target_name** | RelationName | 是 | DEFAULT.App.belongTo | SPG属性名                             |
+| **target_type** | SPGTypeName | 是 | DEFAULT.Company | SPG关系类型。关系映射上必填。                   |
+| **predicting_strategy** | PredictingStrategy | 否 | CertPredictOp() | 预测策略，若设置，会在当前任务覆盖schema上绑定的预测策略。当前支持的预测策略：1、`PredictOp`类型算子。 |
 
 **add_filter**
 > 添加字段筛选条件，数据满足`column_name=column_value`条件的会执行映射。若不设置筛选条件，则全部数据会执行映射。
