@@ -39,10 +39,10 @@ export default defineConfig({
       content: '语义增强可编程知识图谱SPG',
     },
   ],
-  // locales: [
-  //   { id: 'zh-CN', name: '中文' },
-  //   { id: 'en-US', name: 'English' },
-  // ],
+  locales: [
+    { id: 'zh-CN', name: '中文' },
+    { id: 'en-US', name: 'English' },
+  ],
   logo: 'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*D5uYQpLS8dsAAAAAAAAAAAAADtmcAQ/original',
   ...(process.env.NODE_ENV === 'production' ? ProductionConfig : {}),
 });
