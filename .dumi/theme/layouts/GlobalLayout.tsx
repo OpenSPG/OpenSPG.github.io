@@ -14,14 +14,14 @@ export default () => {
       getMessages={(intl) => ({
         REPO: 'https://github.com/OpenSPG/openspg',
         TITLE: {
-          abbr: 'SPG',
+          abbr: 'OpenSPG',
           full: intl(
             '语义增强可编程图谱框架',
             'Semantic-Enhanced Programmable Graph',
           ),
           sub: intl(
-            '新一代企业级知识图谱语义框架',
-            'A new generation of enterprise knowledge graph semantic framework',
+            '新一代企业级知识图谱引擎，大模型与知识图谱双向增强',
+            'New Generation of Enterprise Knowledge Graph Engine, Bidirectionally Enhanced by Large Models and Knowledge Graphs',
           ),
         },
         BUTTON_GROUP: {
