@@ -1,7 +1,7 @@
 /**
  * title: OpenKG
  * nav:
- *  order: 5
+ *  order: 4
  */
 
 import OpenKG from './openkg';

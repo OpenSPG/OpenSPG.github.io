@@ -1,6 +1,6 @@
 /**
  * title: Whitepaper
- * order: 4
+ * order: 3
  * nav:
  *  title: Download Whitepaper
  *  order: 4

@@ -3,7 +3,7 @@
  * order: 4
  * nav:
  *  title: 下载白皮书
- *  order: 4
+ *  order: 3
  */
 import { LoadingOutlined } from '@ant-design/icons';
 import { Alert, Button, Col, Row, Steps, Typography, message } from 'antd';

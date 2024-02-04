@@ -26,7 +26,7 @@ export default () => {
         },
         BUTTON_GROUP: {
           Github: 'https://github.com/OpenSPG/openspg',
-          Documentation: 'introduction/general',
+          Documentation: 'guide',
           WhitePaper: 'download',
         },
         ANNOUNCEMENT: [
