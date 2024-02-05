@@ -294,7 +294,7 @@ export default () => {
           Email: {
             title: intl('联系我们', 'Contact Us'),
             name: intl('邮箱', 'Email'),
-            email: 'feidongni.fdn@antgroup.com',
+            email: 'zhouxiaolu.zxl@antgroup.com',
           },
           QRCode: {
             title: intl(
