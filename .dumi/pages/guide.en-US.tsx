@@ -4,8 +4,6 @@
  *  order: 2
  */
 
-import { Redirect } from '../components/Redirect';
+import Guide from './guide';
 
-export default () => {
-  return <Redirect url="https://openspg.yuque.com/ndx6g9/ns5nw2" />;
-};
+export default Guide;
