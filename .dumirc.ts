@@ -43,6 +43,6 @@ export default defineConfig({
     { id: 'zh-CN', name: '中文' },
     { id: 'en-US', name: 'English' },
   ],
-  logo: 'https://mdn.alipayobjects.com/huamei_xgb3qj/afts/img/A*D5uYQpLS8dsAAAAAAAAAAAAADtmcAQ/original',
+  logo: 'https://mdn.alipayobjects.com/huamei_ukv101/afts/img/z4srRIWNIzoAAAAAAAAAAAAADisxAQFr/original',
   ...(process.env.NODE_ENV === 'production' ? ProductionConfig : {}),
 });
